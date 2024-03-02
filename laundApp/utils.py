@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from twilio.rest import Client
 import re
 from . models import CompanyRegisterForm
-
+from decouple import config
 
 
 # USED TO GENERATE RANDOM BUSINESS ID
@@ -104,8 +104,8 @@ def send_otp(request):
 # THIS CODE IS FROM 3RD PARTY SERVICE PROVIDER (TWILIO) 
 # THEY HELP US SEND OTP CODE VIA SMS OF PHONE NUMBER REGISTERED (SINCE IT'S A TRIAL VERSION)
 def sendTextMsg(receiverNo:str, body:str):
-    account_sid = "ACfa49013831fcc67975c7b461cb18e5be"
-    auth_token = "b21227cf5956a1a4e30a12d08d349e2f"
+    account_sid = config('TWILIO_ACCOUNT_SID')
+    auth_token = config('TWILIO_TOKEN')
     client = Client(account_sid, auth_token)
     message = client.messages.create(
     body=body,
