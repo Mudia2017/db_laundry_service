@@ -109,7 +109,7 @@ def sendTextMsg(receiverNo:str, body:str):
     client = Client(account_sid, auth_token)
     message = client.messages.create(
     body=body,
-    from_="+15076876623",
+    from_=config('TWILIO_FROM'),
     to=receiverNo
     )
     print(message.sid)
