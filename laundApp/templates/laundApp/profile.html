@@ -1,0 +1,1459 @@
+{% extends 'laundApp/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+
+<style>
+    /* ===================== CSS FOR INPUT FIELD NAME ===================== */
+
+    .first-row {
+        display: flex;
+    }
+
+    .name-row {
+        width: 100%;
+        position: relative;
+        height: 50px;
+        overflow: hidden;
+    }
+
+    .name {
+        width: 50%;
+        position: relative;
+        height: 50px;
+        overflow: hidden;
+    }
+
+    ._name {
+        width: 41%;
+        position: relative;
+        height: 50px;
+        overflow: hidden;
+    }
+
+    .input-name-field {
+        width: 100%;
+        height: 100%;
+        padding-top: 20px;
+        border: none;
+        outline: none;
+        padding-left: 1%;
+        background-color: rgba(0, 0, 0, 0)
+    }
+
+    ._input-name-field {
+        width: 100%;
+        height: 100%;
+        padding-top: 20px;
+        border: none;
+        outline: none;
+        padding-left: 1%;
+        background-color: rgba(0, 0, 0, 0)
+    }
+
+    /* === IN THE INPUT FIELD, THIS WILL CHANGE SUGGESTION BACKGROUND COLOR TO TRANSPARENT ==== */
+    input:-webkit-autofill,
+    input:-webkit-autofill:focus {
+        transition: background-color 600000s 0s, color 600000s 0s;
+    }
+
+    input[data-autocompleted] {
+        background-color: transparent !important;
+    }
+
+    /* === END OF THE CODE ==== */
+
+
+    .label-name {
+        position: absolute;
+        bottom: -4px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        border-bottom: 1px solid black;
+    }
+
+    .label-name::after {
+        content: "";
+        position: absolute;
+        left: 0px;
+        bottom: -1px;
+        width: 100%;
+        height: 100%;
+        border-bottom: 3px solid #5fa8d3;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    .content-name {
+        position: absolute;
+        bottom: 5px;
+        left: 2%;
+        transition: all 0.3s ease;
+    }
+
+    .input-name-field:focus+.label-name .content-name,
+    .input-name-field:valid+.label-name .content-name {
+        transform: translateY(-140%);
+        font-size: 11px;
+        color: #5fa8d3;
+    }
+
+    .input-name-field:focus+.label-name::after,
+    .input-name-field:valid+.input-name-field::after {
+        transform: translateX(0%);
+    }
+
+    /* ======================= END OF INPUT FIELD NAME ========================= */
+
+
+
+    /* =========== START OF WINDOW SPINNER ============= */
+    /* .spin-modal-container {
+        z-index: 9999;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: none;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .spinner_modal_content {
+        padding: 0.5em;
+        color: white;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .modal-open-load {
+        display: flex;
+    } */
+
+    /* STARTING FROM HERE LOADING EFFECT COPY FROM WEB */
+    /* .loading {
+        display: flex;
+    }
+
+    .loading .dot {
+        position: relative;
+        width: 2em;
+        height: 2em;
+        margin: 0.8em;
+        border-radius: 50%;
+    }
+
+    .loading .dot::before {
+        position: absolute;
+        content: "";
+        width: 100%;
+        height: 100%;
+        background: inherit;
+        border-radius: inherit;
+        animation: wave 2s ease-out infinite;
+    }
+
+    .loading .dot:nth-child(1) {
+        background: #7ef9ff;
+    }
+
+    .loading .dot:nth-child(1)::before {
+        animation-delay: 0.2s;
+    }
+
+    .loading .dot:nth-child(2) {
+        background: #89cff0;
+    }
+
+    .loading .dot:nth-child(2)::before {
+        animation-delay: 0.4s;
+    }
+
+    .loading .dot:nth-child(3) {
+        background: #4682b4;
+    }
+
+    .loading .dot:nth-child(3)::before {
+        animation-delay: 0.6s;
+    }
+
+    .loading .dot:nth-child(4) {
+        background: #0f52ba;
+    }
+
+    .loading .dot:nth-child(4)::before {
+        animation-delay: 0.8s;
+    }
+
+    .loading .dot:nth-child(5) {
+        background: #000080;
+    }
+
+    .loading .dot:nth-child(5)::before {
+        animation-delay: 1s;
+    }
+
+    @keyframes wave {
+
+        50%,
+        75% {
+            transform: scale(2.5);
+        }
+
+        80%,
+        100% {
+            opacity: 0;
+        }
+    } */
+
+    /* END OF LOADING EFFECT */
+
+    /* =========== END OF WINDOW SPINNER ============= */
+
+
+    /*  ====== START TOAST NOTIFICATION (NEW VERSION) ======== */
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: Verdana, Verdana, Geneva, Tahoma, sans-serif;
+    }
+
+    body {
+        overflow: hidden;
+    }
+
+    .notification {
+        width: 320px;
+        height: 70px;
+        position: absolute;
+        padding: 12px 8px 8px 15px;
+        right: -900px;
+        /* right: 18px; */
+        /* top: 24px; */
+        bottom: 24px;
+        border-radius: 8px;
+        background-color: #fff;
+        border-bottom: 1px solid #2a9f76;
+        border-left: 1px solid #26916d;
+        box-shadow: #555 -1px 4px 17px -4px;
+        transition: .4s cubic-bezier(0.075, 0.82, 0.35, 1.1);
+    }
+
+    .left,
+    .right {
+        display: inline-block;
+    }
+
+    .left {
+        width: 18%;
+    }
+
+    .close {
+        display: block;
+        position: absolute;
+        width: 23px;
+        height: 23px;
+        top: 0px;
+        right: 2px;
+    }
+
+    .close:hover {
+        cursor: pointer;
+    }
+
+    .close .slant_left {
+        transform: rotate(45deg);
+        transition: .5s;
+    }
+
+    .close .slant_right {
+        transform: rotate(135deg);
+        transition: .3s;
+    }
+
+    .close:hover .slant_left {
+        transform: rotate(-145deg);
+        background-color: tomato;
+    }
+
+    .close:hover .slant_right {
+        transform: rotate(-45deg);
+        background-color: tomato;
+    }
+
+    .close span {
+        display: block;
+        position: absolute;
+        top: 13px;
+        width: 15px;
+        height: 1.6px;
+        background-color: #555;
+    }
+
+    .check {
+        display: block;
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        top: 18px;
+        background-color: #26916d;
+        border-radius: 50%;
+    }
+
+    .check::before,
+    .check::after {
+        content: "";
+        display: block;
+        position: absolute;
+        height: 2px;
+        background-color: #fff;
+    }
+
+    .check::before {
+        width: 12px;
+        top: 23px;
+        left: 5px;
+        transform: rotate(45deg);
+    }
+
+    .check::after {
+        width: 22px;
+        top: 20px;
+        right: 7px;
+        transform: rotate(135deg);
+    }
+
+    h1 {
+        font-size: 17px;
+        font-weight: 600;
+        color: #26916d;
+    }
+
+    p {
+        margin-top: 5px;
+        font-size: 13px;
+    }
+
+    /*  =====  END TOAST NOTIFICATION (NEW VERSION) ==== */
+
+
+    /* ===== START OF POPUP INFO ========= */
+    .message-modal-container {
+        z-index: 9999;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-open-info {
+        display: flex;
+    }
+
+    .modal-info-footer {
+        padding: 1em;
+        background-color: rgba(0, 0, 0, 0.05);
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .modal-ok-button {
+        background-color: rgb(50, 135, 245);
+        text-transform: uppercase;
+        padding: 0.5em 1em;
+        border: none;
+        color: white;
+        border-radius: 3px;
+        margin-left: 0.5em;
+    }
+
+    /* ============ END OF POPUP INFO ========== */
+
+
+    /* ========== POPUP CONFIRMATION FORM ============= */
+
+    .modal-container {
+        z-index: 9999;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-open {
+        display: flex;
+    }
+
+    .modal_form {
+        max-width: 700px;
+        max-height: 800px;
+        background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 3px;
+    }
+
+    .modal-button {
+        text-transform: uppercase;
+        padding: 0.5em 1em;
+        border: none;
+        color: white;
+        background-color: grey;
+        border-radius: 3px;
+        margin-left: 0.5em;
+    }
+
+    .modal-confirm-button {
+        background-color: tomato;
+    }
+
+    .modal-header {
+
+        color: orange;
+    }
+
+    .modal-header h2 {
+        padding: 0.5em;
+    }
+
+    .modal_content {
+        padding: 1em;
+        color: rgba(168, 167, 167);
+        text-align: center;
+    }
+
+    .modal-footer {
+        padding: 1em;
+        background-color: rgba(0, 0, 0, 0.05);
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    #formId {
+        display: none;
+    }
+
+    /* =========== END OF POPUP CONFIRMATION FORM ========== */
+
+
+
+    /* =========== START OF WINDOW SPINNER ============= */
+    .spin-modal-container {
+        z-index: 9999;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: none;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .spinner_modal_content {
+        padding: 0.5em;
+        color: white;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .modal-open-load {
+        display: flex;
+    }
+
+    /* STARTING FROM HERE LOADING EFFECT COPY FROM WEB */
+    .loading {
+        display: flex;
+    }
+
+    .loading .dot {
+        position: relative;
+        width: 2em;
+        height: 2em;
+        margin: 0.8em;
+        border-radius: 50%;
+    }
+
+    .loading .dot::before {
+        position: absolute;
+        content: "";
+        width: 100%;
+        height: 100%;
+        background: inherit;
+        border-radius: inherit;
+        animation: wave 2s ease-out infinite;
+    }
+
+    .loading .dot:nth-child(1) {
+        background: #7ef9ff;
+    }
+
+    .loading .dot:nth-child(1)::before {
+        animation-delay: 0.2s;
+    }
+
+    .loading .dot:nth-child(2) {
+        background: #89cff0;
+    }
+
+    .loading .dot:nth-child(2)::before {
+        animation-delay: 0.4s;
+    }
+
+    .loading .dot:nth-child(3) {
+        background: #4682b4;
+    }
+
+    .loading .dot:nth-child(3)::before {
+        animation-delay: 0.6s;
+    }
+
+    .loading .dot:nth-child(4) {
+        background: #0f52ba;
+    }
+
+    .loading .dot:nth-child(4)::before {
+        animation-delay: 0.8s;
+    }
+
+    .loading .dot:nth-child(5) {
+        background: #000080;
+    }
+
+    .loading .dot:nth-child(5)::before {
+        animation-delay: 1s;
+    }
+
+    @keyframes wave {
+
+        50%,
+        75% {
+            transform: scale(2.5);
+        }
+
+        80%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    /* END OF LOADING EFFECT */
+
+    /* =========== END OF WINDOW SPINNER ============= */
+
+
+
+    /* START OF DETAIL CONTAINER */
+    #visibility1 {
+        display: none;
+    }
+
+    #edit_visibility {
+        display: none;
+    }
+
+    #edit_btn {
+        width: 5rem;
+        margin-right: 1rem;
+    }
+
+    #detail_container {
+        margin-top: 1rem;
+    }
+
+    .card {
+        padding: 0.5rem;
+    }
+
+    .style_txt2 {
+        font-family: Caudex;
+        color: grey;
+        font-size: 16px;
+    }
+
+    .style_txt {
+        font-size: 13px;
+    }
+
+
+    /* END OF DETAILS CONTAINER */
+
+    /* START OF CUSTOMER REVIEW */
+    #visibility2 {
+        display: none;
+    }
+
+    /* END OF CUSTOMER REVIEW */
+
+    /* START OF SECURITY SETTINGS */
+    .nav_btn {
+        background-color: rgb(0, 114, 244);
+        color: white;
+    }
+
+    /* END OF SECURITY SETTINGS */
+</style>
+
+<div id="box_element">
+
+    <div style="padding-bottom: 0rem;">
+        <!-- DETAILS BUTTON -->
+        <button id="details" style="width: 11rem; font-size: 13px;" type="button"
+            class="btn btn-outline-primary shadow-none nav_btn">Details</button>
+
+        <!-- CONFIGURATION TAB BUTTON -->
+        <button id="config_btn" style="width: 11rem; font-size: 13px;" type="button"
+            class="btn btn-outline-primary shadow-none">Configuration
+        </button>
+
+        <!-- CUSOTMER REVIEW BUTTON -->
+        <button id="cus_review" style="width: 11rem; font-size: 13px;" type="button"
+            class="btn btn-outline-primary shadow-none">Customer's
+            Review</button>
+
+        <!-- SECURITY SETTINGS BUTTON -->
+        <button id="security" style="width: 11rem; font-size: 13px;" type="button"
+            class="btn btn-outline-primary shadow-none">Security
+            Setting</button>
+
+    </div>
+
+    <!-- DETAILS CONTAINER -->
+    <div id="visibility">
+        <div id="detail_container">
+
+            <div class="col">
+                <div class="card text-center mb-3 h-100 ">
+
+                    <div class="row row-cols-1 row-cols-md-2 g-4" style="text-align: left;">
+
+                        <label class="style_txt" for="">Business Id: <span
+                                class="style_txt2">{{comDetail.businessId}}</span></label>
+                        <label class="style_txt" for="">Business Name: <span id="business"
+                                class="style_txt2">{{comDetail.businessName}}</span></label>
+                        <label class="style_txt" for="">Mobile: <span id="mob"
+                                class="style_txt2">{{comDetail.mobile}}</span></label>
+                        {% if comDetail.phone != '' %}
+                        <label class="style_txt" for="">Phone: <span id="pho"
+                                class="style_txt2">{{comDetail.phone}}</span></label>
+                        {% endif %}
+                        <label class="style_txt" for="">Street Address1: <span id="street1"
+                                class="style_txt2">{{comDetail.streetAddress1}}</span></label>
+                        {% if comDetail.streetAddress2 != '' %}
+                        <label class="style_txt" for="">Street Address2: <span id="street2"
+                                class="style_txt2">{{comDetail.streetAddress2}}</span></label>
+                        {% endif %}
+                        <label class="style_txt" for="">City: <span class="style_txt2"
+                                id="citi">{{comDetail.city}}</span></label>
+                        <label class="style_txt" for="">State: <span id="st"
+                                class="style_txt2">{{comDetail.state}}</span></label>
+                        <label class="style_txt" for="">Postal: <span id="_postal"
+                                class="style_txt2">{{comDetail.postal}}</span></label>
+                        <label class="style_txt" for="">Country: <span id="_country"
+                                class="style_txt2">{{comDetail.country}}</span></label>
+                        <label class="style_txt" for="">Discover us: <span
+                                class="style_txt2">{{comDetail.discoverUs}}</span></label>
+                        {% if comDetail.others != '' %}
+                        <label class="style_txt" for="">Other means you discover us: <span
+                                class="style_txt2">{{comDetail.others}}</span></label>
+                        {% endif %}
+                        <label class="style_txt" for="">Account Level: <span
+                                class="style_txt2">{{comDetail.acctLevel}}</span></label>
+                        <label class="style_txt" for="">Join Date: <span
+                                class="style_txt2">{{comDetail.joinDate}}</span></label>
+                        <label class="style_txt" for="">Last Login: <span
+                                class="style_txt2">{{comDetail.lastLogin}}</span></label>
+                        <label class="style_txt" for="">OTP Confirm: <span
+                                class="style_txt2">{{comDetail.otpConfirm}}</span></label>
+                        <label class="style_txt" for="">Active: <span id="_active"
+                                class="style_txt2">{{comDetail.active}}</span></label>
+
+                    </div>
+
+                    <div style="display: flex;">
+                        <a id="edit_btn" class="btn btn-outline-primary btn-sm shadow-none" href="">
+                            Edit</a>
+
+                        {% if isOTP %}
+                        <a id="" class="btn btn-outline-info btn-sm shadow-none"
+                            href="{% url 're_generate_otp' 'frmProfile' %}">
+                            Generate OTP</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ============ EDIT DETAILS BLOCK CONTAINER ============== -->
+        <form id="edit_visibility">
+            <div class="first-row" style="margin-top: 1rem;">
+
+                <div class="name" style="width: 100%;">
+
+                    <input id="business_name" value="" class="input-name-field" type="text" name="business_name"
+                        autocomplete="" required />
+                    <label for="name" class="label-name">
+                        <span class="content-name">Business Name <span style="color: red;">*</span></span>
+                    </label>
+                </div>
+
+
+            </div>
+
+            <div class="first-row" style="margin-top: 1rem; ">
+                <span style="display: flex; width: 47.5%;">
+                    <select required name="mobile_code" class="form-select form-select-lg mb-3 shadow-none"
+                        style="background-color: rgba(0, 0, 0, 0); margin-top: 1rem;"
+                        aria-label=".form-select-lg example" id="mobile_country_code">
+                        <option value="" selected>Code</option>
+                        <option value="+234">+234</option>
+
+                    </select>
+                    <div class="_name" style="width: 100%;">
+
+                        <input id="mobile" value="" class="input-name-field" type="tel" name="mobile" autocomplete=""
+                            onkeypress="return isNumberKey(event)" maxlength="11" required />
+                        <label for="name" class="label-name">
+                            <span class="content-name">Mobile <span style="font-size: 10px;">(+23480...)</span> <span
+                                    style="color: red;">*</span></span>
+                        </label>
+                    </div>
+                </span>
+
+                <span style="display: flex; margin-left: 2.7rem; width: 47.5%;">
+                    <select name="phone_code" class="form-select form-select-lg mb-3 shadow-none"
+                        style="background-color: rgba(0, 0, 0, 0); margin-top: 1rem; margin-left: 0rem;"
+                        aria-label=".form-select-lg example" id="country_code_phone">
+                        <option value="" selected>Code</option>
+                        <option value="+234">+234</option>
+
+                    </select>
+
+                    <div class="_name" style="width: 100%;">
+                        <input id="phone" value="" class="input-name-field" type="tel" name="phone" autocomplete=""
+                            maxlength="11" onkeypress="return isNumberKey(event)" />
+                        <label for="name" class="label-name">
+                            <span class="content-name">Phone <span style="font-size: 10px;">(+23480...)</span></span>
+                        </label>
+                    </div>
+                </span>
+            </div>
+
+            <div class="first-row" style="margin-top: 0.4rem;">
+
+                <div class="name">
+
+                    <input id="streetAddress1" value="" class="input-name-field" type="text" name="streetAddress1"
+                        autocomplete="" required />
+                    <label for="name" class="label-name">
+                        <span class="content-name">Street Address 1 <span style="color: red;">*</span></span>
+                    </label>
+                </div>
+
+                <div class="name" style="margin-left: 5%;">
+                    <input id="streetAddress2" value="" class="input-name-field" type="text" name="streetAddress2"
+                        autocomplete="" />
+                    <label for="name" class="label-name">
+                        <span class="content-name">Street Address 2</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="first-row" style="margin-top: 1rem;">
+
+                <div class="name">
+
+                    <input id="city" value="" class="input-name-field" type="text" name="city" autocomplete=""
+                        required />
+                    <label for="name" class="label-name">
+                        <span class="content-name">City <span style="color: red;">*</span></span>
+                    </label>
+                </div>
+
+                <div class="name" style="margin-left: 5%;">
+                    <input id="state" value="" class="input-name-field" type="text" name="state" autocomplete=""
+                        required />
+                    <label for="name" class="label-name">
+                        <span class="content-name">State / Province <span style="color: red;">*</span></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="first-row" style="margin-top: 1rem;">
+
+                <div class="name">
+
+                    <input id="postal" value="" class="input-name-field" type="text" name="postal" autocomplete="" />
+                    <label for="name" class="label-name">
+                        <span class="content-name">Postal / Zip</span>
+                    </label>
+                </div>
+
+                <div class="name" style="margin-left: 5%;">
+                    <input id="country" value="" class="input-name-field" type="text" name="country" autocomplete=""
+                        required />
+                    <label for="name" class="label-name">
+                        <span class="content-name">Country <span style="color: red;">*</span></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-check form-switch"
+                style="margin: 20px 5px 0px 0px; display: flex; justify-content: space-between;">
+
+                <div>
+                    <input id="cancel_btn" class="btn btn-outline-danger btn-sm shadow-none" type="button"
+                        value="Cancel">
+                    <input id="details_btn" class="btn btn-outline-primary btn-sm shadow-none" type="submit"
+                        value="Update">
+                </div>
+
+
+                <div class="form-check form-switch">
+                    <input class="form-check-input" name="activeBtn" type="checkbox" role="switch"
+                        id="flexSwitchCheckChecked_id" checked>
+                    <label class="form-check-label" for="flexSwitchCheckChecked" style="font-size: 12px;">Active</label>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+
+    <!-- ============ CONFIRMATION TAB BUTTON ======= -->
+    <div id="visibility3">
+        <p>Set configuration setting like minimum and maximum delivery time</p>
+        <p>Configure the days of the week and set avaibility time</p>
+    </div>
+
+
+    <!-- CUSTOMER REVIEW CONTAINER -->
+    <div id="visibility1">
+        <p
+            style="font-size: 30px; font-weight: 700; color: rgb(246, 166, 171); display: flex; justify-content: center; margin-top: 5%; margin-bottom: 5%;">
+            No Record!</p>
+    </div>
+
+    <!-- SECURITY SETTINGS CONTAINER -->
+    <form id="visibility2" method="POST">
+        {% csrf_token %}
+
+        <div style="margin-top: 2rem;">
+            <span style="color: rgb(194, 2, 2); font-size: 15px;">Note: <span
+                    style="color: brown; font-size: 16px; font-family: Kotta One;">Password is
+                    case sensitive</span></span>
+        </div>
+        <div class="first-row" style="margin-top: 0rem;">
+
+            <div class="name pwd-field" style="width: 48%;">
+
+                <input id="old_pwd" value="" class="input-name-field" type="password" name="old_password"
+                    autocomplete="" required />
+                <label for="" class="label-name">
+                    <span class="content-name">Old Password <span style="color: red;">*</span></span>
+                </label>
+            </div>
+
+
+        </div>
+
+        <div class="first-row" style="margin-top: 1rem;">
+
+            <div class="name pwd-field1">
+
+                <input id="password1" value="" class="input-name-field" type="password" name="new_password1"
+                    autocomplete="" required />
+                <label for="" class="label-name">
+                    <span class="content-name">New Password <span style="color: red;">*</span></span>
+                </label>
+            </div>
+
+            <div class="name pwd-field2" style="margin-left: 5%;">
+                <input id="password2" value="" class="input-name-field" type="password" name="new_password2"
+                    autocomplete="" required />
+                <label for="" class="label-name">
+                    <span class="content-name">Confirm New Password <span style="color: red;">*</span></span>
+                </label>
+            </div>
+        </div>
+
+        <label for="exampleFormControlInput1" class="password-label"><i
+                class="material-icons pwd-visibility">visibility_off</i>Password is case
+            sensitive</label>
+
+        <input id="securitySetting_btn" class="btn btn-outline-primary btn-sm shadow-none" value="Update" type="submit">
+
+
+    </form>
+</div>
+
+
+
+<!-- ===== WINDOW SPINNER ======= -->
+<div id="windowSpinner" class="spin-modal-container">
+    <div id="spinner_modal_id" class="bar">
+        <section>
+
+            <section class="spinner_modal_content">
+                <div class="loading">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+
+                <p style="font-family: Lucida Handwriting; font-size: 20px; font-weight: bold;">Loading...
+                    <span style="font-family: Bradley Hand; font-size: 20px;">please wait</span>
+                </p>
+            </section>
+
+        </section>
+    </div>
+</div>
+<!-- ====== END OF WINDOW SPINNER ====== -->
+
+
+
+<!-- ========= START TOAST NOTIFICATION (NEW VERSION) ======== -->
+<section class="notification">
+    <span class="close">
+        <span class="slant_left"></span>
+        <span class="slant_right"></span>
+    </span>
+
+    <div class="left">
+        <span class="check"></span>
+    </div>
+
+    <div class="right">
+        <h1>Success</h1>
+        <p>Your request has been saved.</p>
+    </div>
+</section>
+
+<!-- ========= END TOAST NOTIFICATION (NEW VERSION) ========= -->
+
+
+<!-- ======= POPUP MESSAGE INFORMATION ========== -->
+<div id="information" class="message-modal-container">
+    <div class="modal_form">
+        <section>
+            <header>
+                <h2 class="modal-header">Warning</h2>
+            </header>
+            <section>
+                <h5 class="modal_content" id="modal_info_content_id"></h5>
+            </section>
+            <footer class="modal-info-footer">
+
+                <button class="modal-ok-button" onclick="onCancelInfoForm()">Ok</button>
+            </footer>
+        </section>
+    </div>
+</div>
+<!-- ======= END OF POPUP MESSAGE INFORMATION ========== -->
+
+
+<style>
+    @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+    /* USED BY PASSWORD TOGGLE ICON */
+    .password-label {
+        display: flex;
+        font-size: 10px;
+        color: crimson;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .pwd-visibility {
+        color: black;
+        cursor: pointer;
+        margin-right: 5px;
+    }
+</style>
+
+
+<script>
+    var isSuccess = "{{ isSuccess }}";
+    const serverMsg = "{{ serverMsg }}";
+    // STYLING THE MAIN CONTAINER...
+    var autoHt = window.innerHeight;
+    var av = screen.availHeight;
+
+    av = av - 80;
+    autoHt = autoHt - 80;
+
+    document.getElementById('box_element').style.height = autoHt + 'px';
+    document.getElementById('box_element').style.overflowY = 'auto';
+    document.getElementById('box_element').style.width = '80%';
+    document.getElementById('box_element').style.paddingTop = '0.5rem';
+    document.getElementById('box_element').style.paddingLeft = '1rem';
+    // ================================================================
+
+    // WE ARE USING THIS FUNCTIONS TO SWITCH BETWEEN THE DIV TEMPLATES,
+    // AND SET THE BACKGROUND COLOR OF THE ACTIVE DIV
+
+    // ============= START OF DETAILS CONFIGURATION ============
+    var btn_detail = document.getElementById('details').addEventListener('click', function () {
+        document.getElementById('visibility').style.display = 'block';
+        document.getElementById('visibility1').style.display = 'none';
+        document.getElementById('visibility2').style.display = 'none';
+        document.getElementById('visibility3').style.display = 'none';
+
+        document.getElementById('details').classList.add('nav_btn');
+        document.getElementById('cus_review').classList.remove('nav_btn');
+        document.getElementById('security').classList.remove('nav_btn');
+        document.getElementById('config_btn').classList.remove('nav_btn');
+
+        sessionStorage.setItem('isSecurityTab', false);
+        sessionStorage.setItem('isCusReview', false);
+        sessionStorage.setItem('isConfigTab', false);
+        sessionStorage.setItem('isDetailTab', true);
+    })
+
+
+    // SETTING THE CONFIGURATION TAB BUTTON 
+    var config_btn = document.getElementById('config_btn').addEventListener('click', function () {
+        document.getElementById('visibility').style.display = 'none';
+        document.getElementById('visibility1').style.display = 'none';
+        document.getElementById('visibility2').style.display = 'none';
+        document.getElementById('visibility3').style.display = 'block';
+
+        document.getElementById('details').classList.remove('nav_btn');
+        document.getElementById('cus_review').classList.remove('nav_btn');
+        document.getElementById('security').classList.remove('nav_btn');
+        document.getElementById('config_btn').classList.add('nav_btn');
+
+        sessionStorage.setItem('isDetailTab', false);
+        sessionStorage.setItem('isSecurityTab', false);
+        sessionStorage.setItem('isCusReview', false);
+        sessionStorage.setItem('isConfigTab', true);
+    })
+
+    // EDIT BUTTON FUNCTION THAT WILL TRANSFER DATA TO EDIT CONTAINER DIV 
+    document.getElementById('edit_btn').addEventListener('click', function (e) {
+        e.preventDefault()
+        document.getElementById('edit_visibility').style.display = 'block';
+        document.getElementById('detail_container').style.display = 'none';
+
+        document.getElementById('business_name').value = document.getElementById('business').textContent;
+        var _mobile = document.getElementById('mob').textContent;
+        if (document.getElementById('mob').textContent.length > 13) {
+            _mobile = document.getElementById('mob').textContent.slice(4);
+            document.getElementById('mobile_country_code').value = '+234';
+
+        }
+        document.getElementById('mobile').value = _mobile;
+
+        var pho = document.getElementById('pho');
+        if (pho != null) {
+            if (document.getElementById('pho').textContent.length > 13) {
+                document.getElementById('phone').value = document.getElementById('pho').textContent.slice(4);
+            }
+        }
+        document.getElementById('streetAddress1').value = document.getElementById('street1').textContent;
+        var addres2 = document.getElementById('street2')
+        if (addres2 != null) {
+            document.getElementById('streetAddress2').value = document.getElementById('street2').textContent;
+        }
+        document.getElementById('city').value = document.getElementById('citi').textContent;
+        document.getElementById('state').value = document.getElementById('st').textContent;
+        document.getElementById('postal').value = document.getElementById('_postal').textContent;
+        document.getElementById('country').value = document.getElementById('_country').textContent;
+        var isActive = document.getElementById('_active').textContent;
+        if (isActive == 'True') {
+            isActive = true;
+        } else {
+            isActive = false;
+        }
+        document.getElementById('flexSwitchCheckChecked_id').checked = isActive;
+    })
+
+    document.getElementById('cancel_btn').addEventListener('click', function () {
+        document.getElementById('edit_visibility').style.display = 'none';
+        document.getElementById('detail_container').style.display = 'block';
+    })
+
+    document.getElementById('details_btn').addEventListener('click', function (e) {
+        validatePhone();
+        var businessName = document.getElementById('business_name').value;
+        var mobile_code = document.getElementById('mobile_country_code').value;
+        var mobile = document.getElementById('mobile').value;
+        var phone_code = document.getElementById('country_code_phone').value;
+        var phone = document.getElementById('phone').value;
+        var address1 = document.getElementById('streetAddress1').value;
+        var address2 = document.getElementById('streetAddress2').value;
+        var city = document.getElementById('city').value;
+        var state = document.getElementById('state').value;
+        var postal = document.getElementById('postal').value;
+        var country = document.getElementById('country').value;
+        var active = document.getElementById('flexSwitchCheckChecked_id').checked;
+
+        var country_code_phone = document.getElementById('country_code_phone')
+
+        if (businessName != '' && mobile_code != '' && mobile != ''
+            && address1 != '' && city != '' && state != '' && postal != ''
+            && country != '') {
+
+            if (country_code_phone.hasAttribute('required') && country_code_phone.value != '') {
+
+                e.preventDefault();
+                onPopWindowSpinner();
+                updateComProfile('updateDetailProfile', businessName, mobile_code,
+                    mobile, phone_code, phone, address1, address2, city, state, postal,
+                    country, active);
+            } else if (!country_code_phone.hasAttribute('required')) {
+                e.preventDefault();
+                onPopWindowSpinner();
+                updateComProfile('updateDetailProfile', businessName, mobile_code,
+                    mobile, phone_code, phone, address1, address2, city, state, postal,
+                    country, active);
+            }
+        }
+    })
+
+
+    // USED TO STYLE THE DROP-DOWN BUTTON
+    var form_fields = document.getElementsByTagName('select')
+    form_fields[0].style.border = '1px solid #16316149';
+    form_fields[0].style.height = '33.5px';
+    form_fields[0].style.borderRadius = '4px';
+    form_fields[0].style.fontSize = '13px';
+    form_fields[0].style.width = '6rem';
+
+    form_fields[1].style.border = '1px solid #16316149';
+    form_fields[1].style.height = '33.5px';
+    form_fields[1].style.borderRadius = '4px';
+    form_fields[1].style.fontSize = '13px';
+    form_fields[1].style.width = '6rem';
+
+
+    function updateComProfile(call, businessName, mobile_code, mobile,
+        phone_code, phone, address1, address2, city, state, postal,
+        country, active) {
+        var url = '/jsonSaveProfile/';
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({
+                'businessName': businessName, 'mobile_code': mobile_code,
+                'mobile': mobile, 'phone_code': phone_code,
+                'phone': phone, 'streetAddress1': address1, 'streetAddress2': address2,
+                'city': city, 'state': state, 'postal': postal,
+                'country': country, 'active': active, 'call': call
+            })
+        })
+            .then((response) => {
+                return response.json()
+            })
+            .then((data) => {
+                console.log(data)
+                // PROFILE WAS UPDATED 
+                if (data == 'success') {
+
+                    // location.reload();
+                    window.location.replace('/re_generate_otp/frmProfile/');
+                }
+                // PROFILE WAS NOT UPDATED.
+                else {
+                    location.reload();
+                    sessionStorageMsg = sessionStorage.setItem('service_record', data)
+                }
+
+            })
+    }
+
+
+    // IF NUMBER IS ENTERED IN PHONE FIELD, WE USE THIS FUNCTION TO MAKE
+    // PHONE CODE REQUIRED.
+    function validatePhone() {
+        var phone = document.getElementById('phone').value
+        var country_code_phone = document.getElementById('country_code_phone');
+
+        if (phone != '') {
+            country_code_phone.required = true;
+        }
+        else {
+            country_code_phone.required = false;
+        }
+    }
+
+    // CUSTOM FIELD FOR MOBILE/PHONE NUMBER
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode
+
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+    }
+
+    // ============= END OF DETAILS CONFIGURATION ============
+
+    var cus_review = document.getElementById('cus_review').addEventListener('click', function () {
+        document.getElementById('visibility').style.display = 'none';
+        document.getElementById('visibility1').style.display = 'block';
+        document.getElementById('visibility2').style.display = 'none';
+        document.getElementById('visibility3').style.display = 'none';
+
+        document.getElementById('cus_review').classList.add('nav_btn');
+        document.getElementById('details').classList.remove('nav_btn');
+        document.getElementById('security').classList.remove('nav_btn');
+        document.getElementById('config_btn').classList.remove('nav_btn');
+
+        sessionStorage.setItem('isDetailTab', false);
+        sessionStorage.setItem('isSecurityTab', false);
+        sessionStorage.setItem('isCusReview', true);
+        sessionStorage.setItem('isConfigTab', false);
+    })
+
+
+    // ================== SECURITY SETTINGS BUTTON =========================
+
+    var cus_review = document.getElementById('security').addEventListener('click', function () {
+        document.getElementById('visibility').style.display = 'none';
+        document.getElementById('visibility1').style.display = 'none';
+        document.getElementById('visibility2').style.display = 'block';
+        document.getElementById('visibility3').style.display = 'none';
+
+        document.getElementById('cus_review').classList.remove('nav_btn');
+        document.getElementById('details').classList.remove('nav_btn');
+        document.getElementById('security').classList.add('nav_btn');
+        document.getElementById('config_btn').classList.remove('nav_btn');
+
+        sessionStorage.setItem('isDetailTab', false);
+        sessionStorage.setItem('isSecurityTab', true);
+        sessionStorage.setItem('isCusReview', false);
+        sessionStorage.setItem('isConfigTab', false);
+    })
+
+
+    // PASSWORD TOGGLE VISIBILITY FOR PASSWORD INPUT FIELD
+    const visibilityToggle = document.querySelector('.pwd-visibility');
+
+    const pwt_input = document.querySelector('.pwd-field input');
+    const pwt_input1 = document.querySelector('.pwd-field1 input');
+    const pwt_input2 = document.querySelector('.pwd-field2 input');
+
+    password = true
+
+    visibilityToggle.addEventListener('click', function () {
+        if (password) {
+            pwt_input.setAttribute('type', 'text');
+            pwt_input1.setAttribute('type', 'text');
+            pwt_input2.setAttribute('type', 'text');
+            visibilityToggle.innerHTML = 'visibility';
+        } else {
+            pwt_input.setAttribute('type', 'password');
+            pwt_input1.setAttribute('type', 'password');
+            pwt_input2.setAttribute('type', 'password');
+            visibilityToggle.innerHTML = 'visibility_off';
+        }
+        password = !password;
+
+    });
+
+
+    document.getElementById('securitySetting_btn').addEventListener('click', function (e) {
+
+        const old_password = document.getElementById('old_pwd').value;
+        const new_password1 = document.getElementById('password1').value;
+        const new_password2 = document.getElementById('password2').value;
+
+        if (old_password != '' && new_password1 != '' && new_password2 != '') {
+            e.preventDefault();
+            onPopWindowSpinner();
+            password_reset(old_password, new_password1, new_password2, 'reset_pwd');
+        }
+    })
+
+
+    // ========== END OF PROFILE NAV BUTTON SETTINGS ============
+
+
+    function password_reset(old_password, new_password1, new_password2, call) {
+        var url = '/jsonSaveProfile/';
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({
+                'old_password': old_password, 'new_password1': new_password1,
+                'new_password2': new_password2, 'call': call
+            })
+        })
+            .then((response) => {
+                return response.json()
+            })
+            .then((data) => {
+                console.log(data)
+                // PROFILE WAS UPDATED 
+                if (data == 'success') {
+                    sessionStorage.setItem('isSecurityTab', false);
+                    location.reload();
+                }
+                // PROFILE WAS NOT UPDATED.
+                else {
+                    location.reload();
+                }
+
+            })
+    }
+
+
+    window.addEventListener('DOMContentLoaded', function () {
+
+        var sessionMsg = sessionStorage.getItem('isSecurityTab');
+        var sessionMsgReview = sessionStorage.getItem('isCusReview');
+        var sessionMsgConfig = sessionStorage.getItem('isConfigTab');
+        var sessionMsgDetail = sessionStorage.getItem('isDetailTab');
+
+        if (sessionMsg == 'true') {
+            document.getElementById('visibility').style.display = 'none';
+            document.getElementById('visibility1').style.display = 'none';
+            document.getElementById('visibility2').style.display = 'block';
+            document.getElementById('visibility3').style.display = 'none';
+
+            document.getElementById('cus_review').classList.remove('nav_btn');
+            document.getElementById('details').classList.remove('nav_btn');
+            document.getElementById('security').classList.add('nav_btn');
+            document.getElementById('config_btn').classList.remove('nav_btn');
+        } else if (sessionMsgReview == 'true') {
+            document.getElementById('visibility').style.display = 'none';
+            document.getElementById('visibility1').style.display = 'block';
+            document.getElementById('visibility2').style.display = 'none';
+            document.getElementById('visibility3').style.display = 'none';
+
+            document.getElementById('cus_review').classList.add('nav_btn');
+            document.getElementById('details').classList.remove('nav_btn');
+            document.getElementById('security').classList.remove('nav_btn');
+            document.getElementById('config_btn').classList.remove('nav_btn');
+        } else if (sessionMsgConfig == 'true') {
+            document.getElementById('visibility').style.display = 'none';
+            document.getElementById('visibility1').style.display = 'none';
+            document.getElementById('visibility2').style.display = 'none';
+            document.getElementById('visibility3').style.display = 'block';
+
+            document.getElementById('cus_review').classList.remove('nav_btn');
+            document.getElementById('details').classList.remove('nav_btn');
+            document.getElementById('security').classList.remove('nav_btn');
+            document.getElementById('config_btn').classList.add('nav_btn');
+        } else if (sessionMsgDetail == 'true') {
+            document.getElementById('visibility').style.display = 'block';
+            document.getElementById('visibility1').style.display = 'none';
+            document.getElementById('visibility2').style.display = 'none';
+            document.getElementById('visibility3').style.display = 'none';
+
+            document.getElementById('cus_review').classList.remove('nav_btn');
+            document.getElementById('details').classList.add('nav_btn');
+            document.getElementById('security').classList.remove('nav_btn');
+            document.getElementById('config_btn').classList.remove('nav_btn');
+        }
+
+
+
+    })
+
+
+    // ============= SCRIPT FOR WINDOW SPINNER ===========
+
+    function onPopWindowSpinner() {
+        let spin = document.getElementById("windowSpinner");
+        if (!spin.classList.contains("modal-open-load")) {
+            spin.classList.add("modal-open-load");
+        }
+    }
+
+    function onCancelWindowSpinner() {
+        let spin = document.getElementById("windowSpinner");
+        spin.classList.remove("modal-open-load");
+    }
+    // ============= END OF SCRIPT FOR WINDOW SPINNER ==========
+
+
+
+    //  ======== START TOAST NOTIFICATION (NEW VERSION) =============
+
+    function toastNotificationNewVersion() {
+        const notification = document.querySelector(".notification"),
+
+            close = document.querySelector(".close"),
+            close_effect = ".7s cubic-bezier(0.75, -.2, 0.205, 1.1)";
+
+        setTimeout(() => {
+            notification.style.right = "8px";
+        }, 1500);
+
+        setTimeout(() => {
+            notification.style.right = "-900px";
+            notification.style.transition = close_effect;
+        }, 6000);
+
+        close.addEventListener("click", () => {
+            notification.style.right = "-900px";
+            notification.style.transition = close_effect;
+        })
+    }
+
+    //  =========== END TOAST NOTIFICATION (NEW VERSION) =============
+
+
+    // DISPLAY TOAST NOTIFICATION MESSAGE (NEW VERSION)
+    if (isSuccess == 'True') {
+
+        toastNotificationNewVersion();
+
+    }
+
+
+    // ============= SCRIPT FOR POPUP INFORMATION MESSAGE ===========
+
+    function onPopInfoForm() {
+        let info = document.getElementById('information');
+        if (!info.classList.contains('modal-open-info')) {
+            info.classList.add('modal-open-info');
+        }
+    }
+
+    function onCancelInfoForm() {
+        let information = document.getElementById('information');
+        information.classList.remove("modal-open-info");
+    }
+    // ============= END OF SCRIPT FOR INFORMATION MESSAGE ==========
+
+
+    // ==== CONDITION TO DISPLAY INFO POPUP =======
+    if (serverMsg != '' && isSuccess == 'False') {
+        onPopInfoForm()
+        document.getElementById('modal_info_content_id').innerHTML = serverMsg;
+
+    }
+
+
+
+
+
+</script>
+{% endblock content %}

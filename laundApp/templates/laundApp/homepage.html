@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caudex:ital,wght@0,400;0,700;1,400;1,700&family=Gothic+A1:wght@100;300&family=Kotta+One&family=Niramit:ital,wght@0,200;0,300;0,500;1,200;1,300&family=Sarabun:ital,wght@0,100;0,200;0,500;0,800;1,100;1,200&family=Thasadith:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+
+
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <title>Document</title> -->
+    {% load static %}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        /* body {
+            width: 100%;
+            height: 100%;
+        } */
+
+        .hero {
+            /* width: 100%;
+            height: 100%; */
+            min-width: 100%;
+            min-height: 100%;
+            position: relative;
+        }
+
+        /*
+        .hero::before {
+            background-image: url(/static/images/imageshoot.png);
+            background-size: contain;
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.4;
+        }
+
+        .hero::after {
+            background-color: #8bd5f7;
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        .flex-center {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-content: center;
+        }
+
+        .not-hero {
+            width: 100vw;
+            height: 10em;
+        }
+
+        .bg-info {
+            background-color: #17a2b8;
+            color: #fff;
+        }
+
+        .not-hero-message {
+            color: #fff;
+            text-shadow: #343a40 2px 2px;
+            min-width: 50%;
+            min-height: 7em;
+        }
+
+        .hero-message {
+            color: #fff;
+            text-shadow: #343a40 2px 2px;
+            min-width: 100%;
+            min-height: 12em;
+            position: relative;
+        }
+
+        .hero-message::before {
+            content: "";
+            display: block;
+            position: absolute;
+            margin-left: 0;
+            min-width: 100%;
+            min-height: 12em;
+            z-index: -1;
+            opacity: 0.4;
+            background-color: #343a40;
+        }
+
+        .hero-title,
+        .hero-sub-title {
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+
+        .hero-title {
+            margin: 3% 0;
+            text-transform: uppercase;
+        }
+
+        @media(min-width:1024px) {
+            .hero-message {
+                min-width: 50%;
+                min-height: 12em;
+            }
+
+            .hero-message::before {
+                margin-left: 25%;
+                min-width: 50%;
+                min-height: 12em;
+            }
+        }
+
+        @media (min-width: 320px) {
+            .hero::before {
+                background-image: url(/static/images/imageshoot.png);
+            }
+        }
+
+        @media (min-width: 460px) {
+            .hero::before {
+                background-image: url(/static/images/imageshoot.png);
+            }
+        }
+
+        @media (min-width: 720px) {
+            .hero::before {
+                background-image: url(/static/images/imageshoot.png);
+            }
+        }
+
+        @media (min-width: 980px) {
+            .hero::before {
+                background-image: url(/static/images/imageshoot.png);
+            }
+        }
+
+        @media (min-width: 1240px) {
+            .hero::before {
+                background-image: url(/static/images/imageshoot.png);
+            }
+        }
+
+        @media (min-width: 1500px) {
+            .hero::before {
+                background-image: url(/static/images/imageshoot.png);
+            }
+        }
+
+        @media (min-width: 1760px) {
+            .hero::before {
+                background-image: url(/static/images/imageshoot.png);
+            }
+        } */
+
+        /* .row_child {
+            background-color: #8bd5f7;
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 50%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+            background-image: linear-gradient(to right, #8bd5f7 , white);
+        } */
+
+        .row_child {
+            padding: 3% 3% 3% 3%;
+            flex-direction: column;
+            width: 50%;
+            /* background-image: url(/static/images/background4.png); */
+            background-position: top;
+            background-size: cover;
+            background-image: linear-gradient(to right, rgba(136, 215, 244, 0.1), white);
+        }
+
+        .row_child h2 {
+            margin: 4px;
+            padding: 1rem 0px 5px 4rem;
+            opacity: 0.6;
+            color: rgb(68, 80, 106);
+        }
+
+        .left_second_container {
+            padding-left: 4rem;
+            font-family: "Sarabun";
+            font-size: 25px;
+            color: rgb(68, 80, 106);
+            font-weight: 100;
+        }
+
+        .left_second_container p {
+            font-weight: lighter;
+        }
+
+        .right_container1 {
+            background-image: url(/static/images/background4.png);
+            background-size: cover;
+            width: 50%;
+        }
+
+        .second_row_container {
+            display: flex;
+            margin: 1rem 4rem 2rem 4rem;
+            background-color: rgb(243, 244, 245);
+        }
+
+        .second_row_container .sub_one_column {
+            width: 50%;
+        }
+
+        .second_row_container .sub_two_column {
+            width: 50%;
+            padding-top: 2rem;
+        }
+
+        .second_row_container .sub_two_column .first_question {
+            font-size: 25px;
+            color: rgb(68, 80, 106);
+            font-family: 'Thasadith';
+            font-weight: bold;
+            padding-right: 2rem;
+        }
+
+        .second_row_container .sub_two_column span p {
+            font-family: "Sarabun";
+            font-size: 25px;
+            color: rgb(68, 80, 106);
+            font-weight: 100;
+            margin-left: 2.5rem;
+        }
+
+        .main_header_container {
+            align-content: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .main_header {
+            color: rgb(68, 80, 106);
+            font-size: 35px;
+        }
+
+        .third_row_container {
+            margin: 0rem 4rem 0rem 4rem;
+        }
+
+        .third_row_container p {
+            font-family: "Sarabun";
+            font-size: 24px;
+            color: rgb(68, 80, 106);
+            font-weight: 100;
+        }
+
+        .fourth_main_row {
+            margin: 0rem 4rem 0rem 4rem;
+
+        }
+
+        .fourth_sub_row {
+            margin-top: 3rem;
+            display: flex;
+        }
+
+        .fourth_sub_col1 {
+            width: 50%;
+            text-align: center;
+        }
+
+        #IconChangeColor {
+            opacity: 0.2;
+        }
+
+
+        .fourth_sub_col2 {
+            width: 50%;
+            text-align: left;
+            padding-bottom: 1rem;
+        }
+
+        .sub_title_benefit {
+            font-size: 25px;
+            color: rgb(68, 80, 106);
+            font-family: 'Thasadith';
+            font-weight: bold;
+            padding-right: 2rem;
+
+        }
+
+        .fourth_sub_col2 p {
+            font-family: "Sarabun";
+            font-size: 24px;
+            color: rgb(68, 80, 106);
+            font-weight: 100;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hero flex-center">
+        <div style="background-color: rgb(94, 187, 209); display: flex; position: fixed; width: 100%; z-index: 1;">
+
+            <span style="width: 90%; background-color: rgb(46, 147, 172); display: flex;">
+
+                <span
+                    style="width: 80%; background-color: rgb(0, 118, 153); display: flex; justify-content: space-between; padding-left: 2%; padding-right: 2%;">
+                    <div style="display: flex; justify-content: center; align-content: center;">
+                        <h3
+                            style="padding-top: 1.2rem; color: rgb(230, 233, 235); font-size: 30px; font-weight: 500; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                            LaundApp</h3>
+                        <img style="width: 3rem; height: 4.5rem" src="{% static 'images/logo.png' %}" alt="">
+                    </div>
+
+                    <div id="toastMsgId" style="margin-top: 0.5rem;"
+                        class="alert alert-warning alert-dismissible fade show hidden" role="alert">
+                        <strong>Logout successful!</strong>
+                        <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
+                    </div>
+                </span>
+
+                <div
+                    style="justify-content: center; align-content: center; flex-direction: column; display: flex; padding-left: 1%;">
+                    <a href="{% url 'com_register_form' %}"><input style="font-size: 25px; "
+                            class="btn btn-outline-light" type="submit" name="com_register_form"
+                            data-bs-toggle="dropdown" aria-expanded="false" value="Apply Now">
+                    </a>
+                </div>
+            </span>
+
+            <div
+                style="justify-content: center; align-content: center; flex-direction: column; display: flex; padding-left: 0.5rem;">
+                <a href="{% url 'login' %}">
+                    <input style="font-size: 25px; " class="btn btn-outline-light" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false" value="Login">
+                </a>
+
+            </div>
+        </div>
+
+
+        <div style="display: flex; padding-top: 4rem;  position: relative;">
+            <div style=" width: 50%;">
+                <div class="row_child" style="width: 100%;">
+                    <h2>
+                        Laund App: Create an app system for your laundry and other service activities, create a closer
+                        bond between you,
+                        your customer and delivery agents. it help you organizer and keep track of your work progress...
+                    </h2>
+
+                </div>
+                <div class="left_second_container">
+                    <p>
+                        Doing the laundry service is necessary for many households without their own laundry machines.
+                        However, over the last few years, having a laundry service has not been enough.
+                        On-demand laundry service mobile app is becoming a must in the laundry industry.
+                    <p>
+                </div>
+
+            </div>
+            <div class="right_container1">
+
+            </div>
+
+        </div>
+
+        <div class="second_row_container">
+            <div class="sub_one_column">
+
+            </div>
+            <div class="sub_two_column">
+                <p class="first_question">Why do you need LaundApp for your business?</p>
+
+                <span style="display: flex; position: relative; margin-bottom: 1rem;">
+
+                    <svg style="color: rgb(148, 148, 148); position: absolute;" xmlns="http://www.w3.org/2000/svg"
+                        width="30" height="30" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
+                        <path
+                            d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"
+                            fill="#949494"></path>
+                        <path
+                            d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"
+                            fill="#949494"></path>
+                    </svg>
+
+                    <p>Real time push notification to interact with clients.</p>
+
+                </span>
+
+                <span style="display: flex; position: relative; margin-bottom: 1rem;">
+
+                    <svg style="position: absolute;" xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                        fill="rgb(148, 148, 148)" class="bi bi-check2-circle" viewBox="0 0 16 16">
+                        <path
+                            d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"
+                            fill=""></path>
+                        <path
+                            d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"
+                            fill=""></path>
+                    </svg>
+
+
+                    <p>Just checking the lenght notification to interact with clients. Just checking the lenght this si
+                        thh</p>
+
+
+
+                </span>
+
+
+            </div>
+        </div>
+
+
+        <!-- THIRD ROW - FEATURES OF LAUNDAPP -->
+        <div class="third_row_container">
+            <div class="main_header_container">
+                <h2 class="main_header">Features of LaundApp</h2>
+                <p>Our online app building platform allows you to integrate numerous features inside your
+                    mobile apps which makes turnkey app development.</p>
+            </div>
+
+
+            <div class="row row-cols-1 row-cols-md-4 g-4">
+                <div class="col">
+                    <div class="card mb-3 shadow p-3 mb-5 bg-body rounded" style="max-width: 18rem;">
+                        <div class="card-header">Header</div>
+                        <div class="card-body">
+                            <h5 class="card-title">Info card title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of the card's content.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card mb-3 shadow p-3 mb-5 bg-body rounded" style="max-width: 18rem;">
+                        <div class="card-header">Header</div>
+                        <div class="card-body">
+                            <h5 class="card-title">Info card title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of the card's content.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card mb-3 shadow p-3 mb-5 bg-body rounded" style="max-width: 18rem;">
+                        <div class="card-header">Header</div>
+                        <div class="card-body">
+                            <h5 class="card-title">Info card title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of the card's content.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card mb-3 shadow p-3 mb-5 bg-body rounded" style="max-width: 18rem;">
+                        <div class="card-header">Header</div>
+                        <div class="card-body">
+                            <h5 class="card-title">Info card title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of the card's content.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card mb-3 shadow p-3 mb-5 bg-body rounded" style="max-width: 18rem;">
+                        <div class="card-header">Header</div>
+                        <div class="card-body">
+                            <h5 class="card-title">Info card title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of the card's content.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ====== FOUTH MAIN ROW ======== -->
+        <div class="fourth_main_row">
+
+            <h2 class="main_header main_header_container">Benefits of using LaundApp</h2>
+            <div class="fourth_sub_row">
+
+                <div class="fourth_sub_col1">
+
+                    <div
+                        style=" position: relative; display: inline-block; width: 80%; height: 80%; left: 0; top: 0; margin: 0;">
+                        <svg style="width: 100%; height: 100%;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                            id="IconChangeColor" height="200" width="200">
+                            <path d="M19 1H9c-1.1 0-2 .9-2 2v3h2V4h10v16H9v-2H7v3c0 1.1.9 2 2 2h10c1.1 0 2-.9 
+                        2-2V3c0-1.1-.9-2-2-2zM7.01 13.47l-2.55-2.55-1.27 1.27L7 16l7.19-7.19-1.27-1.27z"
+                                id="mainIconPathAttribute" fill="#737373"></path>
+                        </svg>
+
+
+                        <svg style="position: absolute; width: 100%; height: 100%; left: 0; top: 0; margin: 0;"
+                            xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="feather feather-shield-off" id="IconChangeColors">
+                            <path d="M19.69 14a6.9 6.9 0 0 0 .31-2V5l-8-3-3.16 1.18" id="mainIconPathAttribute"
+                                stroke-width="0.4" stroke="#1d960d"></path>
+                            <path d="M4.73 4.73L4 5v7c0 6 8 10 8 10a20.29 20.29 0 0 0 5.62-4.38"
+                                id="mainIconPathAttribute" stroke="#1d960d">
+                            </path>
+                            <line x1="1" y1="1" x2="23" y2="23"></line>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="fourth_sub_col2">
+                    <span class="sub_title_benefit">
+                        Secure & Safe
+                    </span>
+                    <p>
+                        An unsecure app can quickly lead to loss of revenue, or worse, even legal trouble with your
+                        customers. Building your app on a reliable and safe interface allows you to prevent many of
+                        these negative outcomes. Shoutem knows the importance of security.
+
+                        That’s why we add 2-factor authentication, consistent security updates, and more for each of our
+                        customers. These safeguards are in place regardless of whether you are building an ecommerce,
+                        news, or personal app. You can feel confident knowing Shoutem’s strong security protections are
+                        keeping you and your customers safe.
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="fourth_sub_row">
+
+                <div class="fourth_sub_col2">
+                    <span class="sub_title_benefit">
+                        Real-time Updates
+                    </span>
+                    <p>
+                        Static apps can make users feel trapped, causing disengagement. Real-time updates encourage
+                        interactivity and create a more positive user experience. They allow for seamless communication
+                        and effortless data sharing.
+
+                        LaundApp offers a plethora of real-time update options. Just a few of them include push
+                        notifications, abandoned cart notifications, live streaming, and feed updates.
+                    </p>
+                </div>
+
+                <div class="fourth_sub_col1">
+
+                    <div
+                        style=" position: relative; display: inline-block; width: 80%; height: 80%; left: 0; top: 0; margin: 0;">
+                        <svg style="width: 100%; height: 100%;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                            id="IconChangeColor" height="200" width="200">
+                            <path d="M19 1H9c-1.1 0-2 .9-2 2v3h2V4h10v16H9v-2H7v3c0 1.1.9 2 2 2h10c1.1 0 2-.9 
+                        2-2V3c0-1.1-.9-2-2-2zM7.01 13.47l-2.55-2.55-1.27 1.27L7 16l7.19-7.19-1.27-1.27z"
+                                id="mainIconPathAttribute" fill="#737373"></path>
+                        </svg>
+
+
+                        <svg style="position: absolute; width: 100%; height: 100%; left: 0; top: 0; margin: 0;"
+                            xmlns="http://www.w3.org/2000/svg" width="300" height="300" fill="currentColor"
+                            class="bi bi-recycle" viewBox="0 0 16 16" id="IconChangeColor1">
+                            <path d="M9.302 1.256a1.5 1.5 0 0 0-2.604 0l-1.704 2.98a.5.5 0 0 
+                        0 .869.497l1.703-2.981a.5.5 0 0 1 .868 0l2.54 4.444-1.256-.337a.5.5 0 1 0-.26.966l2.415.647a.5.5 0 0 
+                        0 .613-.353l.647-2.415a.5.5 0 1 0-.966-.259l-.333 1.242-2.532-4.431zM2.973 7.773l-1.255.337a.5.5 0 1 
+                        1-.26-.966l2.416-.647a.5.5 0 0 1 .612.353l.647 2.415a.5.5 0 0 1-.966.259l-.333-1.242-2.545 4.454a.5.5 0 0 
+                        0 .434.748H5a.5.5 0 0 1 0 1H1.723A1.5 1.5 0 0 1 .421 12.24l2.552-4.467zm10.89 1.463a.5.5 0 1 0-.868.496l1.716 
+                        3.004a.5.5 0 0 1-.434.748h-5.57l.647-.646a.5.5 0 1 0-.708-.707l-1.5 1.5a.498.498 0 0 0 0 .707l1.5 1.5a.5.5 0 1 
+                        0 .708-.707l-.647-.647h5.57a1.5 1.5 0 0 0 1.302-2.244l-1.716-3.004z" id="mainIconPathAttribute"
+                                fill="orange"></path>
+                        </svg>
+
+
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            <div class="fourth_sub_row">
+
+                <div class="fourth_sub_col1">
+
+                    <div
+                        style=" position: relative; display: inline-block; width: 80%; height: 80%; left: 0; top: 0; margin: 0;">
+                        <svg style="width: 100%; height: 100%;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                            id="IconChangeColor" height="200" width="200">
+                            <path d="M19 1H9c-1.1 0-2 .9-2 2v3h2V4h10v16H9v-2H7v3c0 1.1.9 2 2 2h10c1.1 0 2-.9 
+                        2-2V3c0-1.1-.9-2-2-2zM7.01 13.47l-2.55-2.55-1.27 1.27L7 16l7.19-7.19-1.27-1.27z"
+                                id="mainIconPathAttribute" fill="#737373"></path>
+                        </svg>
+
+
+                        <svg style="position: absolute; width: 100%; height: 100%; left: 0; top: 0; margin: 0;"
+                            xmlns="http://www.w3.org/2000/svg" width="300" height="300" fill="currentColor"
+                            class="bi bi-hand-index" viewBox="0 0 16 16" id="IconChangeColor2">
+                            <path
+                                d="M6.75 1a.75.75 0 0 1 .75.75V8a.5.5 0 0 0 1 
+                        0V5.467l.086-.004c.317-.012.637-.008.816.027.134.027.294.096.448.182.077.042.15.147.15.314V8a.5.5 0 1 0 
+                        1 0V6.435a4.9 4.9 0 0 1 .106-.01c.316-.024.584-.01.708.04.118.046.3.207.486.43.081.096.15.19.2.259V8.5a.5.5 
+                        0 0 0 1 0v-1h.342a1 1 0 0 1 .995 1.1l-.271 2.715a2.5 2.5 0 0 1-.317.991l-1.395 2.442a.5.5 0 0 
+                        1-.434.252H6.035a.5.5 0 0 1-.416-.223l-1.433-2.15a1.5 1.5 0 0 1-.243-.666l-.345-3.105a.5.5 0 0 
+                        1 .399-.546L5 8.11V9a.5.5 0 0 0 1 0V1.75A.75.75 0 0 1 6.75 1zM8.5 4.466V1.75a1.75 1.75 0 1 0-3.5 
+                        0v5.34l-1.2.24a1.5 1.5 0 0 0-1.196 1.636l.345 3.106a2.5 2.5 0 0 0 .405 1.11l1.433 2.15A1.5 1.5 0 0 0 
+                        6.035 16h6.385a1.5 1.5 0 0 0 1.302-.756l1.395-2.441a3.5 3.5 0 0 0 .444-1.389l.271-2.715a2 2 0 0 
+                        0-1.99-2.199h-.581a5.114 5.114 0 0 0-.195-.248c-.191-.229-.51-.568-.88-.716-.364-.146-.846-.132-1.158-.108l-.132.012a1.26 
+                        1.26 0 0 0-.56-.642 2.632 2.632 0 0 0-.738-.288c-.31-.062-.739-.058-1.05-.046l-.048.002zm2.094 2.025z"
+                                id="mainIconPathAttribute" fill="#03989e"></path>
+                        </svg>
+
+                    </div>
+                </div>
+
+                <div class="fourth_sub_col2">
+                    <span class="sub_title_benefit">
+                        Easy To Use
+                    </span>
+                    <p>
+                        Without any prior coding knowledge or experience, you can create a beautiful and efficient app.
+                        Shoutem is a DIY app builder, saving you time and hassle. It’s also easy to use, as it utilizes
+                        a drag-and-drop platform and requires zero coding.
+
+                        As a DIY no-code app development platform, Shoutem can give you the same precision as well as
+                        customization that developers use at a fraction of the time and price.
+                    </p>
+                </div>
+
+
+            </div>
+
+
+            <div class="fourth_sub_row">
+
+                <div class="fourth_sub_col2">
+                    <span class="sub_title_benefit">
+                        Customization
+                    </span>
+                    <p>
+                        Your business is unique, and your app should reflect that. Shoutem’s customization features give
+                        you access to all the tools you need to create your perfect app.
+
+                        You can style and design it to your unique desires. Text, backgrounds, links, integrations,
+                        colors, and more can all be built to match your goals. Your app will both stand out of the crowd
+                        and be easy to navigate as a result.
+                    </p>
+                </div>
+
+                <div class="fourth_sub_col1">
+
+                    <div
+                        style=" position: relative; display: inline-block; width: 80%; height: 80%; left: 0; top: 0; margin: 0;">
+                        <svg style="width: 100%; height: 100%;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                            id="IconChangeColor" height="200" width="200">
+                            <path d="M19 1H9c-1.1 0-2 .9-2 2v3h2V4h10v16H9v-2H7v3c0 1.1.9 2 2 2h10c1.1 0 2-.9 
+                        2-2V3c0-1.1-.9-2-2-2zM7.01 13.47l-2.55-2.55-1.27 1.27L7 16l7.19-7.19-1.27-1.27z"
+                                id="mainIconPathAttribute" fill="#737373"></path>
+                        </svg>
+
+
+                        <svg style="position: absolute; width: 100%; height: 100%; left: 0; top: 0; margin: 0;"
+                            xmlns="http://www.w3.org/2000/svg" width="300" height="300" fill="currentColor"
+                            class="bi bi-gear" viewBox="0 0 16 16" id="IconChangeColor5">
+                            <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 
+                        0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"
+                                id="mainIconPathAttribute" fill="purple"></path>
+                            <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 
+                        1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 
+                        3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 
+                        0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 
+                        2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 
+                        1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 
+                        1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 
+                        1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 
+                        1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 
+                        0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 
+                        0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 
+                        2.692-1.115l.094-.319z" id="mainIconPathAttribute" fill="purple"></path>
+                        </svg>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- ========== PAGE FOOTER ============ -->
+        <div style="background-color: rgb(2, 16, 29); padding: 2rem 2rem 2rem 2rem;">
+            <div style="display: flex; justify-content: space-around; color: rgb(132, 132, 132); ">
+                <div style="display: block;">
+                    <p>Contact us</p>
+                    <p>Contact us</p>
+                    <p>Contact us</p>
+
+                </div>
+
+                <div style="display: block;">
+                    <p>Contact us</p>
+                    <p>Contact us</p>
+                    <p>Contact us</p>
+
+                </div>
+
+                <div style="display: block;">
+                    <p>Contact us</p>
+                    <p>Contact us</p>
+                    <p>Contact us</p>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script>
+
+
+        var call = "{{ pk }}";
+
+        // THIS IS USED TO SHOW AND HIDE ALERT FOR LOGOUT
+        if (call == '0') {
+            function showDiv() {
+                document.getElementById('toastMsgId').style.display = 'block';
+            }
+            setTimeout("showDiv()", 0);
+
+            function hideDiv() {
+                document.getElementById('toastMsgId').style.display = "none";
+            }
+            setTimeout("hideDiv()", 5000);
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caudex:ital,wght@0,400;0,700;1,400;1,700&family=Gothic+A1:wght@100;300&family=Kotta+One&family=Niramit:ital,wght@0,200;0,300;0,500;1,200;1,300&family=Sarabun:ital,wght@0,100;0,200;0,500;0,800;1,100;1,200&family=Thasadith:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP</title>
+    {% load static %}
+</head>
+
+<body>
+    <style>
+        /* ========== POPUP CONFIRMATION FORM ============= */
+
+        .modal-container {
+            z-index: 9999;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-open {
+            display: flex;
+        }
+
+        .modal_form {
+            max-width: 700px;
+            max-height: 800px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 3px;
+        }
+
+        .modal-button {
+            text-transform: uppercase;
+            padding: 0.5em 1em;
+            border: none;
+            color: white;
+            background-color: grey;
+            border-radius: 3px;
+            margin-left: 0.5em;
+        }
+
+        .modal-confirm-button {
+            background-color: tomato;
+        }
+
+        .modal-header {
+
+            color: orange;
+        }
+
+        .modal-header h2 {
+            padding: 0.5em;
+        }
+
+        .modal_content {
+            padding: 1em;
+            color: rgba(168, 167, 167);
+            text-align: center;
+        }
+
+        .modal-footer {
+            padding: 1em;
+            background-color: rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* =========== END OF POPUP CONFIRMATION FORM ========== */
+
+
+        /* ===================== CSS FOR INPUT FIELD NAME ===================== */
+
+
+        .first-row {
+            display: flex;
+        }
+
+        .name-row {
+            width: 100%;
+            position: relative;
+            height: 50px;
+            overflow: hidden;
+        }
+
+        .name {
+            width: 50%;
+            position: relative;
+            height: 50px;
+            overflow: hidden;
+        }
+
+        .input-name-field {
+            width: 100%;
+            height: 100%;
+            color: #595f6e;
+            padding-top: 20px;
+            border: none;
+            outline: none;
+            padding-left: 1%;
+        }
+
+        .label-name {
+            position: absolute;
+            bottom: -4px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            border-bottom: 1px solid black;
+        }
+
+        .label-name::after {
+            content: "";
+            position: absolute;
+            left: 0px;
+            bottom: -1px;
+            width: 100%;
+            height: 100%;
+            border-bottom: 3px solid #5fa8d3;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .content-name {
+            position: absolute;
+            bottom: 5px;
+            left: 2%;
+            transition: all 0.3s ease;
+        }
+
+        .input-name-field:focus+.label-name .content-name,
+        .input-name-field:valid+.label-name .content-name {
+            transform: translateY(-140%);
+            font-size: 11px;
+            color: #5fa8d3;
+        }
+
+        .input-name-field:focus+.label-name::after,
+        .input-name-field:valid+.input-name-field::after {
+            transform: translateX(0%);
+        }
+
+
+        /* ======================= END OF INPUT FIELD NAME ========================= */
+
+        .login-model {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            position: absolute;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* background-image: url(/static/images/logo1.png); */
+            background-repeat: space;
+        }
+
+        .login-content {
+            width: 300px;
+            height: 75%;
+            background-color: white;
+            border-radius: 4px;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+        }
+
+        #log-in-buttons {
+            width: 30%;
+            margin: 0 3%;
+        }
+
+        #wrap-btn {
+            visibility: hidden;
+        }
+
+        .pwd-visibility {
+            color: black;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .alert-danger {
+            display: none;
+            font-size: 13px;
+        }
+
+        .alert-info {
+            display: none;
+            font-size: 13px;
+        }
+
+        .login-label {
+            text-align: center;
+            font-size: 23px;
+            color: orange;
+            display: flex;
+        }
+    </style>
+
+    <div>
+
+        <div class="login-model">
+            <div class="login-content">
+
+                <form action="{% url 'otp' %}" method="POST">
+                    {% csrf_token %}
+                    <label for="" class="login-label">
+                        <img style="width: 15%; height: 15%;" src="{% static 'images/logo.png' %}" alt="">
+                        <h4 style="width: 75%;">OTP</h4>
+                    </label>
+                    <p style="font-family: Sarabun;">One time OTP expire in 2 minutes</p>
+                    <hr style="margin-bottom: 2%; margin-top: 0px;">
+
+                    <div class="">
+
+                        <div class="name" style="width: 100%; margin-bottom: 2%;">
+
+                            <input value="" class="input-name-field" type="tel" name="otp" autocomplete="" required />
+                            <label for="" class="label-name">
+                                <span class="content-name">OTP</span>
+                            </label>
+
+                        </div>
+
+
+                    </div>
+
+                    <!-- ALERT MESSAGE -->
+
+
+                    <div id="error-alert" class="alert alert-danger " role="alert">
+
+
+                        <strong> {{ serverMsg }} </strong>
+                    </div>
+
+                    <div id="info-alert" class="alert alert-info " role="alert">
+
+
+                        <strong> {{ serverMsg }} </strong>
+                    </div>
+
+
+                    <div style="margin-top: 2rem; justify-content: space-around; display: flex;">
+                        <a href="{% url 'homePage' pk=1 %}" class="btn btn-danger" id="log-in-buttons">Cancel</a>
+
+
+                        <input type="submit" class="btn btn-primary button" id="confirmOtp" name="" value="Confirm">
+
+                    </div>
+
+                    <hr>
+
+                    <input type="submit" name="" value="Re-generate OTP code" class="btn btn-outline-secondary">
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // THIS IS USED TO SHOW AND HIDE ALERT FOR LOGIN FAILURE
+        var isSuccess = "{{ isSuccess }}";
+
+        console.log(isSuccess)
+        if (isSuccess == 'False') {
+            function showDiv() {
+                document.getElementById('error-alert').style.display = "block";
+            }
+            setTimeout("showDiv()", 0);
+
+            function hideDiv() {
+                document.getElementById('error-alert').style.display = "none";
+            }
+            setTimeout("hideDiv()", 5000);
+        }
+        else if (isSuccess == 'True') {
+            function _showDiv() {
+                document.getElementById('info-alert').style.display = "block";
+            }
+            setTimeout("_showDiv()", 0);
+
+            function _hideDiv() {
+                document.getElementById('info-alert').style.display = "none";
+            }
+            setTimeout("_hideDiv()", 5000);
+        }
+
+
+
+    </script>
+
+</body>
+
+</html>

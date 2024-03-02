@@ -1,0 +1,144 @@
+{% extends 'laundApp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="main_container">
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+
+        <div class="col">
+            <div class="card text-center mb-3 h-100 shadow" style=" background-color: rgb(136, 215, 244);">
+                <span style="background-color: white;">
+                    <div class="card-header">
+                        <h5 class="card-title" style="font-family: Sarabun;">Active Bookings</h5>
+                    </div>
+                    <div class="card-body">
+
+                        <p class="card-text" style="font-family: Sarabun;">21</p>
+
+                    </div>
+                </span>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card text-center mb-3 h-100 shadow" style="background-color: orange; ">
+                <span style="background-color: white;">
+                    <div class="card-header">
+                        <h5 class="card-title" style="font-family: Kotta One;">Pending Bookings</h5>
+                    </div>
+                    <div class="card-body">
+
+                        <p class="card-text" style="font-family: Kotta One;">18</p>
+
+                    </div>
+                </span>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card text-center mb-3 h-100 shadow" style="background-color: aquamarine;">
+                <span style="background-color: white;">
+                    <div class="card-header">
+                        <h5 class="card-title" style="font-family: Thasadith; font-weight: 700;">Bookings Delivered</h5>
+                    </div>
+                    <div class="card-body">
+
+                        <p class="card-text" style="font-family: Thasadith; font-weight: 700;">49</p>
+
+                    </div>
+                </span>
+            </div>
+        </div>
+
+
+        <div class="col">
+            <div class="card text-center mb-3 h-100 shadow" style="background-color: rgb(238, 124, 127);">
+                <span style="background-color: white;">
+                    <div class="card-header">
+                        <h5 class="card-title" style="font-family: Niramit;">Cancelled Bookings</h5>
+                    </div>
+                    <div class="card-body">
+
+                        <p class="card-text" style="font-family: Niramit;">9</p>
+
+                    </div>
+                </span>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card text-center mb-3 h-100 shadow" style="background-color: peachpuff;">
+                <span style="background-color: white;">
+                    <div class="card-header">
+                        <h5 class="card-title">Services</h5>
+                    </div>
+                    <div class="card-body">
+
+                        <p class="card-text">0</p>
+
+                    </div>
+                </span>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card text-center mb-3 h-100 shadow" style="background-color: teal;">
+                <span style="background-color: white;">
+                    <div class="card-header">
+                        <h5 class="card-title" style="font-family: Caudex;">Active Agents </h5>
+                    </div>
+                    <div class="card-body">
+
+                        <p class="card-text" style="font-family: Caudex;">5786</p>
+
+                    </div>
+                </span>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card text-center mb-3 h-100 shadow">
+                <div class="card-header">
+                    <h5 class="card-title">Agent Active Orders</h5>
+                </div>
+                <div class="card-body">
+
+                    <p class="card-text">0</p>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="col">
+            <div class="card text-center mb-3 h-100 shadow" >
+                <div class="card-header">
+                    <h5 class="card-title">Bookings Delivered</h5>
+                </div>
+                <div class="card-body">
+
+                    <p class="card-text">49</p>
+
+                </div>
+            </div>
+        </div> -->
+    </div>
+
+
+
+
+</div>
+
+<script>
+    var autoHt = window.innerHeight;
+    var av = screen.availHeight;
+
+    av = av - 80;
+    autoHt = autoHt - 80;
+
+    document.getElementById('main_container').style.height = autoHt + 'px';
+    document.getElementById('main_container').style.overflowY = 'auto';
+    document.getElementById('main_container').style.width = '80%';
+    document.getElementById('main_container').style.paddingTop = '0.5rem';
+</script>
+{% endblock content %}

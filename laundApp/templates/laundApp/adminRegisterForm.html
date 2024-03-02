@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caudex:ital,wght@0,400;0,700;1,400;1,700&family=Gothic+A1:wght@100;300&family=Kotta+One&family=Niramit:ital,wght@0,200;0,300;0,500;1,200;1,300&family=Sarabun:ital,wght@0,100;0,200;0,500;0,800;1,100;1,200&family=Thasadith:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    rel="stylesheet">
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=1000, initial-scale=1.0">
+
+  <title>Registration Form</title>
+
+  {% load static %}
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+
+    /* ===================== CSS FOR INPUT FIELD NAME ===================== */
+
+    .first-row {
+      display: flex;
+    }
+
+    .name-row {
+      width: 100%;
+      position: relative;
+      height: 50px;
+      overflow: hidden;
+    }
+
+    .name {
+      width: 50%;
+      position: relative;
+      height: 50px;
+      overflow: hidden;
+    }
+
+    ._name {
+      width: 41%;
+      position: relative;
+      height: 50px;
+      overflow: hidden;
+    }
+
+    .input-name-field {
+      width: 100%;
+      height: 100%;
+      padding-top: 20px;
+      border: none;
+      outline: none;
+      padding-left: 1%;
+      background-color: rgba(0, 0, 0, 0)
+    }
+
+    ._input-name-field {
+      width: 100%;
+      height: 100%;
+      padding-top: 20px;
+      border: none;
+      outline: none;
+      padding-left: 1%;
+      background-color: rgba(0, 0, 0, 0)
+    }
+
+    /* === IN THE INPUT FIELD, THIS WILL CHANGE SUGGESTION BACKGROUND COLOR TO TRANSPARENT ==== */
+    input:-webkit-autofill,
+    input:-webkit-autofill:focus {
+      transition: background-color 600000s 0s, color 600000s 0s;
+    }
+
+    input[data-autocompleted] {
+      background-color: transparent !important;
+    }
+
+    /* === END OF THE CODE ==== */
+
+
+    .label-name {
+      position: absolute;
+      bottom: -4px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      border-bottom: 1px solid black;
+    }
+
+    .label-name::after {
+      content: "";
+      position: absolute;
+      left: 0px;
+      bottom: -1px;
+      width: 100%;
+      height: 100%;
+      border-bottom: 3px solid #5fa8d3;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+
+    .content-name {
+      position: absolute;
+      bottom: 5px;
+      left: 2%;
+      transition: all 0.3s ease;
+    }
+
+    .input-name-field:focus+.label-name .content-name,
+    .input-name-field:valid+.label-name .content-name {
+      transform: translateY(-140%);
+      font-size: 11px;
+      color: #5fa8d3;
+    }
+
+    .input-name-field:focus+.label-name::after,
+    .input-name-field:valid+.input-name-field::after {
+      transform: translateX(0%);
+    }
+
+    /* ======================= END OF INPUT FIELD NAME ========================= */
+
+
+    /* ===== START OF POPUP INFO ========= */
+    .message-modal-container {
+      z-index: 9999;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-open-info {
+      display: flex;
+    }
+
+    .modal-info-footer {
+      padding: 1em;
+      background-color: rgba(0, 0, 0, 0.05);
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .modal-ok-button {
+      background-color: rgb(50, 135, 245);
+      text-transform: uppercase;
+      padding: 0.5em 1em;
+      border: none;
+      color: white;
+      border-radius: 3px;
+      margin-left: 0.5em;
+    }
+
+    /* ============ END OF POPUP INFO ========== */
+
+
+    /* ========== POPUP CONFIRMATION FORM ============= */
+
+    .modal-container {
+      z-index: 9999;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-open {
+      display: flex;
+    }
+
+    .modal_form {
+      max-width: 700px;
+      max-height: 800px;
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 3px;
+    }
+
+    .modal-button {
+      text-transform: uppercase;
+      padding: 0.5em 1em;
+      border: none;
+      color: white;
+      background-color: grey;
+      border-radius: 3px;
+      margin-left: 0.5em;
+    }
+
+    .modal-confirm-button {
+      background-color: tomato;
+    }
+
+    .modal-header {
+
+      color: orange;
+    }
+
+    .modal-header h2 {
+      padding: 0.5em;
+    }
+
+    .modal_content {
+      padding: 1em;
+      color: rgba(168, 167, 167);
+      text-align: center;
+    }
+
+    .modal-footer {
+      padding: 1em;
+      background-color: rgba(0, 0, 0, 0.05);
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    /* =========== END OF POPUP CONFIRMATION FORM ========== */
+
+
+
+    /* =========== START OF WINDOW SPINNER ============= */
+    .spin-modal-container {
+      z-index: 9999;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .spinner_modal_content {
+      padding: 0.5em;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .modal-open-load {
+      display: flex;
+    }
+
+    /* STARTING FROM HERE LOADING EFFECT COPY FROM WEB */
+    .loading {
+      display: flex;
+    }
+
+    .loading .dot {
+      position: relative;
+      width: 2em;
+      height: 2em;
+      margin: 0.8em;
+      border-radius: 50%;
+    }
+
+    .loading .dot::before {
+      position: absolute;
+      content: "";
+      width: 100%;
+      height: 100%;
+      background: inherit;
+      border-radius: inherit;
+      animation: wave 2s ease-out infinite;
+    }
+
+    .loading .dot:nth-child(1) {
+      background: #7ef9ff;
+    }
+
+    .loading .dot:nth-child(1)::before {
+      animation-delay: 0.2s;
+    }
+
+    .loading .dot:nth-child(2) {
+      background: #89cff0;
+    }
+
+    .loading .dot:nth-child(2)::before {
+      animation-delay: 0.4s;
+    }
+
+    .loading .dot:nth-child(3) {
+      background: #4682b4;
+    }
+
+    .loading .dot:nth-child(3)::before {
+      animation-delay: 0.6s;
+    }
+
+    .loading .dot:nth-child(4) {
+      background: #0f52ba;
+    }
+
+    .loading .dot:nth-child(4)::before {
+      animation-delay: 0.8s;
+    }
+
+    .loading .dot:nth-child(5) {
+      background: #000080;
+    }
+
+    .loading .dot:nth-child(5)::before {
+      animation-delay: 1s;
+    }
+
+    @keyframes wave {
+
+      50%,
+      75% {
+        transform: scale(2.5);
+      }
+
+      80%,
+      100% {
+        opacity: 0;
+      }
+    }
+
+    /* END OF LOADING EFFECT */
+
+    /* =========== END OF WINDOW SPINNER ============= */
+
+
+    .main_container {
+      padding: 4rem;
+    }
+
+    .main_header {
+      /* color: rgb(68, 80, 106); */
+      font-size: 35px;
+      font-family: 'Thasadith';
+      text-align: center;
+
+    }
+
+    .sub_title {
+      font-family: "Sarabun";
+      font-size: 22px;
+      color: rgb(68, 80, 106);
+      font-weight: 100;
+      text-align: center;
+      padding-bottom: 0.5rem;
+
+    }
+
+    .sub_form_container {
+      background-color: aliceblue;
+      /* background-image: url(/static/images/logo.png); */
+      /* opacity: 0.4;  */
+      position: relative;
+      overflow: hidden;
+      padding-left: 2rem;
+      padding-right: 2rem;
+      /* background-repeat: round; */
+
+    }
+
+    .img_logo {
+
+      position: absolute;
+      /* left: 0;
+           top: 0; */
+      width: 5%;
+      height: 30%;
+
+
+    }
+
+    .content_container {
+      position: relative;
+
+    }
+
+    .inner_content_container {
+      background-image: url(/static/images/logo1.png);
+      background-repeat: round;
+      display: block;
+
+    }
+
+    .hidden {
+      visibility: hidden;
+    }
+
+    .terms-conditions {
+      font-size: 10px;
+      color: grey;
+      margin: 0%;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="main_container">
+    <form action="" method="POST">
+      {% csrf_token %}
+      <div style="background-color: royalblue; padding: 3rem 5rem 3rem 5rem;">
+        <div class="sub_form_container">
+          <div class="form_header" style=" position: relative; display: flex;">
+            <span style="width: 7%;"><img class="img_logo" src="{% static 'images/logo.png' %}" alt=""
+                style=" width: 6%; height: 100%;"></span>
+            <span style="display: block;">
+              <h2 class="main_header">Company Registration Form</h2>
+              <p class="sub_title">Create your business account by using this form. Required fields are marked with an
+                asterisk (*)</p>
+            </span>
+
+          </div>
+          <hr>
+          <div class="content_container">
+            <div class="inner_content_container">
+
+              <div class="first-row" style="margin-top: 1rem;">
+
+
+
+                <div class="name">
+
+                  <input id="first_name" value="{{ form.first_name }}" class="input-name-field" type="text"
+                    name="first_name" autocomplete="" required />
+                  <label for="name" class="label-name">
+                    <span class="content-name">First Name <span style="color: red;">*</span></span>
+                  </label>
+                </div>
+
+                <div class="name" style="margin-left: 5%;">
+                  <input id="last_name" value="{{ form.last_name }}" class="input-name-field" type="text"
+                    name="last_name" autocomplete="" required />
+                  <label for="name" class="label-name">
+                    <span class="content-name">Last Name <span style="color: red;">*</span></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="first-row" style="margin-top: 1rem;">
+
+                <div class="name">
+
+                  <input id="username" value="{{ form.username }}" class="input-name-field" type="text" name="username"
+                    autocomplete="" required />
+                  <label for="name" class="label-name">
+                    <span class="content-name">Username<span style="color: red;">*</span></span>
+                  </label>
+                </div>
+
+                <div class="name" style="margin-left: 5%;">
+                  <input id="upperCase" value="{{ form.prefix }}" class="input-name-field" type="text" name="prefix"
+                    autocomplete="" style="text-transform:uppercase" maxlength="5" required />
+                  <label for="name" class="label-name">
+                    <span class="content-name">Prefix <span style="font-size: 10px;">(Not more than 5 alphabet)</span>
+                      <span style="color: red;">*</span></span>
+                  </label>
+                </div>
+              </div>
+
+
+              <div class="first-row" style="margin-top: 1rem;">
+
+                <div class="name">
+
+                  <input id="businessName" value="{{ form.businessName }}" class="input-name-field" type="text"
+                    name="businessName" autocomplete="" required />
+                  <label for="name" class="label-name">
+                    <span class="content-name">Business Name <span style="color: red;">*</span></span>
+                  </label>
+                </div>
+
+                <div class="name" style="margin-left: 5%;">
+                  <input id="email" value="{{ form.email }}" class="input-name-field" type="email" name="email"
+                    required />
+                  <label for="name" class="label-name">
+                    <span class="content-name">Email <span style="color: red;">*</span></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="first-row" style="margin-top: 1rem; ">
+                <span style="display: flex; width: 47.5%;">
+                  <select required name="mobile_code" class="form-select form-select-lg mb-3"
+                    style="background-color: rgba(0, 0, 0, 0); margin-top: 1rem;" aria-label=".form-select-lg example"
+                    id="mobile_country_code">
+                    <option value="" selected>Code</option>
+                    <option value="+234">+234</option>
+
+                  </select>
+                  <div class="_name" style="width: 100%;">
+
+                    <input id="mobile" value="{{ form.mobile }}" class="input-name-field" type="tel" name="mobile"
+                      autocomplete="" onkeypress="return isNumberKey(event)" maxlength="11" required />
+                    <label for="name" class="label-name">
+                      <span class="content-name">Mobile <span style="font-size: 10px;">(+23480...)</span> <span
+                          style="color: red;">*</span></span>
+                    </label>
+                  </div>
+                </span>
+
+                <span style="display: flex; margin-left: 2.7rem; width: 47.5%;">
+                  <select name="phone_code" class="form-select form-select-lg mb-3"
+                    style="background-color: rgba(0, 0, 0, 0); margin-top: 1rem; margin-left: 0rem;"
+                    aria-label=".form-select-lg example" id="country_code_phone">
+                    <option value="" selected>Code</option>
+                    <option value="+234">+234</option>
+
+                  </select>
+
+                  <div class="_name" style="width: 100%;">
+                    <input id="phone" value="{{ form.phone }}" class="input-name-field" type="tel" name="phone"
+                      autocomplete="" maxlength="11" onkeypress="return isNumberKey(event)" />
+                    <label for="name" class="label-name">
+                      <span class="content-name">Phone <span style="font-size: 10px;">(+23480...)</span></span>
+                    </label>
+                  </div>
+                </span>
+              </div>
+
+              <div class="first-row" style="margin-top: 0.4rem;">
+
+                <div class="name">
+
+                  <input id="streetAddress1" value="{{ form.streetAddress1 }}" class="input-name-field" type="text"
+                    name="streetAddress1" autocomplete="" required />
+                  <label for="name" class="label-name">
+                    <span class="content-name">Street Address 1 <span style="color: red;">*</span></span>
+                  </label>
+                </div>
+
+                <div class="name" style="margin-left: 5%;">
+                  <input id="streetAddress2" value="{{ form.streetAddress2 }}" class="input-name-field" type="text"
+                    name="streetAddress2" autocomplete="" />
+                  <label for="name" class="label-name">
+                    <span class="content-name">Street Address 2</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="first-row" style="margin-top: 1rem;">
+
+                <div class="name">
+
+                  <input id="city" value="{{ form.city }}" class="input-name-field" type="text" name="city"
+                    autocomplete="" required />
+                  <label for="name" class="label-name">
+                    <span class="content-name">City <span style="color: red;">*</span></span>
+                  </label>
+                </div>
+
+                <div class="name" style="margin-left: 5%;">
+                  <input id="state" value="{{ form.state }}" class="input-name-field" type="text" name="state"
+                    autocomplete="" required />
+                  <label for="name" class="label-name">
+                    <span class="content-name">State / Province <span style="color: red;">*</span></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="first-row" style="margin-top: 1rem;">
+
+                <div class="name">
+
+                  <input id="postal" value="{{ form.postal }}" class="input-name-field" type="text" name="postal"
+                    autocomplete="" />
+                  <label for="name" class="label-name">
+                    <span class="content-name">Postal / Zip</span>
+                  </label>
+                </div>
+
+                <div class="name" style="margin-left: 5%;">
+                  <input id="country" value="{{ form.country }}" class="input-name-field" type="text" name="country"
+                    autocomplete="" required />
+                  <label for="name" class="label-name">
+                    <span class="content-name">Country <span style="color: red;">*</span></span>
+                  </label>
+                </div>
+              </div>
+
+
+              <div class="first-row" style="margin-top: 1rem;">
+                <div class="name" style="margin-top: 0.8rem; justify-content: space-between; display: flex; ">
+                  <label for="">How did you discover us?</label>
+                  <select required name="discoverUs" class="form-select form-select-lg mb-3"
+                    style="background-color: rgba(0, 0, 0, 0)" aria-label=".form-select-lg example" onchange="run()"
+                    id="optionSelected">
+                    <option value="" selected>Please Select</option>
+                    <option value="Google Search">Google Search</option>
+                    <option value="Advertisemant">Advertisemant</option>
+                    <option value="Social Media">Social Media</option>
+                    <option value="Others">Others (Please specify</option>
+                  </select>
+
+                </div><span style="color: red;">*</span>
+
+
+
+                <div class="name hidden" style="margin-left: 5%;" id="othersId">
+                  <input value="{{ form.others }}" class="input-name-field" type="text" name="others" autocomplete=""
+                    id="othersRequired" />
+                  <label for="name" class="label-name">
+                    <span class="content-name">If others is select please specify <span
+                        style="color: red;">*</span></span>
+                  </label>
+                </div>
+              </div>
+
+
+              <div class="first-row" style="margin-top: 1rem;">
+
+                <div class="name pwd-field">
+
+                  <input id="password1" value="" class="input-name-field" type="password" name="password1"
+                    autocomplete="" required />
+                  <label for="" class="label-name">
+                    <span class="content-name">Password <span style="color: red;">*</span></span>
+                  </label>
+                </div>
+
+                <div class="name pwd-field2" style="margin-left: 5%;">
+                  <input id="password2" value="" class="input-name-field" type="password" name="password2"
+                    autocomplete="" required />
+                  <label for="" class="label-name">
+                    <span class="content-name">Confirm Password <span style="color: red;">*</span></span>
+                  </label>
+                </div>
+              </div>
+
+              <label for="exampleFormControlInput1" class="password-label"><i
+                  class="material-icons pwd-visibility">visibility_off</i>Password is case
+                sensitive</label>
+            </div>
+
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name="checkbox"
+              onclick="toggle()" required>
+            <label class="form-check-label terms-conditions" for="flexCheckDefault">
+              By continuing, you're confirming that you've read our <a href="#">Terms &
+                Conditions</a> and Cookie Policy
+            </label>
+          </div>
+
+
+
+          <div
+            style="width: 100%; display: flex; margin-bottom: 1rem; justify-content: space-around; margin-top: 2rem;">
+            <a href="{% url 'homePage' pk=1 %}" class="btn btn-danger" id="log-in-buttons"
+              style="width: 20%;">Cancel</a>
+
+
+            <input style="width: 20%;" type="submit" class="btn btn-success button" id="log-in-buttons"
+              value="Create Account" onclick="onPopWindowSpinner()">
+
+          </div>
+
+        </div>
+      </div>
+      <div>
+
+      </div>
+    </form>
+  </div>
+
+
+
+  <!-- ======= POPUP CONFIRMATION TEMPLATE ========== -->
+  <div id="confirmation" class="modal-container">
+    <div class="modal_form">
+      <section>
+        <header>
+          <h2 class="modal-header">Warning</h2>
+        </header>
+        <section>
+          <h5 class="modal_content" id="modal_content_id"></h5>
+        </section>
+        <footer class="modal-footer">
+          <button class="modal-button" onclick="onCancel()" id="cancelBtnId">Cancel</button>
+          <button class="modal-button modal-confirm-button" onclick="onConfirmBtn()" id="confirmBtnId">Confirm</button>
+        </footer>
+      </section>
+    </div>
+  </div>
+  <!-- ======= END OF POPUP CONFIRMATION TEMPLATE ========== -->
+
+
+
+  <!-- ======= POPUP MESSAGE INFORMATION ========== -->
+  <div id="information" class="message-modal-container">
+    <div class="modal_form">
+      <section>
+        <header>
+          <h2 class="modal-header">Warning</h2>
+        </header>
+        <section>
+          <h5 class="modal_content" id="modal_info_content_id"></h5>
+        </section>
+        <footer class="modal-info-footer">
+
+          <button class="modal-ok-button" onclick="onCancelInfoForm()">Ok</button>
+        </footer>
+      </section>
+    </div>
+  </div>
+  <!-- ======= END OF POPUP MESSAGE INFORMATION ========== -->
+
+
+
+  <!-- ===== WINDOW SPINNER ======= -->
+  <div id="windowSpinner" class="spin-modal-container">
+    <div id="spinner_modal_id" class="bar">
+      <section>
+
+        <section class="spinner_modal_content">
+          <div class="loading">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+
+          <p style="font-family: Lucida Handwriting; font-size: 20px; font-weight: bold;">Loading... <span
+              style="font-family: Bradley Hand; font-size: 20px;">please wait</span></p>
+        </section>
+
+      </section>
+    </div>
+  </div>
+  <!-- ====== END OF WINDOW SPINNER ====== -->
+
+  <style>
+    @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+    /* USED BY PASSWORD TOGGLE ICON */
+    .password-label {
+      display: flex;
+      font-size: 10px;
+      color: crimson;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+
+    .pwd-visibility {
+      color: black;
+      cursor: pointer;
+      margin-right: 5px;
+    }
+  </style>
+
+  <script type="text/javascript">
+
+    var isSuccess = "{{ isSuccess }}";
+    var serverMsg = "{{ serverMsg }}";
+    var call = "{{ call }}";
+
+
+    // USED TO STYLE THE DROP-DOWN BUTTON
+    var form_fields = document.getElementsByTagName('select')
+    form_fields[0].style.border = '1px solid #16316149';
+    form_fields[0].style.height = '30.5px';
+    form_fields[0].style.borderRadius = '4px';
+    // ****************
+    form_fields[1].style.border = '1px solid #16316149';
+    form_fields[1].style.height = '30.5px';
+    form_fields[1].style.borderRadius = '4px';
+    // ****************
+    form_fields[2].style.border = '1px solid #16316149';
+    form_fields[2].style.height = '30.5px';
+    form_fields[2].style.borderRadius = '4px';
+
+
+
+    // ====CUSTOM FIELD DESIGN/VALIDATION ========
+    document.querySelector('#upperCase').addEventListener('keydown', (e) => {
+      console.log(e.which);
+      // var str = document.getElementById('upperCase').value
+
+      if (e.which === 32) {
+        e.preventDefault();
+      }
+
+    });
+
+    document.querySelector('#email').addEventListener('keydown', (e) => {
+      if (e.which === 32) {
+        e.preventDefault();
+      }
+    })
+
+    document.querySelector('#username').addEventListener('keydown', (e) => {
+      if (e.which === 32) {
+        e.preventDefault();
+      }
+    })
+
+    // CUSTOM FIELD FOR MOBILE/PHONE NUMBER
+    function isNumberKey(evt) {
+      var charCode = (evt.which) ? evt.which : evt.keyCode
+
+      if (charCode > 31 && (charCode < 48 || charCode > 57))
+        return false;
+      return true;
+    }
+
+
+    // IF NUMBER IS ENTERED IN PHONE FIELD, WE USE THIS FUNCTION TO MAKE
+    // PHONE CODE REQUIRED.
+    function validatePhone() {
+      var phone = document.getElementById('phone').value
+      var country_code_phone = document.getElementById('country_code_phone')
+
+      if (phone != '') {
+        country_code_phone.required = true;
+      } else {
+        country_code_phone.required = false;
+      }
+    }
+
+    // USED TO UPDATE THE VALUE OF TERMS & CONDITION FIELD
+    function toggle() {
+      var ck = document.getElementById('flexCheckDefault')
+      if (ck.checked) {
+        ck.value = true;
+      } else {
+        ck.value = false;
+      }
+    }
+
+
+    // ==== END OF CUSTOM FIELD DESIGN/VALIDATION ========
+
+
+    // PASSWORD TOGGLE VISIBILITY FOR PASSWORD INPUT FIELD
+    const visibilityToggle = document.querySelector('.pwd-visibility');
+
+    const pwt_input = document.querySelector('.pwd-field input');
+    const pwt_input2 = document.querySelector('.pwd-field2 input');
+
+    password = true
+
+    visibilityToggle.addEventListener('click', function () {
+      if (password) {
+        pwt_input.setAttribute('type', 'text');
+        pwt_input2.setAttribute('type', 'text');
+        visibilityToggle.innerHTML = 'visibility';
+      } else {
+        pwt_input.setAttribute('type', 'password');
+        pwt_input2.setAttribute('type', 'password');
+        visibilityToggle.innerHTML = 'visibility_off';
+      }
+      password = !password;
+
+    });
+
+    // FUNCTION USED TO HIDE OR DISPLAY THIS FIELD "IF OTHERS WERE IS SELECTED FROM"
+    // THE DROP-DOWN LIST 
+    function run() {
+      var optSelected = document.getElementById('optionSelected').value;
+      if (optSelected == 'Others') {
+        document.getElementById('othersId').classList.remove('hidden');
+        document.getElementById('othersRequired').required = true;
+      } else {
+        document.getElementById('othersId').classList.add('hidden');
+        document.getElementById('othersRequired').required = false;
+      }
+    }
+    // ================= END FUNCTION =====================
+
+
+
+
+    // =========== SCRIPT FOR POPUP CONFIRMATION MESSAGE ==========
+    function onPopConfirmForm() {
+      let confirmation = document.getElementById('confirmation');
+      if (!confirmation.classList.contains('modal-open')) {
+        confirmation.classList.add("modal-open");
+      }
+
+    }
+
+    function onCancel() {
+      let confirmation = document.getElementById('confirmation');
+      confirmation.classList.remove("modal-open");
+    }
+
+    function onConfirmBtn() { window.location.href = "{% url 'otp' %}" }
+
+
+
+    // =========== END OF SCRIPT FOR POPUP CONFIRMATION MESSAGE ==========
+
+
+    // ============= SCRIPT FOR POPUP INFORMATION MESSAGE ===========
+
+    function onPopInfoForm() {
+      let info = document.getElementById('information');
+      if (!info.classList.contains('modal-open-info')) {
+        info.classList.add('modal-open-info');
+      }
+    }
+
+    function onCancelInfoForm() {
+      let information = document.getElementById('information');
+      information.classList.remove("modal-open-info");
+    }
+    // ============= END OF SCRIPT FOR INFORMATION MESSAGE ==========
+
+
+    // ============= SCRIPT FOR WINDOW SPINNER ===========
+
+    function onPopWindowSpinner() {
+      validatePhone();
+      // BEFORE WE SPIN, WE NEED TO CHECK ALL REQUIRED FIELDS HAVE VALUES IN THEM
+      var first_name = document.getElementById('first_name').value;
+      var last_name = document.getElementById('last_name').value;
+      var username = document.getElementById('username').value;
+      var upperCase = document.getElementById('upperCase').value;
+      var businessName = document.getElementById('businessName').value;
+      var email = document.getElementById('email').value;
+      var mobile_country_code = document.getElementById('mobile_country_code').value
+      var mobile = document.getElementById('mobile').value;
+      var streetAddress1 = document.getElementById('streetAddress1').value;
+      var city = document.getElementById('city').value;
+      var state = document.getElementById('state').value;
+      var country = document.getElementById('country').value;
+      var optSelected = document.getElementById('optionSelected').value;
+      var password1 = document.getElementById('password1').value;
+      var password2 = document.getElementById('password2').value;
+      var othersId = document.getElementById('othersId')
+
+      var country_code_phone = document.getElementById('country_code_phone')
+      var chckbox = document.getElementById('flexCheckDefault')
+
+      if (first_name != '' && last_name != '' && username != '' && upperCase != ''
+        && businessName != '' && email != '' && mobile_country_code != '' && mobile != ''
+        && streetAddress1 != '' && city != '' && state != '' && country != ''
+        && optSelected != '' && password1 != '' && password2 != '' && chckbox.checked == true
+      ) {
+        if (!othersId.classList.contains('hidden')) {
+          var othersVal = document.getElementById('othersRequired').value;
+          if (othersVal != '') {
+            if (country_code_phone.hasAttribute('required') && country_code_phone.value != '') {
+
+              let spin = document.getElementById('windowSpinner');
+              if (!spin.classList.contains('modal-open-load')) {
+                spin.classList.add('modal-open-load');
+              }
+            } else if (!country_code_phone.hasAttribute('required')) {
+
+              let spin = document.getElementById('windowSpinner');
+              if (!spin.classList.contains('modal-open-load')) {
+                spin.classList.add('modal-open-load');
+              }
+            }
+          }
+
+        } else {
+
+          if (country_code_phone.hasAttribute('required') && country_code_phone.value != '') {
+
+            let spin = document.getElementById('windowSpinner');
+            if (!spin.classList.contains('modal-open-load')) {
+              spin.classList.add('modal-open-load');
+            }
+          } else if (!country_code_phone.hasAttribute('required')) {
+
+            let spin = document.getElementById('windowSpinner');
+            if (!spin.classList.contains('modal-open-load')) {
+              spin.classList.add('modal-open-load');
+            }
+          }
+        }
+      }
+    }
+
+    function onCancelWindowSpinner() {
+      let spin = document.getElementById('windowSpinner');
+      spin.classList.remove("modal-open-load");
+    }
+    // ============= END OF SCRIPT FOR WINDOW SPINNER ==========
+
+
+    // ===== THIS CONDITION IS EXCUTED WHEN WE RECEIVE A CALLBACK FROM THE SERVER ====
+    // THIS CALLBACK COULD BE EITHER A SUCCESSFUL OR FAIL MESSAGE OF REGISTRATION FORM SUMITTED
+
+
+    if (serverMsg != '' && call == '') {
+
+      onPopInfoForm()
+      document.getElementById('modal_info_content_id').innerHTML = serverMsg;
+
+    } else if (serverMsg != '') {
+      onPopConfirmForm()
+      document.getElementById('modal_content_id').innerHTML = serverMsg;
+    }
+
+  </script>
+</body>
+
+</html>

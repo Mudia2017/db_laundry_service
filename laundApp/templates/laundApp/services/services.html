@@ -1,0 +1,2860 @@
+{% extends 'laundApp/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+
+<style>
+    /* ===================== CSS FOR INPUT FIELD NAME ===================== */
+
+
+    /* .first-row {
+        display: flex;
+    }
+
+    .name-row {
+        width: 100%;
+        position: relative;
+        height: 50px;
+        overflow: hidden;
+    } */
+
+    .name {
+        width: 50%;
+        position: relative;
+        height: 50px;
+        overflow: hidden;
+    }
+
+    .input-name-field {
+        width: 100%;
+        height: 100%;
+        color: #595f6e;
+        padding-top: 20px;
+        border: none;
+        outline: none;
+        padding-left: 1%;
+    }
+
+    .label-name {
+        position: absolute;
+        bottom: -4px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        border-bottom: 1px solid black;
+    }
+
+    .label-name::after {
+        content: "";
+        position: absolute;
+        left: 0px;
+        bottom: -1px;
+        width: 100%;
+        height: 100%;
+        border-bottom: 3px solid #5fa8d3;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    .content-name {
+        position: absolute;
+        bottom: 5px;
+        left: 2%;
+        transition: all 0.3s ease;
+        font-size: 12px;
+    }
+
+    .input-name-field:focus+.label-name .content-name,
+    .input-name-field:valid+.label-name .content-name {
+        transform: translateY(-140%);
+        font-size: 11px;
+        color: #5fa8d3;
+    }
+
+    .input-name-field:focus+.label-name::after,
+    .input-name-field:valid+.input-name-field::after {
+        transform: translateX(0%);
+    }
+
+
+    /* ======================= END OF INPUT FIELD NAME ========================= */
+
+
+    /* ========== OPEN TRANSPARENT FORM ============= */
+
+    .modal_container {
+        z-index: 9999;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        align-items: center;
+        justify-content: right;
+    }
+
+    .modal-open-form {
+        display: flex;
+    }
+
+    .modalForm {
+        height: 100%;
+        width: 40%;
+        max-width: 700px;
+        max-height: 800px;
+        background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 3px;
+    }
+
+    .modalButton {
+        text-transform: uppercase;
+        padding: 0.5em 1em;
+        border: none;
+        color: white;
+        background-color: grey;
+        border-radius: 3px;
+        margin-left: 0.5em;
+        width: 25%;
+    }
+
+    .modalConfirmButton {
+        background-color: tomato;
+    }
+
+    .modalHeader {
+        text-align: center;
+        color: rgb(245, 111, 2);
+    }
+
+    .modalHeader h2 {
+        padding: 0.5em;
+    }
+
+    .modalFooter {
+        padding: 1em;
+        background-color: rgba(0, 0, 0, 0.05);
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    /* =========== END OF OPEN TRANSPARENT FORM ========== */
+
+
+    .first_row {
+        display: flex;
+        justify-content: space-between;
+        margin: 0px 10px 0px 10px;
+    }
+
+
+    /* ===================== CSS FOR INPUT FIELD NAME ===================== */
+
+
+    /* .first-row {
+        display: flex;
+    }
+
+    .name-row {
+        width: 100%;
+        position: relative;
+        height: 50px;
+        overflow: hidden;
+    } */
+
+    ._name {
+        width: 50%;
+        position: relative;
+        height: 50px;
+        overflow: hidden;
+    }
+
+    ._inputNameField {
+        width: 100%;
+        height: 100%;
+        /* color: #595f6e; */
+        padding-top: 20px;
+        border: none;
+        outline: none;
+        padding-left: 1%;
+        background-color: rgba(0, 0, 0, 0.1);
+        color: white;
+
+    }
+
+    ._labelName {
+        position: absolute;
+        bottom: -4px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        /* border-bottom: 1px solid black; */
+        border-bottom: 1px solid white;
+    }
+
+    ._labelName::after {
+        content: "";
+        position: absolute;
+        left: 0px;
+        bottom: -1px;
+        width: 100%;
+        height: 100%;
+        border-bottom: 3px solid #5fa8d3;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    ._contentName {
+        position: absolute;
+        bottom: 5px;
+        left: 2%;
+        transition: all 0.3s ease;
+        font-size: 12px;
+        color: white;
+    }
+
+    ._inputNameField:focus+._labelName ._contentName,
+    ._inputNameField:valid+._labelName ._contentName {
+        transform: translateY(-140%);
+        font-size: 11px;
+        color: #5fa8d3;
+    }
+
+    ._inputNameField:focus+._labelName::after,
+    ._inputNameField:valid+._inputName-field::after {
+        transform: translateX(0%);
+    }
+
+
+    /* === IN THE INPUT FIELD, THIS WILL CHANGE SUGGESTION BACKGROUND COLOR TO TRANSPARENT ==== */
+    input:-webkit-autofill,
+    input:-webkit-autofill:focus {
+        transition: background-color 600000s 0s, color 600000s 0s;
+    }
+
+    input[data-autocompleted] {
+        background-color: transparent !important;
+    }
+
+    /* === END OF THE CODE ==== */
+
+    /* ======================= END OF INPUT FIELD NAME ========================= */
+
+
+
+    /* =========== START OF WINDOW SPINNER ============= */
+    .spin-modal-container {
+        z-index: 9999;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: none;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .spinner_modal_content {
+        padding: 0.5em;
+        color: white;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .modal-open-load {
+        display: flex;
+    }
+
+    /* STARTING FROM HERE LOADING EFFECT COPY FROM WEB */
+    .loading {
+        display: flex;
+    }
+
+    .loading .dot {
+        position: relative;
+        width: 2em;
+        height: 2em;
+        margin: 0.8em;
+        border-radius: 50%;
+    }
+
+    .loading .dot::before {
+        position: absolute;
+        content: "";
+        width: 100%;
+        height: 100%;
+        background: inherit;
+        border-radius: inherit;
+        animation: wave 2s ease-out infinite;
+    }
+
+    .loading .dot:nth-child(1) {
+        background: #7ef9ff;
+    }
+
+    .loading .dot:nth-child(1)::before {
+        animation-delay: 0.2s;
+    }
+
+    .loading .dot:nth-child(2) {
+        background: #89cff0;
+    }
+
+    .loading .dot:nth-child(2)::before {
+        animation-delay: 0.4s;
+    }
+
+    .loading .dot:nth-child(3) {
+        background: #4682b4;
+    }
+
+    .loading .dot:nth-child(3)::before {
+        animation-delay: 0.6s;
+    }
+
+    .loading .dot:nth-child(4) {
+        background: #0f52ba;
+    }
+
+    .loading .dot:nth-child(4)::before {
+        animation-delay: 0.8s;
+    }
+
+    .loading .dot:nth-child(5) {
+        background: #000080;
+    }
+
+    .loading .dot:nth-child(5)::before {
+        animation-delay: 1s;
+    }
+
+    @keyframes wave {
+
+        50%,
+        75% {
+            transform: scale(2.5);
+        }
+
+        80%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    /* END OF LOADING EFFECT */
+
+    /* =========== END OF WINDOW SPINNER ============= */
+
+
+    /* STYLING THE DROPDOWN BUTTON (COMBO BOX) IN THE FORM */
+
+    .select_box {
+        overflow: hidden;
+        position: relative;
+    }
+
+    .select_box:after {
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid white;
+        position: absolute;
+        top: 40%;
+        right: 5px;
+        content: "";
+        z-index: 98;
+    }
+
+    .select_box select {
+        width: 220px;
+        border: 0;
+        background: none;
+    }
+
+    /* END, STYLING THE DROPDOWN IN THE FORM */
+
+
+    /*  ====== START TOAST NOTIFICATION (NEW VERSION) ======== */
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: Verdana, Verdana, Geneva, Tahoma, sans-serif;
+    }
+
+    body {
+        overflow: hidden;
+    }
+
+    .notification {
+        width: 320px;
+        height: 70px;
+        position: absolute;
+        padding: 12px 8px 8px 15px;
+        right: -900px;
+        /* right: 18px; */
+        /* top: 24px; */
+        bottom: 24px;
+        border-radius: 8px;
+        background-color: #fff;
+        border-bottom: 1px solid #2a9f76;
+        border-left: 1px solid #26916d;
+        box-shadow: #555 -1px 4px 17px -4px;
+        transition: .4s cubic-bezier(0.075, 0.82, 0.35, 1.1);
+    }
+
+    .left,
+    .right {
+        display: inline-block;
+    }
+
+    .left {
+        width: 18%;
+    }
+
+    .close {
+        display: block;
+        position: absolute;
+        width: 23px;
+        height: 23px;
+        top: 0px;
+        right: 2px;
+    }
+
+    .close:hover {
+        cursor: pointer;
+    }
+
+    .close .slant_left {
+        transform: rotate(45deg);
+        transition: .5s;
+    }
+
+    .close .slant_right {
+        transform: rotate(135deg);
+        transition: .3s;
+    }
+
+    .close:hover .slant_left {
+        transform: rotate(-145deg);
+        background-color: tomato;
+    }
+
+    .close:hover .slant_right {
+        transform: rotate(-45deg);
+        background-color: tomato;
+    }
+
+    .close span {
+        display: block;
+        position: absolute;
+        top: 13px;
+        width: 15px;
+        height: 1.6px;
+        background-color: #555;
+    }
+
+    .check {
+        display: block;
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        top: 18px;
+        background-color: #26916d;
+        border-radius: 50%;
+    }
+
+    .check::before,
+    .check::after {
+        content: "";
+        display: block;
+        position: absolute;
+        height: 2px;
+        background-color: #fff;
+    }
+
+    .check::before {
+        width: 12px;
+        top: 23px;
+        left: 5px;
+        transform: rotate(45deg);
+    }
+
+    .check::after {
+        width: 22px;
+        top: 20px;
+        right: 7px;
+        transform: rotate(135deg);
+    }
+
+    h1 {
+        font-size: 17px;
+        font-weight: 600;
+        color: #26916d;
+    }
+
+    p {
+        margin-top: 5px;
+        font-size: 13px;
+    }
+
+    /*  =====  END TOAST NOTIFICATION (NEW VERSION) ==== */
+
+    /* ===== START OF POPUP INFO ========= */
+    .message-modal-container {
+        z-index: 9999;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-open-info {
+        display: flex;
+    }
+
+    .modal-info-footer {
+        padding: 1em;
+        background-color: rgba(0, 0, 0, 0.05);
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .modal-ok-button {
+        background-color: rgb(50, 135, 245);
+        text-transform: uppercase;
+        padding: 0.5em 1em;
+        border: none;
+        color: white;
+        border-radius: 3px;
+        margin-left: 0.5em;
+    }
+
+    /* ============ END OF POPUP INFO ========== */
+
+
+    /* ========== POPUP CONFIRMATION FORM ============= */
+
+    .modal-container {
+        z-index: 9999;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-open {
+        display: flex;
+    }
+
+    .modal_form {
+        max-width: 700px;
+        max-height: 800px;
+        background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 3px;
+    }
+
+    .modal-button {
+        text-transform: uppercase;
+        padding: 0.5em 1em;
+        border: none;
+        color: white;
+        background-color: grey;
+        border-radius: 3px;
+        margin-left: 0.5em;
+    }
+
+    .modal-confirm-button {
+        background-color: tomato;
+    }
+
+    .modal-header {
+
+        color: orange;
+    }
+
+    .modal-header h2 {
+        padding: 0.5em;
+    }
+
+    .modal_content {
+        padding: 1em;
+        color: rgba(168, 167, 167);
+        text-align: center;
+    }
+
+    .modal-footer {
+        padding: 1em;
+        background-color: rgba(0, 0, 0, 0.05);
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    #formId {
+        display: none;
+    }
+
+    /* =========== END OF POPUP CONFIRMATION FORM ========== */
+
+
+    /* ======== START TABLE STYLING ======== */
+
+    .styled-table {
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 0.9em;
+        font-family: sans-serif;
+        min-width: 100%;
+        /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); */
+    }
+
+    .styled-table thead tr {
+        background-color: rgb(0, 161, 213);
+        color: #ffffff;
+        text-align: left;
+    }
+
+    .styled-table th,
+    .styled-table td {
+        padding: 12px 15px;
+    }
+
+    .styled-table tbody tr {
+        border-bottom: 1px solid #dddddd;
+    }
+
+    .styled-table tbody tr:nth-of-type(even) {
+        background-color: #f3f3f3;
+    }
+
+    .styled-table tbody tr:last-of-type {
+        border-bottom: 2px solid rgb(0, 161, 213);
+    }
+
+    /* .styled-table tbody tr.active-row {
+        font-weight: bold;
+        color: rgb(0, 141, 194);
+    } */
+
+    tr:nth-child(even) {
+        /* font-weight: bold; */
+        color: rgb(0, 141, 194);
+        /* background-color: #dddddd; */
+    }
+
+    .first_col {
+        color: inherit;
+        /* blue colors for links too */
+        text-decoration: inherit;
+        /* no underline */
+
+    }
+
+    /* ======== END TABLE STYLING ======== */
+
+
+
+    /* ===== START OF POPUP ICON TEMPLATE ========= */
+    .icon_message-modal-container {
+        z-index: 9999;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        align-items: center;
+        justify-content: left;
+    }
+
+    .icon_modal-open-info {
+        display: flex;
+    }
+
+    .icon_modal-info-footer {
+        padding: 1em;
+        background-color: rgba(0, 0, 0, 0.05);
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .icon_modal-ok-button {
+        background-color: rgb(50, 135, 245);
+        text-transform: uppercase;
+        padding: 0.5em 1em;
+        border: none;
+        color: white;
+        border-radius: 3px;
+        margin-left: 0.5em;
+    }
+
+    .icon_modal_form {
+        margin-left: 10%;
+        width: 40%;
+        height: 90%;
+        max-width: 700px;
+        max-height: 800px;
+        background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 3px;
+    }
+
+    .icon_modal-header {
+        display: flex;
+        justify-content: center;
+        color: orange;
+    }
+
+    .icon_modal-header h2 {
+        padding: 0.5em;
+    }
+
+    .icon_modal_content {
+        padding: 1em;
+        color: rgba(168, 167, 167);
+        text-align: center;
+    }
+
+    /* ============ END OF POPUP ICON TEMPLATE ========== */
+
+
+    #hide {
+        display: none;
+    }
+
+    .clickable_icon {
+        cursor: pointer;
+        font-size: 40px;
+        color: aqua;
+    }
+
+    .inner_container {
+        display: flex;
+        justify-content: space-evenly;
+    }
+</style>
+
+
+<form id="main_container" method="POST">
+    {% csrf_token %}
+    <div class="first_row">
+
+        <div>
+            <a id="addService_btn" class="btn btn-outline-primary btn-sm shadow-none" href="">&#43; Add
+                Service</a>
+
+
+
+        </div>
+
+        <span id="hide" style=" height: 1%;">
+            <select required name="action" class="form-select form-select-lg mb-3 " style="font-size: 12px; "
+                aria-label="form-select-lg example" id="selectId">
+                <option value="" selected>Select Action</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="delete">Delete</option>
+            </select>
+            <input style="height: 10%;" type="submit" value="Proceed" name="proceedBtn"
+                class="btn btn-outline-secondary btn-sm" id="proceedId">
+        </span>
+
+        <!-- <button class="trigger_notification">Trigger Notification</button> -->
+
+        <div class="name" style="width: 30%; margin-bottom: 2%;">
+
+            <input id="user_emailId" value="" class="input-name-field" type="text" name="search" autocomplete="" />
+            <label for="" class="label-name">
+                <span class="content-name">Search by service name</span>
+            </label>
+
+        </div>
+
+    </div>
+
+
+    <div>
+        <table class="styled-table">
+            <thead>
+                <tr style="font-size: 12px;">
+                    <th><input type="checkbox" name="chkBoxAll" value="" id="chk_all"></th>
+                    <th>Service Name</th>
+                    <th>Iron Normal</th>
+                    <th>Iron Fast</th>
+                    <th>Laundry Normal</th>
+                    <th>Laundry Fast</th>
+                    <th>Laundry/Iron Normal</th>
+                    <th>Laundry/Iron Fast</th>
+                    <th>Dry/Wash Normal</th>
+                    <th>Dry/Wash Fast</th>
+                    <th>Active</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for service in serviceList %}
+                <tr>
+
+                    <!-- <td><input type="text" data-action="{{service.id}}" class="refund_all"></td> -->
+                    <td> <input name="chkBox" data-id="{{service.id}}" value="{{service.id}}" type="checkbox"></td>
+                    <td><a data-pk="{{service.id}}" class="first_col" href="">{{service.serviceName}}</a></td>
+                    <td>{{service.ironNormal|intcomma}}</td>
+                    <td>{{service.ironFast|intcomma}}</td>
+                    <td>{{service.laundryNormal|intcomma}}</td>
+                    <td>{{service.laundryFast|intcomma}}</td>
+                    <td>{{service.laundryIronNormal|intcomma}}</td>
+                    <td>{{service.laundryIronFast|intcomma}}</td>
+                    <td>{{service.dryWashNormal|intcomma}}</td>
+                    <td>{{service.dryWashFast|intcomma}}</td>
+                    {% if service.active == True %}
+                    <td style="color: limegreen;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                        </svg></td>
+                    {% else %}
+                    <td style="color: red;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
+                        </svg></td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+
+        {% if not serviceList %}
+
+        <p
+            style="font-size: 30px; font-weight: 700; color: rgb(246, 166, 171); display: flex; justify-content: center; margin-top: 5%; margin-bottom: 5%;">
+            No Record!</p>
+
+        {% endif %}
+
+    </div>
+</form>
+
+
+
+<!-- ======= OPEN TRANSPARENT FORM ========== -->
+<div id="confirmation-id" class="modal_container">
+    <div class="modalForm">
+        <form action="" method="POST" id="frmId">
+            {% csrf_token %}
+            <section>
+                <header>
+
+                    <h2 class="modalHeader" id="headerId">Add Service</h2>
+                    <hr style="color: white;">
+                    <input type="text" id="formId" name="id">
+
+                </header>
+                <section style="padding: 0px 10px 0px 10px; max-height: 450px; overflow-y: auto; ">
+                    <div style="display: flex; justify-content: space-between;">
+                        <div class="_name" style="width: 49%; margin-bottom: 2%;">
+                            <input id="service_nameId" value="{{ serviceForm.serviceName }}" class="_inputNameField"
+                                type="text" name="serviceName" autocomplete="" required />
+                            <label for="" class="_labelName">
+                                <span class="_contentName">Service Name <span
+                                        style="color: red; font-size: 11px;">*</span></span>
+                            </label>
+                        </div>
+
+                        <div class="select_box"
+                            style="margin-top: 0.8rem; justify-content: space-between; display: flex; max-width: 49%;">
+
+                            <select required name="catName" class="form-select form-select-lg mb-3"
+                                style="background-color: rgba(0, 0, 0, 0); color: white; max-width: 100%; font-size: 12px; border-bottom: 1px solid white;"
+                                aria-label=".form-select-lg example" id="optionSelected">
+                                <option value="" selected>Select Category</option>
+                                {% for category in catList %}
+                                <option value="{{category.id}}">{{category.catName}}</option>
+                                {% endfor %}
+
+                            </select>
+
+                        </div><span style="color: red;">*</span>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between;">
+                        <div class="_name" style="width: 49%; margin-bottom: 2%;">
+                            <input id="ironNormalId" value="{{ serviceForm.ironNormal }}" class="_inputNameField"
+                                type="tel" name="ironNormal" autocomplete="" required />
+                            <label for="" class="_labelName">
+                                <span class="_contentName">Iron Normal <span
+                                        style="color: red; font-size: 11px;">*</span></span>
+                            </label>
+                        </div>
+
+                        <div class="_name" style="width: 49%; margin-bottom: 2%;">
+                            <input id="ironFastId" value="{{ serviceForm.ironFast }}" class="_inputNameField"
+                                type="number" name="ironFast" autocomplete="" required />
+                            <label for="" class="_labelName">
+                                <span class="_contentName">Iron Fast <span
+                                        style="color: red; font-size: 11px;">*</span></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between;">
+                        <div class="_name" style="width: 49%; margin-bottom: 2%;">
+                            <input id="laundNormalId" value="{{ serviceForm.laundryNormal }}" class="_inputNameField"
+                                type="number" name="laundryNormal" autocomplete="" required />
+                            <label for="" class="_labelName">
+                                <span class="_contentName">Laundry Normal <span
+                                        style="color: red; font-size: 11px;">*</span></span>
+                            </label>
+                        </div>
+
+                        <div class="_name" style="width: 49%; margin-bottom: 2%;">
+                            <input id="laundFastId" value="{{ serviceForm.laundryFast }}" class="_inputNameField"
+                                type="number" name="laundryFast" autocomplete="" required />
+                            <label for="" class="_labelName">
+                                <span class="_contentName">Laundry Fast <span
+                                        style="color: red; font-size: 11px;">*</span></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between;">
+                        <div class="_name" style="width: 49%; margin-bottom: 2%;">
+                            <input id="laund_ironNorId" value="{{ serviceForm.laundryIronNormal }}"
+                                class="_inputNameField" type="number" name="laundryIronNormal" autocomplete=""
+                                required />
+                            <label for="" class="_labelName">
+                                <span class="_contentName">Laundry & Iron Normal <span
+                                        style="color: red; font-size: 11px;">*</span></span>
+                            </label>
+                        </div>
+
+                        <div class="_name" style="width: 49%; margin-bottom: 2%;">
+                            <input id="laund_ironFastId" value="{{ serviceForm.laundryIronFast }}"
+                                class="_inputNameField" type="number" name="laundryIronFast" autocomplete="" required />
+                            <label for="" class="_labelName">
+                                <span class="_contentName">Laundry & Iron Fast <span
+                                        style="color: red; font-size: 11px;">*</span></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between;">
+                        <div class="_name" style="width: 49%; margin-bottom: 2%;">
+                            <input id="dryWashNorId" value="{{ serviceForm.dryWashNormal }}" class="_inputNameField"
+                                type="number" name="dryWashNormal" autocomplete="" required />
+                            <label for="" class="_labelName">
+                                <span class="_contentName">Dry Wash Normal <span
+                                        style="color: red; font-size: 11px;">*</span></span>
+                            </label>
+                        </div>
+
+                        <div class="_name" style="width: 49%; margin-bottom: 2%;">
+                            <input id="dryWashFastId" value="{{ serviceForm.dryWashFast }}" class="_inputNameField"
+                                type="number" name="dryWashFast" autocomplete="" required />
+                            <label for="" class="_labelName">
+                                <span class="_contentName">Dry Wash Fast <span
+                                        style="color: red; font-size: 11px;">*</span></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <hr style="color: white;">
+                    <div style="display: flex; justify-content: space-between; width: 100%; ">
+
+                        <div id="icon_cover">
+                            <button type="button" class="btn btn-outline-info btn-sm shadow-none"
+                                onclick="icon_popTemplateForm()">Icon</button>
+
+
+                            <svg style="font-size: 40px; " class="svg-inline--fa fa-twitter " aria-hidden="true"
+                                focusable="false" data-prefix="fab" data-icon="twitter" role="img" id=""
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
+                                <!-- <path class="_click_icon" id="changeable_icon" fill="currentColor"
+                                    d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z">
+                                </path> -->
+                            </svg>
+
+                        </div>
+
+                        <!-- THE DISPLAY IS NONE BECAUSE IT'S USED BY THE CANCEL BUTTON TO REMOVE ANY ITEM ON THE FORM -->
+                        <svg style="font-size: 40px; display: none;" class="svg-inline--fa fa-twitter"
+                            aria-hidden="true" focusable="false" data-prefix="fab" data-icon="twitter" role="img"
+                            id="defaultIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
+                            <!-- <path class="_click_icon" id="changeable_icon" fill="currentColor"
+                                    d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z">
+                                </path> -->
+                        </svg>
+
+
+                        <span style="color: rgb(245, 111, 2); font-size: 13px;">Addtional Serivce</span>
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" name="activeBtn" type="checkbox" role="switch"
+                                id="flexSwitchCheckChecked_id" checked>
+                            <label class="form-check-label" for="flexSwitchCheckChecked"
+                                style="color: orange; font-size: 12px;">Active</label>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between;">
+                        <div class="_name" style="width: 49%; margin-bottom: 2%;">
+                            <input id="stainRemovalId" value="{{ serviceForm.stainRemoval }}" class="_inputNameField"
+                                type="number" name="stainRemoval" autocomplete="" required />
+                            <label for="" class="_labelName">
+                                <span class="_contentName">Stain Removal <span
+                                        style="color: red; font-size: 11px;">*</span></span>
+                            </label>
+                        </div>
+
+                        <div class="_name" style="width: 49%; margin-bottom: 2%;">
+                            <input id="dryUpId" value="{{ serviceForm.dryUp }}" class="_inputNameField" type="number"
+                                name="dryUp" autocomplete="" required />
+                            <label for="" class="_labelName">
+                                <span class="_contentName">Dry Up <span
+                                        style="color: red; font-size: 11px;">*</span></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between;">
+                        <div class="_name" style="width: 49%; margin-bottom: 2%;">
+                            <input id="othersId" value="{{ serviceForm.others }}" class="_inputNameField" type="number"
+                                name="others" autocomplete="" required />
+                            <label for="" class="_labelName">
+                                <span class="_contentName">Others <span
+                                        style="color: red; font-size: 11px;">*</span></span>
+                            </label>
+                        </div>
+
+
+
+
+                    </div>
+
+
+                </section>
+                <footer class="modalFooter">
+
+                    <button class="modalButton" onclick="onCancelForm()" id="cancelFormBtn"
+                        type="button">Cancel</button>
+
+
+                    <input type="submit" class="modalButton modalConfirmButton" id="confirmBtn-id" onclick=""
+                        value="Save" name="button">
+
+                </footer>
+            </section>
+        </form>
+    </div>
+</div>
+<!-- ======= END OF OPEN TRANSPARENT FORM ========== -->
+
+
+
+<!-- ======= POPUP ICON TEMPLATE ========== -->
+<div id="icon_information" class="icon_message-modal-container">
+    <div class="icon_modal_form">
+        <section>
+            <header>
+                <h2 class="icon_modal-header">Icons</h2>
+            </header>
+            <section style="padding: 5px;">
+
+                <div class="inner_container">
+
+
+                    <svg onclick="pants()" fill="#00e1fe" height="40px" width="40px" version="1.1" id="_pant"
+                        class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300.969 300.969" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <path
+                                    d="M210.669,38.667H90.3c-3.935,0-7.252,2.949-7.701,6.859c-0.853,7.436-1.185,14.929-0.974,22.427l6.435,229.004 c0.063,2.234,1.892,4.012,4.126,4.012h37.508c2.161,0,3.957-1.667,4.117-3.823l14.152-190.766c0.098-1.315,1.193-2.332,2.512-2.332 c1.319,0,2.414,1.017,2.512,2.332l14.152,190.766c0.16,2.155,1.955,3.823,4.117,3.823h37.507c2.235,0,4.063-1.778,4.126-4.012 l6.454-229.001c0.211-7.499-0.12-14.993-0.973-22.43C217.921,41.608,214.612,38.667,210.669,38.667z">
+                                </path>
+                                <path
+                                    d="M211.653,0H89.315c-4.281,0-7.751,3.47-7.751,7.752v11.164c0,4.281,3.47,7.751,7.751,7.751h122.338 c4.281,0,7.751-3.47,7.751-7.751V7.752C219.405,3.47,215.934,0,211.653,0z M138.484,18c-2.577,0-4.667-2.089-4.667-4.667 c0-2.577,2.089-4.667,4.667-4.667c2.577,0,4.667,2.089,4.667,4.667C143.151,15.911,141.062,18,138.484,18z M162.484,18 c-2.577,0-4.667-2.089-4.667-4.667c0-2.577,2.089-4.667,4.667-4.667s4.667,2.089,4.667,4.667C167.151,15.911,165.062,18,162.484,18 z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <svg onclick="t_shirt()" fill="#00e1fe" height="40px" width="40px" version="1.1" id="_tshirt"
+                        class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 295.526 295.526" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <path
+                                    d="M147.763,44.074c12.801,0,23.858-8.162,27.83-20.169c-7.578,2.086-17.237,3.345-27.83,3.345 c-10.592,0-20.251-1.259-27.828-3.345C123.905,35.911,134.961,44.074,147.763,44.074z">
+                                </path>
+                                <path
+                                    d="M295.158,58.839c-0.608-1.706-1.873-3.109-3.521-3.873l-56.343-26.01c-11.985-4.06-24.195-7.267-36.524-9.611 c-0.434-0.085-0.866-0.126-1.292-0.126c-3.052,0-5.785,2.107-6.465,5.197c-4.502,19.82-22.047,34.659-43.251,34.659 c-21.203,0-38.749-14.838-43.25-34.659c-0.688-3.09-3.416-5.197-6.466-5.197c-0.426,0-0.858,0.041-1.292,0.126 c-12.328,2.344-24.538,5.551-36.542,9.611L3.889,54.965c-1.658,0.764-2.932,2.167-3.511,3.873 c-0.599,1.726-0.491,3.589,0.353,5.217l24.46,48.272c1.145,2.291,3.474,3.666,5.938,3.666c0.636,0,1.281-0.092,1.917-0.283 l27.167-8.052v161.97c0,3.678,3.001,6.678,6.689,6.678h161.723c3.678,0,6.67-3.001,6.67-6.678V107.66l27.186,8.052 c0.636,0.191,1.28,0.283,1.915,0.283c2.459,0,4.779-1.375,5.94-3.666l24.469-48.272C295.629,62.428,295.747,60.565,295.158,58.839z ">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <svg onclick="long_sleeve()" fill="#00e1fe" height="40px" width="40px" version="1.1"
+                        id="_long_sleeve" class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 427.067 427.067" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path id="XMLID_356_"
+                                d="M412.861,117.9l-97.318-59.469c-1.413-0.863-3.037-1.32-4.693-1.32h-18.143 c0.384-1.684,2.077-16.14-1.791-19.522c1.553-3.146,2.372-6.627,2.372-10.241v-4.093C293.288,10.432,282.856,0,270.035,0H157.034 c-12.822,0-23.254,10.432-23.254,23.255c0,0,0.004,11.154,2.372,14.334c-1.552,3.146-2.372,6.628-2.372,10.241 c0,0,0.19,7.618,0.552,9.281h-18.114c-1.656,0-3.28,0.457-4.693,1.32L14.207,117.9c-2.675,1.635-4.307,4.544-4.307,7.68v256.274 c0,4.97,4.028,8.999,8.998,9l61.629,0.017c0.001,0,0.002,0,0.002,0c4.961,0,8.987-4.014,9-8.975l0.562-200.645l17.127-11.59v248.405 c0,4.971,4.029,9,9,9H310.85c4.971,0,9-4.029,9-9V169.662l17.127,11.59l0.562,200.645c0.014,4.962,4.041,8.976,9.002,8.975 l61.629-0.017c4.97-0.001,8.998-4.03,8.998-9V125.58C417.168,122.444,415.536,119.535,412.861,117.9z M71.554,372.869l-43.655-0.013 v-12.931H71.59L71.554,372.869z M399.168,372.856l-43.655,0.013l-0.036-12.943h43.691V372.856z M399.168,341.926h-43.741 l-0.463-165.485c-0.008-2.979-1.49-5.76-3.956-7.429l-35.005-23.687c-0.077-0.054-0.154-0.105-0.232-0.157l-17.438-11.8 c-4.118-2.787-9.713-1.705-12.498,2.41c-2.785,4.117-1.707,9.712,2.41,12.498l13.605,9.206v251.585H125.218V157.481l13.603-9.205 c4.117-2.786,5.195-8.382,2.41-12.498c-2.785-4.117-8.38-5.195-12.498-2.41L76.06,169.012c-2.467,1.67-3.948,4.45-3.956,7.429 l-0.463,165.485H27.899V130.628l90.851-55.517h64.156c4.971,0,9-4.029,9-9s-4.029-9-9-9h-26.242c-2.785,0-4.884-2.23-4.884-5.188 c0,0,0.056-4.956,0.149-5.334h22.553c4.971,0,9-4.029,9-9s-4.029-9-9-9h-22.553c-0.093-0.378-0.149-5.334-0.149-5.334 c0-2.849,2.406-5.255,5.254-5.255h113.001c2.848,0,5.253,2.406,5.253,5.255c0,0-0.056,4.956-0.149,5.334H216.24 c-4.971,0-9,4.029-9,9s4.029,9,9,9h58.898c0.093,0.378,0.149,5.334,0.149,5.334c-0.129,4.486-3.34,5.016-4.403,5.188l-26.706,0.017 c-0.006,0-0.012,0-0.018,0c-4.962,0-8.99,4.019-9,8.982c-0.009,4.971,4.012,9.008,8.983,9.018l64.172-0.017l90.851,55.517V341.926z">
+                            </path>
+                        </g>
+                    </svg>
+
+                    <svg onclick="woman_coat()" fill="#00fffe" height="40px" width="40px" version="1.1" id="_woman_coat"
+                        class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 306.993 306.993" xml:space="preserve"
+                        stroke="#00fffe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <path
+                                    d="M120.753,68.178c0.213,1.382,1.115,2.561,2.394,3.128c1.278,0.567,2.758,0.445,3.926-0.325l26.425-17.412l26.433,17.412 c1.168,0.769,2.647,0.892,3.926,0.324c1.278-0.567,2.18-1.746,2.393-3.129l6.546-42.481c1.64-10.644-5.059-20.81-15.494-23.472 c-0.431-0.11-0.864-0.207-1.298-0.289C169.538,0.713,161.809,0,153.501,0c-8.313,0-16.048,0.714-22.518,1.939 c-0.568,0.107-1.137,0.242-1.705,0.401c-10.243,2.857-16.692,12.891-15.071,23.401L120.753,68.178z M134.154,26.704 c0.325-0.826,1.081-1.406,1.963-1.505c4.202-0.467,8.979-0.771,14.091-0.862c1.085-0.02,2.18-0.032,3.292-0.032 c1.105,0,2.192,0.013,3.27,0.032c5.108,0.091,9.887,0.394,14.093,0.862c0.883,0.098,1.64,0.677,1.965,1.504 s0.165,1.765-0.414,2.439l-18.928,22.045l-18.922-22.044C133.987,28.469,133.829,27.53,134.154,26.704z">
+                                </path>
+                                <path
+                                    d="M288.687,177.414L228.974,42.848c-3.02-6.8-8.711-12.084-15.75-14.596c-1.775-0.639-3.597-1.084-5.439-1.339L200.1,76.788 c-0.778,5.048-4.071,9.354-8.74,11.426c-1.946,0.864-4.019,1.29-6.084,1.29c-2.89,0-5.765-0.835-8.253-2.474l-23.525-15.497 l-23.517,15.496c-2.489,1.64-5.363,2.475-8.254,2.475c-2.064,0-4.137-0.426-6.082-1.289c-4.669-2.072-7.963-6.376-8.742-11.424 L99.21,26.913c-1.842,0.256-3.668,0.7-5.45,1.338c-7.03,2.512-12.712,7.796-15.732,14.596L18.315,177.414 c-1.746,3.927-0.111,8.536,3.741,10.467l16.166,8.148c1.921,0.961,4.129,1.136,6.162,0.48c2.014-0.674,3.695-2.125,4.656-4.037 l43.676-86.641L65.67,297.398c-0.441,2.368,0.196,4.809,1.735,6.662c1.539,1.853,3.823,2.933,6.232,2.933h72.36v-67.245 c0-4.143,3.357-7.5,7.5-7.5c4.143,0,7.5,3.357,7.5,7.5v67.245h69.655c3.079,0,5.999-1.368,7.97-3.734 c1.971-2.366,2.786-5.485,2.233-8.515l-26.532-188.822l43.621,86.549c0.961,1.903,2.642,3.363,4.656,4.037 c2.051,0.656,4.241,0.48,6.152-0.462l16.176-8.166C288.77,185.95,290.424,181.341,288.687,177.414z M153.497,211.364 c-4.563,0-8.268-3.696-8.268-8.259c0-4.573,3.704-8.277,8.268-8.277c4.563,0,8.268,3.704,8.268,8.277 C161.764,207.668,158.06,211.364,153.497,211.364z M153.497,178.302c-4.563,0-8.268-3.714-8.268-8.277 c0-4.564,3.704-8.269,8.268-8.269c4.563,0,8.268,3.704,8.268,8.269C161.764,174.588,158.06,178.302,153.497,178.302z M153.497,145.221c-4.563,0-8.268-3.704-8.268-8.268c0-4.564,3.704-8.268,8.268-8.268c4.563,0,8.268,3.704,8.268,8.268 C161.764,141.516,158.06,145.221,153.497,145.221z M153.497,112.149c-4.563,0-8.268-3.704-8.268-8.268 c0-4.564,3.704-8.269,8.268-8.269c4.563,0,8.268,3.704,8.268,8.269C161.764,108.445,158.06,112.149,153.497,112.149z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <svg onclick="hat()" fill="#00e1fe" height="40px" width="40px" version="1.1" id="_hat"
+                        class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 296 296" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <path
+                                    d="M259.819,145.091c0.013,0.697,0.025,1.393,0.025,2.092v28.409c0,6.348-3.996,12.009-9.978,14.134 c-19.321,6.866-52.678,15.05-101.867,15.05c-49.191,0-82.547-8.184-101.867-15.05c-5.981-2.126-9.977-7.786-9.977-14.134v-28.409 c0-0.699,0.013-1.395,0.025-2.092C13.642,155.753,0,169.671,0,184.894c0,33.56,66.263,60.768,148,60.768 c81.736,0,148-27.208,148-60.768C296,169.671,282.357,155.753,259.819,145.091z">
+                                </path>
+                                <path
+                                    d="M51.155,147.182v28.409c22.329,7.935,54.882,14.184,96.844,14.184c41.961,0,74.514-6.249,96.844-14.184v-28.409 c0-53.488-43.357-96.845-96.844-96.845C94.511,50.338,51.155,93.695,51.155,147.182z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <svg onclick="baby_cloth()" fill="#00e1fe" height="40px" width="40px" version="1.1" id="_baby_cloth"
+                        class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.213 512.213" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g transform="translate(1 1)">
+                                <g>
+                                    <g>
+                                        <path
+                                            d="M474.413,122.093l-97.28-91.307c-3.413-3.413-7.68-6.827-11.947-9.387c-7.68-5.12-16.213-9.387-24.747-11.093 c-4.097-0.854-8.13-1.65-12.114-2.397c-0.928-0.737-2.013-1.377-3.246-1.87c-11.947-2.56-23.893-4.267-34.987-5.12 c-23.893-2.56-46.08-2.56-69.973,0c-11.093,0.853-23.04,2.56-34.987,5.12c-1.655,0.331-3.049,1.05-4.14,2.052 c-3.418,0.692-6.869,1.427-10.366,2.215c-8.533,1.707-17.067,5.12-25.6,11.093c-4.267,2.56-7.68,5.12-11.093,8.533L35.8,121.24 c-1.707,1.707-2.56,3.413-2.56,5.973s0.853,4.267,2.56,5.973l43.52,42.667c3.413,2.56,8.533,2.56,11.947,0l44.373-38.4v117.76 v1.707c0,8.533-0.853,17.067-2.56,25.6l-40.107,192c-0.853,4.267,1.707,8.533,5.973,10.24l76.8,25.6 c2.56,0.853,4.267,0.853,5.973,0c2.56-0.853,3.413-2.56,4.267-5.12l34.987-153.6c3.413-16.213,17.92-27.307,34.133-27.307 s29.867,10.24,34.133,25.6l42.667,155.307c0.853,1.707,2.56,4.267,4.267,5.12c1.707,0.853,2.56,0.853,4.267,0.853 c0.853,0,1.707,0,2.56,0l76.8-25.6c4.267-1.707,6.827-5.973,5.973-10.24l-47.787-189.44c-2.56-10.24-3.413-20.48-3.413-30.72 v-117.76L419.8,177.56c3.413,2.56,8.533,2.56,11.947-0.853l42.667-42.667c1.707-1.707,2.56-3.413,2.56-5.973 S476.12,123.8,474.413,122.093z M314.84,152.813h-17.067V19.693c5.12,0.853,11.093,1.707,17.067,2.56V152.813z M229.507,152.813 V53.986c8.242,3.23,16.92,4.96,25.6,4.96c8.68,0,17.358-1.732,25.6-5.181v99.047H229.507z M280.707,35.053 c-15.36,9.387-35.84,9.387-51.2,0V17.987c17.067-1.707,34.133-1.707,51.2,0V35.053z M195.373,152.813V22.253 c5.973-0.853,11.093-1.707,17.067-2.56V39.32v113.493H195.373z M86.147,157.933l-31.573-30.72l91.307-86.187 c2.56-2.56,5.12-5.12,8.533-6.827c5.973-4.267,12.8-6.827,19.627-8.533c1.432-0.316,2.85-0.618,4.267-0.918v128.065 c-5.12,0-8.533,3.413-8.533,8.533v84.48H153.56v-128c0-3.413-1.707-5.973-5.12-7.68c-3.413-0.853-6.827-0.853-9.387,1.707 L86.147,157.933z M407,471.107l-60.587,20.48l-40.107-146.773c-5.973-22.187-26.453-38.4-50.347-38.4 c-24.747,0-45.227,17.067-51.2,40.96l-32.427,144.213l-60.587-20.48l38.4-184.32c1.707-7.68,2.56-15.36,2.56-23.04h25.6 c5.12,0,8.533-3.413,8.533-8.533V169.88h8.533v8.533c0,5.12,3.413,8.533,8.533,8.533s8.533-3.413,8.533-8.533v-8.533h8.533 h68.267h8.533v8.533c0,5.12,3.413,8.533,8.533,8.533s8.533-3.413,8.533-8.533v-8.533h8.533v85.333 c0,5.12,3.413,8.533,8.533,8.533h25.6c0,8.533,1.707,17.067,3.413,25.6L407,471.107z M425.773,157.933l-53.76-46.08 c-2.56-1.707-5.973-2.56-9.387-0.853c-3.413,1.707-5.12,4.267-5.12,7.68v128h-16.213v-85.333c0-5.12-3.413-8.533-8.533-8.533 h-0.853V24.762c1.417,0.296,2.834,0.594,4.267,0.905C343,27.373,349.827,29.933,355.8,34.2c3.413,2.56,6.827,5.12,9.387,7.68 l91.307,85.333L425.773,157.933z">
+                                        </path>
+                                        <path
+                                            d="M280.707,204.013h-51.2c-5.12,0-8.533,3.413-8.533,8.533c0,5.12,3.413,8.533,8.533,8.533h51.2 c5.12,0,8.533-3.413,8.533-8.533C289.24,207.427,285.827,204.013,280.707,204.013z">
+                                        </path>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+
+                </div>
+                <hr style="color: white;">
+
+                <div class="inner_container">
+
+                    <svg onclick="jacket()" fill="#00e1fe" height="40px" width="40px" version="1.1" id="_jacket"
+                        class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 290.094 290.094" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path
+                                d="M287.804,168.95l-4.583-6.372c1.47-6.462,0.47-12.932-3.375-17.968c-2.29-2.999-5.34-5.156-8.828-6.473 c1.402-7.683,0.015-15.282-4.56-21.273c-2.597-3.401-5.969-5.942-9.818-7.633c0.926-8.658-1.254-17.525-6.827-24.823 c-7.749-10.147-20.151-14.76-32.395-13.331l-1.079-1.5c-4.957-6.893-12.929-10.98-21.42-10.98h-12.186V42.043 c0-6.721-5.449-12.17-12.17-12.17h-2.886L149.54,78.971c1.823,1.368,3.007,3.541,3.007,5.995v15c0,4.143-3.357,7.5-7.5,7.5 c-4.143,0-7.5-3.357-7.5-7.5v-15c0-2.455,1.184-4.627,3.007-5.995l-18.138-49.099h-3.235c-6.722,0-12.171,5.449-12.171,12.17v16.554 H95.175c-8.491,0-16.463,4.086-21.42,10.98l-1.104,1.534c-12.349-1.55-24.902,3.06-32.72,13.297 c-5.573,7.298-7.752,16.164-6.827,24.823c-3.849,1.691-7.22,4.232-9.818,7.633c-4.576,5.991-5.962,13.59-4.561,21.273 c-3.488,1.318-6.538,3.474-8.828,6.473c-3.919,5.132-4.886,11.754-3.292,18.338L2.29,168.95c-3.708,5.157-2.828,12.298,2.023,16.399 l13.14,11.109c4.83,4.084,11.982,3.787,16.458-0.683l7.251-7.242c5.674-0.372,10.826-2.531,14.521-6.439 c-0.415,2.449-0.635,4.939-0.635,7.466c0,12.829,5.511,24.757,14.965,34.7c1.295,1.639,2.67,3.243,4.14,4.799 c-2.824,2.229-4.643,5.674-4.643,9.551v9.441c0,6.721,5.449,12.17,12.17,12.17h126.735c6.721,0,12.17-5.449,12.17-12.17v-9.441 c0-3.877-1.819-7.322-4.643-9.551c1.47-1.555,2.844-3.159,4.139-4.798c9.454-9.944,14.965-21.872,14.965-34.701 c0-2.379-0.196-4.726-0.565-7.037c3.742,3.715,8.862,5.735,14.466,6.026l7.235,7.226c4.475,4.469,11.628,4.766,16.458,0.683 l13.14-11.109C290.632,181.248,291.513,174.107,287.804,168.95z M152.547,240.218c0,4.143-3.357,7.5-7.5,7.5 c-4.143,0-7.5-3.357-7.5-7.5v-15c0-4.143,3.357-7.5,7.5-7.5c4.143,0,7.5,3.357,7.5,7.5V240.218z M152.547,200.168 c0,4.143-3.357,7.5-7.5,7.5c-4.143,0-7.5-3.357-7.5-7.5v-25.051c0-4.143,3.357-7.5,7.5-7.5c4.143,0,7.5,3.357,7.5,7.5V200.168z M152.547,150.067c0,4.142-3.357,7.5-7.5,7.5c-4.143,0-7.5-3.358-7.5-7.5v-25.051c0-4.143,3.357-7.5,7.5-7.5 c4.143,0,7.5,3.357,7.5,7.5V150.067z">
+                            </path>
+                        </g>
+                    </svg>
+
+                    <svg onclick="gloves()" fill="#00e1fe" height="40px" width="40px" version="1.1" id="_gloves"
+                        class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 283.721 283.721" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <path
+                                    d="M88.894,181.205c-11.458-11.9-11.097-30.904,0.804-42.363c11.977-11.53,30.943-11.055,42.361,0.805l0.267,0.277 l-7.506-63.701c-1.933-16.407,9.842-31.328,26.244-33.26c0.954-0.113,1.919-0.168,2.879-0.189l1.2-14.097 c0.701-8.232-5.405-15.474-13.637-16.175c-8.227-0.701-15.474,5.405-16.175,13.637l-4.189,49.209 c-0.26,3.05-4.822,2.862-4.822-0.205V14.96c0-8.262-6.698-14.96-14.96-14.96C93.098,0,86.4,6.698,86.4,14.96v59.234 c0,2.496-3.695,2.717-3.988,0.234L76.745,26.34c-0.967-8.205-8.403-14.076-16.608-13.107C51.931,14.2,46.064,21.636,47.03,29.842 l11.681,99.134c0.335,2.843-3.149,4.489-5.133,2.428l-25.012-25.979c-5.73-5.951-15.2-6.132-21.152-0.401 c-5.952,5.73-6.132,15.2-0.401,21.152c66.649,69.226,68.525,69.21,70.225,70.289c-4.3,0.81-7.554,4.58-7.554,9.115v24.234 c0,5.126,4.156,9.282,9.282,9.282h65.664C138.999,233.247,94.915,187.458,88.894,181.205z">
+                                </path>
+                                <path
+                                    d="M264.359,185.063l16.255-79.621c1.503-7.365-3.248-14.554-10.614-16.058c-7.36-1.495-14.554,3.25-16.058,10.614 l-6.48,31.742c-0.583,2.854-4.793,2.201-4.549-0.656l4.919-57.782c0.701-8.232-5.405-15.474-13.637-16.175 c-8.23-0.701-15.474,5.406-16.175,13.637l-4.189,49.209c-0.263,3.082-4.822,2.862-4.822-0.205V59.586 c0-8.262-6.698-14.96-14.96-14.96c-8.262,0-14.96,6.698-14.96,14.96v59.234c0,2.5-3.693,2.738-3.988,0.234l-5.666-48.088 c-0.967-8.203-8.402-14.076-16.609-13.107c-8.205,0.967-14.073,8.403-13.106,16.609l11.681,99.134 c0.337,2.861-3.162,4.475-5.133,2.428l-25.012-25.979c-5.729-5.95-15.199-6.133-21.152-0.402 c-5.952,5.731-6.132,15.201-0.401,21.152c0,0,68.524,69.21,70.224,70.289c-4.299,0.811-7.553,4.58-7.553,9.115v24.234 c0,5.126,4.156,9.282,9.282,9.282h88.189c5.126,0,9.282-4.156,9.282-9.282v-24.234c0-4.561-3.292-8.345-7.628-9.127 c1.793-2.467,2.863-5.493,2.863-8.776V185.063z M245.655,272.309c-5.707,0-10.333-4.626-10.333-10.333 c0-5.707,4.626-10.333,10.333-10.333c5.707,0,10.333,4.626,10.333,10.333C255.988,267.683,251.361,272.309,245.655,272.309z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <svg onclick="socks()" fill="#00e1fe" height="40px" width="40px" version="1.1" id="_socks"
+                        class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 254.809 254.809" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <g>
+                                    <path
+                                        d="M231.767,156.697l-14.616-3.567c-13.105-3.198-24.741-18.747-29.353-31.425c-12.706-34.93,5.111-71.203,11.865-83.022 c0.605-1.059,0.757-2.318,0.421-3.491c-0.336-1.173-1.131-2.162-2.206-2.74l-59.37-31.913c-1.286-0.691-2.827-0.719-4.138-0.075 c-1.311,0.645-2.23,1.882-2.468,3.323c-3.147,19.041-16.47,41.674-25.54,54.025l29.458,15.697 c4.61,2.478,8.082,6.784,9.525,11.813c1.444,5.032,0.783,10.526-1.815,15.073c-3.869,6.77-13.761,26.143-14.302,47.619 l0.949,0.598c10.447,6.584,18.385,16.481,22.543,28.108c3.32,9.283,10.309,16.793,19.33,20.77 c9.021,3.977,18.844,2.792,28.372,0.259c9.093-2.417,33.969-7.821,33.969-7.821c5.57-1.225,8.9-6.436,10.263-12.023 C246.952,168.489,241.182,158.994,231.767,156.697z">
+                                    </path>
+                                </g>
+                                <path
+                                    d="M162.61,210.966l-14.616-3.567c-13.106-3.198-24.741-18.747-29.353-31.424c-12.707-34.932,5.113-71.207,11.866-83.024 c0.606-1.06,0.757-2.319,0.421-3.492c-0.337-1.173-1.133-2.16-2.208-2.738L69.351,54.809c-0.668-0.359-1.404-0.539-2.142-0.539 c-0.683,0-1.366,0.154-1.996,0.464c-1.311,0.645-2.23,1.882-2.468,3.323c-3.382,20.467-12.767,36.782-21.743,48.317 C55.2,117.649,64.33,135.043,64.33,154.54c0,15.594-5.844,29.841-15.444,40.693l12.134,7.646 c10.447,6.584,18.385,16.481,22.543,28.108c3.32,9.283,10.309,16.793,19.33,20.77c4.612,2.033,9.549,3.051,14.487,3.051 c8.988,0,18.914-2.108,47.854-10.613c6.498-1.995,8.9-6.436,10.263-12.023C177.795,222.758,172.025,213.264,162.61,210.966z">
+                                </path>
+                                <path
+                                    d="M31.079,117.639c-3.103,3.113-5.737,5.413-7.469,6.841c-0.76,0.556-1.509,1.137-2.235,1.764 c-8.116,7.004-12.431,17.441-11.629,28.131c0.801,10.69,6.624,20.367,15.694,26.083l10.545,6.645 c8.247-8.395,13.346-19.892,13.346-32.563C49.33,139.518,42.165,126.146,31.079,117.639z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <svg onclick="winter_cap()" fill="#00e1fe" height="40px" width="40px" version="1.1" id="_winter_cap"
+                        class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 273.011 273.011" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <path
+                                    d="M218.959,209.067H54.051c-17.658,0-31.972,14.314-31.972,31.972s14.314,31.972,31.972,31.972h164.908 c17.658,0,31.972-14.314,31.972-31.972S236.617,209.067,218.959,209.067z">
+                                </path>
+                                <path
+                                    d="M81.083,142.099c1.407-1.407,3.314-2.197,5.304-2.197c1.989,0,3.897,0.79,5.304,2.196l19.589,19.59l19.589-19.59 c2.93-2.928,7.678-2.928,10.607,0l19.589,19.59l19.589-19.59c1.407-1.406,3.315-2.196,5.304-2.196c1.989,0,3.896,0.79,5.304,2.197 l19.588,19.589l10.771-10.771c-1.517-5.446-3.295-10.968-5.307-16.478l-0.16,0.16c-1.407,1.406-3.314,2.196-5.304,2.196 c-1.989,0-3.896-0.79-5.304-2.197l-19.588-19.589l-19.589,19.59c-1.465,1.464-3.385,2.196-5.304,2.196 c-1.919,0-3.839-0.732-5.304-2.196l-19.589-19.59l-19.589,19.59c-2.93,2.928-7.678,2.928-10.607,0l-19.589-19.59l-19.588,19.589 c-1.407,1.407-3.314,2.197-5.304,2.197c-1.837,0-3.599-0.681-4.967-1.891c-2.007,5.533-3.774,11.074-5.28,16.537l10.247,10.247 L81.083,142.099z">
+                                </path>
+                                <path
+                                    d="M225.599,168.152l-9.446,9.446c-1.407,1.406-3.314,2.196-5.304,2.196c-1.989,0-3.896-0.79-5.304-2.197l-19.588-19.589 l-19.589,19.59c-1.465,1.464-3.385,2.196-5.304,2.196c-1.919,0-3.839-0.732-5.304-2.196l-19.589-19.59l-19.589,19.59 c-2.93,2.928-7.678,2.928-10.607,0l-19.589-19.59l-19.588,19.589c-1.407,1.407-3.314,2.197-5.304,2.197 c-1.989,0-3.897-0.79-5.304-2.196l-8.879-8.879c-1.408,7.942-2.156,15.475-2.156,22.271h182.697 C227.854,184.033,227.072,176.303,225.599,168.152z">
+                                </path>
+                                <path
+                                    d="M86.387,96.902c1.989,0,3.897,0.79,5.304,2.196l19.589,19.59l19.589-19.59c2.93-2.928,7.678-2.928,10.607,0l19.589,19.59 l19.589-19.59c1.407-1.406,3.315-2.196,5.304-2.196c1.989,0,3.896,0.79,5.304,2.197l17.807,17.808 c-12.772-27.557-31.164-52.303-52.345-62.417c6.599-5.685,10.783-14.096,10.783-23.49c0-17.121-13.879-31-31-31 c-17.121,0-31,13.879-31,31c0,9.393,4.183,17.804,10.782,23.488c-20.863,9.962-39.021,34.118-51.767,61.174l16.563-16.563 C82.49,97.692,84.398,96.902,86.387,96.902z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <svg onclick="robe()" fill="#00e1fe" height="40px" width="40px" version="1.1" id="_robe"
+                        class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 296.157 296.157" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <path
+                                    d="M271.537,136.697L217.004,13.81c-2.9-6.523-8.553-11.69-15.877-13.809l1.944,36.373c0.231,4.293-3.193,7.9-7.489,7.9 c-2.176,0-3.816,0-5.871,0c4.458,11.042,3.705,9.178,4.606,11.41c1.67,4.134-0.629,8.723-4.77,9.982l-58.338,17.76l-3.001,4.424 c0,2.355,0,196.272,0,208.306h93.406c5.263,0,9.341-4.616,8.692-9.839L203.624,71.41l39.836,79.041 c1.848,3.655,6.246,5.066,9.87,3.265l14.776-7.462C271.615,144.493,273.119,140.286,271.537,136.697z M195.583,176.042 c0,13.118-10.634,23.752-23.752,23.752c-13.118,0-23.752-10.634-23.752-23.752V152.91c0-2.628,2.131-4.759,4.759-4.759h37.986 c2.628,0,4.759,2.131,4.759,4.759V176.042z">
+                                </path>
+                                <path
+                                    d="M168.59,1.6c-4.932,3.653-12.289,5.974-20.512,5.974c-8.221,0-15.576-2.32-20.508-5.971l20.509,30.234L168.59,1.6z">
+                                </path>
+                                <path
+                                    d="M101.84,55.684c2.24-5.549,2.566-6.355,4.606-11.409c-2.054,0-3.698,0-5.871,0c-4.3,0-7.719-3.611-7.489-7.9L95.03,0 c-7.2,2.075-12.928,7.18-15.876,13.81L24.622,136.697c-1.583,3.589-0.089,7.796,3.421,9.556l14.766,7.442 c3.67,1.856,8.065,0.363,9.881-3.245l39.884-79.119L65.852,286.317c-0.649,5.223,3.429,9.84,8.692,9.84h38.664 c0-7.908,0-202.715,0-210.61c0-1.501,0.45-2.968,1.293-4.21l7.461-10.999l-15.352-4.67C102.465,64.405,100.17,59.821,101.84,55.684 z">
+                                </path>
+                                <path
+                                    d="M124.518,39.583l-5.701,14.119l11.962,3.639l8.238-12.144L110.443,3.074h-0.556l-1.4,26.2h9.077 C122.872,29.274,126.508,34.654,124.518,39.583z">
+                                </path>
+                                <path
+                                    d="M177.342,53.703l-5.701-14.121c-1.988-4.921,1.64-10.308,6.954-10.308h9.076l-1.4-26.2h-0.555l-41.102,60.592 L177.342,53.703z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <svg onclick="little_girl_cloth()" fill="#00e1fe" height="40px" width="40px" version="1.1"
+                        id="_little_girl_cloth" class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <g>
+                                    <path
+                                        d="M339.712,80.816V17.134c0-8.58-6.293-16.104-14.824-17.032c-10.076-1.096-18.581,6.749-18.581,16.6v61.241H206.095V17.134 c0-8.58-6.293-16.104-14.824-17.032c-10.076-1.096-18.58,6.749-18.58,16.6v64.114c-19.44,6.895-33.404,25.458-33.404,47.233 v50.106h233.829v-50.106C373.116,106.274,359.152,87.709,339.712,80.816z">
+                                    </path>
+                                </g>
+                            </g>
+                            <g>
+                                <g>
+                                    <path
+                                        d="M180.816,211.559h-60.957c-55.274,71.665-83.889,159.484-80.986,251.053c0.228,6.948,4.73,13.015,11.287,15.267 c29.875,10.247,60.484,17.84,91.407,23.469c-3.927-58.212-2.024-117.408,7.5-173.853 C156.22,285.158,166.987,246.423,180.816,211.559z">
+                                    </path>
+                                </g>
+                            </g>
+                            <g>
+                                <g>
+                                    <path
+                                        d="M392.141,211.559h-60.957c13.829,34.864,24.597,73.599,31.748,115.936c9.443,55.972,11.531,115.481,7.64,173.824 c30.877-5.626,61.438-13.209,91.268-23.44c6.557-2.25,11.059-8.319,11.287-15.267 C476.029,371.045,447.415,283.224,392.141,211.559z">
+                                    </path>
+                                </g>
+                            </g>
+                            <g>
+                                <g>
+                                    <path
+                                        d="M329.985,333.041c-7.47-44.365-19.41-86.12-34.709-121.482h-78.552c-15.3,35.362-27.239,77.117-34.709,121.482 c-9.499,56.278-11.108,115.422-6.604,173.34C202.163,509.776,229.048,512,256,512c27.051,0,54.037-2.237,80.885-5.655 C341.352,448.328,339.414,388.837,329.985,333.041z">
+                                    </path>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+
+                </div>
+
+                <hr style="color: white;">
+
+                <div class="inner_container">
+                    <svg onclick="bikini_summer()" height="40px" width="40px" version="1.1" id="_bikini_summer"
+                        xmlns="http://www.w3.org/2000/svg" class="clickable_icon"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve"
+                        fill="#00e1fe" stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <style type="text/css">
+                                .st0 {
+                                    fill: none;
+                                    stroke: #000000;
+                                    stroke-width: 2;
+                                    stroke-linecap: round;
+                                    stroke-linejoin: round;
+                                    stroke-miterlimit: 10;
+                                }
+                            </style>
+                            <g>
+                                <path
+                                    d="M26.2,20.7c-0.1-0.3-0.3-0.6-0.6-0.7c-0.3-0.1-0.7-0.1-0.9,0.1c-1.6,1.2-5,2-8.6,2s-7-0.8-8.6-2c-0.3-0.2-0.6-0.3-0.9-0.1 c-0.3,0.1-0.6,0.4-0.6,0.7l-0.8,3C5,24,5,24.3,5.2,24.6S5.6,25,5.9,25c3.7,0.3,6.9,2.8,7.9,6.3c0.1,0.4,0.5,0.7,1,0.7h2.4 c0.4,0,0.8-0.3,1-0.7c1-3.5,4.2-6,7.9-6.3c0.3,0,0.6-0.2,0.7-0.4S27,24,27,23.7L26.2,20.7z">
+                                </path>
+                                <path
+                                    d="M12.3,18c0.8,0,1.7-0.1,2.5-0.4l1.2-0.4l1.2,0.4c0.8,0.3,1.7,0.4,2.5,0.4c2.2,0,4.3-0.9,5.8-2.6c1.6-1.9,2-4.3,1-6.6 c0,0,0-0.1-0.1-0.1l-2.3-3.7C24.1,5.1,24,5,24,5V1c0-0.6-0.4-1-1-1s-1,0.4-1,1v4.9c-1.4,3.2-3.4,6.2-6,8.9c-2.6-2.6-4.6-5.6-6-8.9 V1c0-0.6-0.4-1-1-1S8,0.4,8,1v4c0,0-0.1,0.1-0.1,0.1L5.6,8.8c0,0,0,0.1-0.1,0.1c-1,2.2-0.7,4.7,1,6.6C8,17.1,10.1,18,12.3,18z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <svg onclick="dress()" fill="#00e1fe" height="40px" width="40px" version="1.1" id="_dress"
+                        class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 282.803 282.803" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <path
+                                    d="M50.073,80.352l18.095,9.832c1.969,1.07,4.428,0.488,5.709-1.351l14.048-20.167c9.193,22.379,10.106,47.387,2.208,70.395 l-21.749,65.963h146.035l-21.749-65.963c-7.898-23.007-6.985-48.015,2.208-70.395l14.048,20.167 c1.281,1.839,3.74,2.421,5.709,1.351l18.095-9.832c2.015-1.095,2.85-3.553,1.921-5.649l-26.99-60.821 c-2.629-5.916-7.574-10.507-13.686-12.696c-1.619-0.579-3.281-0.971-4.958-1.187h-20.234c0,12.019-12.259,21.762-27.381,21.762 S114.021,12.019,114.02,0H93.786c-1.677,0.216-3.339,0.608-4.958,1.187c-6.112,2.188-11.057,6.779-13.686,12.696l-26.99,60.821 C47.222,76.799,48.058,79.257,50.073,80.352z">
+                                </path>
+                                <polygon points="224.311,235.025 219.365,220.025 63.438,220.025 58.493,235.025 ">
+                                </polygon>
+                                <path
+                                    d="M232.554,260.025H50.249l-3.715,11.267c-0.881,2.671-0.426,5.603,1.222,7.882c1.648,2.279,4.291,3.63,7.104,3.63 c35.588,0,137.497,0,173.082,0c2.813,0,5.454-1.35,7.103-3.629c1.648-2.279,2.104-5.211,1.223-7.883L232.554,260.025z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <svg onclick="women_dress()" fill="#00e1fe" height="40px" width="40px" version="1.1"
+                        id="_women_dress" class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 297.857 297.857" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path
+                                d="M247.116,50.68l-5.156-7.169c-0.158-8.142-2.77-16.734-8.29-24.386c-6.39-8.881-19.699-18.16-32.468-19.073 c-0.288-0.016-4.986-0.033-12.237-0.049c-2.469-0.005-4.587,1.733-5.07,4.155c-3.271,16.403-17.605,28.795-34.97,28.795 c-17.366,0-31.709-12.392-34.973-28.796c-0.481-2.417-2.604-4.161-5.068-4.157c-7.196,0.013-11.875,0.037-12.237,0.052 c-12.74,0.91-26.065,10.175-32.468,19.073c-5.509,7.651-8.132,16.244-8.289,24.386l-5.146,7.169c-0.806,1.1-1.139,2.485-0.913,3.84 c0.225,1.366,0.972,2.563,2.082,3.369l31.025,22.314c2.308,1.679,5.538,1.159,7.209-1.159l4.704-6.551 c5.659,14.137,8.122,29.256,7.271,44.275c-12.198,25.747-20.33,60.831-20.33,99.506c0,15.275,9.307,51.939,16.072,75.721 c0.986,3.466,4.153,5.863,7.756,5.863h86.612c3.608,0,6.769-2.392,7.756-5.862c6.767-23.782,16.082-60.445,16.082-75.721 c0-38.647-8.121-73.709-20.302-99.451c-0.859-15.031,1.599-30.16,7.252-44.3l4.694,6.521c1.669,2.318,4.891,2.838,7.199,1.159 l31.034-22.314c1.11-0.805,1.857-2.003,2.083-3.369C248.246,53.165,247.921,51.781,247.116,50.68z">
+                            </path>
+                        </g>
+                    </svg>
+
+                    <svg onclick="sweater_hood()" fill="#00e1fe" height="40px" width="40px" version="1.1"
+                        id="_sweater_hood" class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 304.43 304.43" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <path
+                                    d="M176.2,218.497h-47.971c-0.603,9.548-3.716,20.083-8.962,29.98c-2.266,4.273-4.859,8.296-7.69,11.963h81.275 c-2.831-3.667-5.425-7.69-7.691-11.963C179.916,238.581,176.804,228.046,176.2,218.497z">
+                                </path>
+                                <path
+                                    d="M302.819,183.478l-84.082-85.638c-4.173-4.25-9.878-6.644-15.834-6.644h-14.341c7.845-15.915,12.623-33.403,12.623-43.027 c0-20.619-21.925-42.333-48.971-42.333s-48.971,21.715-48.971,42.333c0,9.492,4.65,26.634,12.304,42.372v0.655h-14.022 c-5.956,0-11.662,2.394-15.834,6.644L1.61,183.478c-2.045,2.083-2.155,5.385-0.254,7.6l17.576,20.47 c1.96,2.282,5.369,2.617,7.735,0.76l53.12-41.687L63.928,286.117c-0.432,3.144,0.518,6.321,2.603,8.712 c2.086,2.392,5.104,3.764,8.277,3.764h154.813c3.173,0,6.191-1.373,8.277-3.764c2.086-2.392,3.035-5.569,2.603-8.712 l-15.859-115.496l53.12,41.687c2.366,1.857,5.775,1.522,7.735-0.76l17.576-20.47C304.975,188.862,304.865,185.561,302.819,183.478z M152.215,41.502c13.636,0,24.69,10.948,24.69,21.343s-11.054,38.99-24.69,38.99c-13.636,0-24.69-28.594-24.69-38.99 S138.579,41.502,152.215,41.502z M218.222,270.218c-0.991,3.11-3.881,5.223-7.146,5.223H93.353c-3.265,0-6.154-2.112-7.146-5.223 c-0.992-3.11,0.143-6.505,2.806-8.395c6.41-4.547,12.447-11.782,17-20.371c5.378-10.144,8.052-21.232,7.154-29.661 c-0.225-2.115,0.459-4.227,1.881-5.809c1.423-1.582,3.45-2.485,5.577-2.485h63.178c2.127,0,4.154,0.903,5.577,2.485 c1.422,1.582,2.105,3.693,1.881,5.809c-0.898,8.431,1.776,19.518,7.153,29.661c0,0,0,0,0.001,0c4.553,8.589,10.59,15.824,17,20.371 C218.079,263.713,219.214,267.108,218.222,270.218z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <svg onclick="women_swimsuit()" fill="#00e1fe" height="40px" width="40px" version="1.1"
+                        id="_women_swimsuit" class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 295.333 295.333" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <path
+                                    d="M220.073,217.323C203.927,188,205.04,152.915,217.9,122.008l3.427-8.237c3.567-9.487,6.571-14.339,6.7-20.268 c0.219-10.096-2.022-20.695-5.499-28.619c-8.318-18.952-14.973-39.257-19.425-59.469l0-0.002C202.405,2.252,199.603,0,196.366,0 h-0.45c-1.719,0-3.357,0.736-4.498,2.021c-1.142,1.286-1.677,2.998-1.476,4.706c1.763,14.973,5.639,49.826,3.647,50.935 c-16.157,9.012-33.648,27.59-38.757,42.186c-1.171,2.93-4.009,4.852-7.164,4.852c-3.156,0-5.993-1.922-7.164-4.852 c-5.109-14.596-22.6-33.174-38.757-42.186c-2.003-1.115,1.923-36.32,3.674-51.163c0.194-1.648-0.326-3.3-1.428-4.541 C102.889,0.716,101.308,0,99.648,0h-0.899c-3.11,0-5.801,2.163-6.47,5.2c-4.518,20.509-11.057,40.478-19.485,59.713 c-3.471,7.921-5.706,18.507-5.487,28.591c0.129,5.929,3.132,10.781,6.7,20.268l3.453,8.299 c12.851,30.886,13.938,65.944-2.198,95.248c-2.402,4.361-2.802,9.546-1.105,14.226c1.697,4.681,5.327,8.419,9.967,10.223 c8.056,3.132,14.536,8.088,24.231,16.289c11.925,10.114,20.411,21.986,24.505,33.031c0.945,2.549,3.378,4.243,6.096,4.243h17.42 c2.72,0,5.151-1.693,6.096-4.243c4.094-11.045,12.579-22.918,24.504-33.032c9.686-8.194,15.877-13.047,24.165-16.218 c4.669-1.786,8.335-5.508,10.051-10.203c1.716-4.695,1.31-9.902-1.101-14.281C220.086,217.346,220.08,217.334,220.073,217.323z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <svg onclick="female_trakcsuit()" fill="#00e1fe" height="40px" width="40px" version="1.1"
+                        id="_female_trakcsuit" class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 297.275 297.275" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <path
+                                    d="M188.117,125.214h-78.958c-2.581,0-4.757,1.934-5.051,4.499c-0.56,4.878-0.777,9.793-0.639,14.712l4.221,150.219 c0.041,1.465,1.241,2.632,2.707,2.632h24.604c1.418,0,2.595-1.094,2.7-2.507l9.283-125.136c0.064-0.863,0.783-1.53,1.648-1.53 c0.865,0,1.583,0.667,1.647,1.53l9.284,125.136c0.105,1.414,1.283,2.507,2.7,2.507h24.604c1.466,0,2.665-1.167,2.707-2.632 l4.233-150.217c0.139-4.919-0.079-9.835-0.638-14.714C192.874,127.143,190.704,125.214,188.117,125.214z">
+                                </path>
+                                <path
+                                    d="M255.456,65.452L195.82,4.712C192.861,1.698,188.814,0,184.589,0h-14.727c0,11.722-9.503,21.225-21.225,21.225 c-11.722,0-21.225-9.502-21.225-21.225h-14.727c-4.224,0-8.271,1.698-11.231,4.712L41.82,65.452 c-1.451,1.478-1.529,3.819-0.18,5.39l12.564,14.633c1.35,1.572,3.678,1.848,5.358,0.636l41.252-29.777l-4.963,53.073 c-0.104,1.117,0.267,2.226,1.022,3.056c0.756,0.83,1.826,1.302,2.947,1.302h97.635c1.122,0,2.192-0.473,2.947-1.302 c0.755-0.829,1.126-1.939,1.022-3.056l-4.963-53.073l41.252,29.777c1.68,1.212,4.008,0.936,5.358-0.636l12.564-14.633 C256.984,69.271,256.906,66.929,255.456,65.452z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+
+
+                </div>
+
+                <hr style="color: white;">
+
+                <div class="inner_container">
+                    <svg onclick="skirt()" fill="#00e1fe" height="40px" width="40px" version="1.1" id="_skirt"
+                        class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g transform="translate(0 -1)">
+                                <g>
+                                    <g>
+                                        <path
+                                            d="M256,26.6h-17.067c-4.71,0-8.533,3.814-8.533,8.533s3.823,8.533,8.533,8.533H256c4.71,0,8.533-3.814,8.533-8.533 S260.71,26.6,256,26.6z">
+                                        </path>
+                                        <path
+                                            d="M325.862,368.175l-18.739,137.438l-0.401,3.968c18.492-2.526,34.099-6.118,46.49-9.771l-2.987-9.958L325.862,368.175z">
+                                        </path>
+                                        <path
+                                            d="M418.082,230.461c-8.422-75.776-33.041-150.929-42.615-171.597V18.067C375.467,8.654,367.812,1,358.4,1H254.549H153.6 c-9.412,0-17.067,7.654-17.067,17.067v40.798c-9.574,20.668-34.193,95.821-42.615,171.597 c-6.076,54.699,11.802,164.523,22.485,230.136l3.166,19.61c0.418,2.603,2.014,4.872,4.318,6.135 C125.867,487.434,173.303,513,256,513c11.895,0,22.98-0.572,33.382-1.485l0.794-7.902l25.634-188.032 c0.563-4.13,4.028-7.245,8.192-7.381c3.994,0.119,7.817,2.765,8.627,6.861l34.133,170.667l2.628,8.73 c11.563-4.284,18.022-7.731,18.722-8.115c2.304-1.263,3.9-3.533,4.318-6.135l3.166-19.644 C406.281,394.958,424.158,285.143,418.082,230.461z M268.382,46.875c-3.26,3.43-7.654,5.325-12.382,5.325H153.6V18.067h100.949 c9.728,0,18.022,7.245,18.492,16.145C273.289,38.948,271.642,43.453,268.382,46.875z M358.4,52.2h-72.926 c3.302-5.666,4.966-12.143,4.608-18.893c-0.29-5.581-2.108-10.709-4.847-15.241H358.4V52.2z">
+                                        </path>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <svg onclick="female_coat()" fill="#00e1fe" height="40px" width="40px" version="1.1"
+                        id="_female_coat" class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.002 512.002" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g transform="translate(0 -1)">
+                                <g>
+                                    <g>
+                                        <polygon
+                                            points="290.132,381.47 307.199,398.536 324.266,381.47 324.266,359.403 290.132,359.403 ">
+                                        </polygon>
+                                        <polygon
+                                            points="221.866,274.069 161.748,274.069 155.161,308.203 221.866,308.203 ">
+                                        </polygon>
+                                        <polygon
+                                            points="221.866,381.47 221.866,359.403 187.732,359.403 187.732,381.47 204.799,398.536 ">
+                                        </polygon>
+                                        <path
+                                            d="M290.131,325.269L290.131,325.269c0,4.718-3.823,8.532-8.533,8.532h-17.067v51.2c0-4.719-3.823-8.533-8.533-8.533 s-8.533,3.814-8.533,8.533v-51.2h-17.067c-4.71,0-8.533-3.814-8.533-8.533h-70.05c-10.965,49.391-23.817,116.907-23.817,162.133 c0,0.077,0.043,0.145,0.043,0.222c0.026,0.99,0.23,1.946,0.58,2.85c0.034,0.085,0.026,0.188,0.06,0.273 c0.41,0.956,1.007,1.818,1.741,2.577c0.256,0.265,0.589,0.418,0.879,0.649c0.461,0.375,0.87,0.794,1.417,1.067 c0.128,0.06,0.273,0.102,0.41,0.171c0.06,0.026,0.119,0.051,0.188,0.077c35.925,17.681,88.081,17.715,122.684,17.715 c34.603,0,86.767-0.034,122.684-17.715c0.068-0.026,0.128-0.051,0.196-0.077c0.128-0.068,0.273-0.111,0.401-0.171 c0.512-0.256,0.879-0.649,1.306-0.99c0.341-0.256,0.717-0.452,1.016-0.759c0.29-0.307,0.452-0.683,0.691-1.024 c0.998-1.4,1.707-3.012,1.707-4.864c0-45.295-12.894-112.956-23.825-162.133H290.131z M170.664,385.002v-34.133 c0-4.719,3.823-8.533,8.533-8.533h51.2c4.71,0,8.533,3.814,8.533,8.533v34.133c0,2.27-0.896,4.437-2.5,6.033l-25.6,25.6 c-1.664,1.664-3.849,2.5-6.033,2.5c-2.185,0-4.369-0.836-6.033-2.5l-25.6-25.6C171.569,389.439,170.664,387.272,170.664,385.002z M255.997,495.935c-22.084,0-51.695,0-78.558-4.77c37.538-9.259,65.357-31.514,78.558-62.541 c13.184,31.027,40.994,53.291,78.532,62.541C307.675,495.927,278.082,495.935,255.997,495.935z M341.331,385.002 c0,2.27-0.896,4.437-2.5,6.033l-25.6,25.6c-1.664,1.664-3.849,2.5-6.033,2.5c-2.185,0-4.369-0.836-6.033-2.5l-25.6-25.6 c-1.596-1.596-2.5-3.763-2.5-6.033v-34.133c0-4.719,3.823-8.533,8.533-8.533h51.2c4.71,0,8.533,3.814,8.533,8.533V385.002z">
+                                        </path>
+                                        <path
+                                            d="M494.762,460.085c-4.796-23.33-10.923-55.578-18.014-92.911c-36.028-189.602-55.654-282.197-69.82-295.569 c-11.46-10.829-49.357-23.262-60.433-26.735l-23.936-31.915c-0.102-0.137-0.239-0.222-0.35-0.35 c-0.154-0.188-0.273-0.393-0.444-0.572c-0.154-0.154-0.384-0.256-0.538-0.41c-0.282-0.239-0.555-0.452-0.862-0.648 C308.744,1.102,284.296,1,255.999,1c-28.305,0-52.753,0.102-64.375,9.975c-0.299,0.196-0.572,0.41-0.845,0.64 c-0.162,0.154-0.393,0.265-0.546,0.418c-0.171,0.179-0.29,0.393-0.444,0.572c-0.111,0.128-0.247,0.213-0.35,0.35L165.503,44.87 c-11.068,3.473-48.964,15.906-60.433,26.735C90.905,84.977,71.278,177.572,35.25,367.174 c-7.091,37.333-13.218,69.581-18.005,92.911c-0.478,2.313,0.017,4.702,1.374,6.63c1.357,1.92,3.439,3.209,5.769,3.541 l59.733,8.533c4.54,0.649,8.789-2.432,9.609-6.938c10.65-59.025,39.313-215.262,43.964-229.214 c2.944-8.841,9.114-24.209,14.404-37.035c4.164,16.375,7.177,34.116,8.738,51.396h61.03c0-4.71,3.823-8.533,8.533-8.533h17.067 v-20.173c1.809,0.913,3.618,1.801,5.359,2.5c0.102,0.043,0.213,0.026,0.316,0.06c0.93,0.333,1.886,0.546,2.859,0.546 c0.973,0,1.929-0.213,2.859-0.546c0.102-0.034,0.213-0.017,0.316-0.06c1.741-0.7,3.55-1.587,5.359-2.5v20.173h17.067 c4.71,0,8.533,3.823,8.533,8.533h61.03c1.562-17.271,4.574-35.012,8.738-51.396c5.291,12.826,11.46,28.194,14.404,37.035 c4.651,13.952,33.314,170.189,43.964,229.214c0.811,4.506,5.026,7.586,9.609,6.938l59.733-8.533 c2.321-0.333,4.412-1.621,5.76-3.541C494.736,464.787,495.231,462.397,494.762,460.085z M255.999,18.067 c17.451,0,40.508,0,50.244,3.942L300.202,52.2h-88.405l-6.042-30.191C215.491,18.067,238.548,18.067,255.999,18.067z M242.798,205.381c-0.572-0.427-1.143-0.811-1.724-1.263c-1.937-1.476-3.883-3.055-5.845-4.753 c-22.451-19.43-37.803-47.334-43.238-78.677l-12.254-66.364l11.904-15.863l4.651,23.245c0.026,0.597,0.171,1.408,0.247,2.108 c0.077,0.666,0.119,1.271,0.239,2.022c0.171,1.041,0.427,2.236,0.674,3.413c0.171,0.811,0.299,1.536,0.503,2.406 c0.333,1.399,0.751,2.953,1.169,4.497c0.222,0.819,0.401,1.562,0.64,2.423c0.683,2.381,1.451,4.898,2.295,7.535 c0.026,0.094,0.051,0.179,0.085,0.282c0.879,2.748,1.852,5.623,2.884,8.585c0.341,0.964,0.717,1.971,1.067,2.953 c0.734,2.048,1.468,4.087,2.261,6.204c0.435,1.178,0.913,2.381,1.365,3.576c0.751,1.954,1.493,3.908,2.287,5.896 c0.529,1.331,1.075,2.654,1.613,3.994c0.768,1.886,1.527,3.763,2.321,5.658c0.58,1.399,1.178,2.773,1.775,4.173 c0.785,1.826,1.562,3.652,2.364,5.47c0.614,1.399,1.237,2.782,1.869,4.173c0.802,1.783,1.604,3.55,2.415,5.299 c0.631,1.374,1.263,2.705,1.903,4.053c0.811,1.698,1.613,3.371,2.423,5.018c0.649,1.331,1.297,2.62,1.954,3.917 c0.794,1.57,1.579,3.098,2.364,4.599c0.649,1.246,1.297,2.449,1.937,3.635c0.777,1.442,1.545,2.816,2.313,4.164 c0.631,1.118,1.254,2.202,1.877,3.251c0.751,1.28,1.485,2.466,2.219,3.627c0.606,0.964,1.203,1.911,1.783,2.79 c0.717,1.075,1.408,2.039,2.091,2.987c0.563,0.768,1.118,1.553,1.656,2.236c0.188,0.239,0.393,0.563,0.58,0.785v25.197 c-0.23-0.145-0.451-0.273-0.682-0.426C245.469,207.327,244.138,206.371,242.798,205.381z M263.465,153.124 c-0.879,1.69-1.749,3.311-2.611,4.864c-0.393,0.708-0.777,1.408-1.169,2.082c-0.828,1.459-1.638,2.825-2.432,4.122 c-0.316,0.503-0.64,1.05-0.947,1.536c-0.102,0.171-0.205,0.29-0.307,0.461c-0.102-0.171-0.205-0.29-0.307-0.461 c-0.307-0.486-0.631-1.033-0.947-1.536c-0.794-1.297-1.604-2.662-2.432-4.122c-0.384-0.674-0.777-1.365-1.169-2.082 c-0.87-1.562-1.749-3.2-2.637-4.898c-0.299-0.58-0.597-1.135-0.905-1.724c-1.169-2.287-2.355-4.668-3.55-7.134 c-0.333-0.683-0.666-1.391-0.99-2.082c-0.905-1.886-1.801-3.806-2.705-5.768c-0.418-0.896-0.828-1.809-1.246-2.722 c-0.879-1.954-1.758-3.917-2.628-5.905c-0.333-0.777-0.683-1.545-1.015-2.33c-1.169-2.688-2.321-5.402-3.447-8.115 c-0.29-0.708-0.572-1.399-0.862-2.099c-0.853-2.091-1.707-4.173-2.526-6.246c-0.375-0.939-0.742-1.869-1.109-2.799 c-0.768-1.954-1.51-3.883-2.244-5.794c-0.299-0.794-0.614-1.604-0.904-2.381c-0.964-2.577-1.894-5.103-2.765-7.543 c-0.196-0.546-0.375-1.058-0.563-1.604c-0.683-1.929-1.331-3.797-1.937-5.606c-0.256-0.768-0.495-1.51-0.742-2.244 c-0.521-1.596-0.998-3.115-1.451-4.574c-0.188-0.623-0.393-1.271-0.572-1.869c-0.563-1.894-1.067-3.669-1.485-5.282h82.278 c-0.418,1.613-0.922,3.388-1.485,5.282c-0.179,0.606-0.384,1.254-0.58,1.877c-0.444,1.451-0.922,2.953-1.434,4.531 c-0.247,0.759-0.495,1.519-0.768,2.313c-0.597,1.792-1.237,3.644-1.911,5.555c-0.196,0.546-0.367,1.067-0.572,1.621 c-0.87,2.44-1.801,4.966-2.765,7.543c-0.29,0.777-0.606,1.587-0.905,2.381c-0.734,1.911-1.476,3.84-2.244,5.794 c-0.367,0.93-0.734,1.86-1.109,2.799c-0.819,2.074-1.673,4.156-2.526,6.246c-0.29,0.7-0.572,1.391-0.862,2.099 c-1.126,2.714-2.278,5.427-3.447,8.115c-0.333,0.785-0.683,1.553-1.015,2.33c-0.87,1.988-1.749,3.951-2.628,5.905 c-0.418,0.913-0.828,1.826-1.246,2.722c-0.905,1.963-1.801,3.883-2.705,5.768c-0.333,0.691-0.657,1.399-0.99,2.091 c-1.187,2.449-2.373,4.829-3.543,7.108C264.088,151.963,263.781,152.527,263.465,153.124z M319.999,120.774 c-5.427,31.266-20.779,59.17-43.23,78.592c-1.963,1.698-3.917,3.277-5.845,4.762c-0.58,0.435-1.143,0.828-1.715,1.246 c-1.34,0.99-2.679,1.954-3.994,2.833c-0.23,0.154-0.452,0.282-0.683,0.427v-25.199c0.188-0.222,0.393-0.546,0.58-0.785 c0.538-0.683,1.092-1.468,1.655-2.236c0.683-0.947,1.374-1.911,2.091-2.987c0.58-0.879,1.178-1.826,1.783-2.79 c0.734-1.161,1.468-2.347,2.219-3.627c0.623-1.05,1.246-2.133,1.877-3.251c0.768-1.348,1.536-2.722,2.313-4.164 c0.64-1.186,1.289-2.389,1.937-3.635c0.785-1.502,1.57-3.029,2.364-4.599c0.657-1.297,1.306-2.586,1.954-3.917 c0.811-1.647,1.613-3.319,2.423-5.018c0.64-1.348,1.271-2.679,1.903-4.053c0.811-1.749,1.613-3.516,2.415-5.299 c0.632-1.391,1.254-2.773,1.869-4.173c0.802-1.818,1.579-3.644,2.364-5.47c0.597-1.399,1.195-2.773,1.775-4.173 c0.794-1.894,1.553-3.772,2.321-5.658c0.538-1.34,1.084-2.662,1.613-3.994c0.794-1.988,1.536-3.942,2.287-5.896 c0.452-1.195,0.93-2.398,1.365-3.576c0.794-2.116,1.527-4.156,2.261-6.204c0.35-0.981,0.725-1.988,1.067-2.953 c1.033-2.961,2.005-5.837,2.884-8.585c0.034-0.102,0.06-0.188,0.085-0.282c0.845-2.637,1.613-5.154,2.295-7.535 c0.239-0.862,0.418-1.604,0.64-2.423c0.418-1.545,0.845-3.098,1.169-4.497c0.205-0.87,0.333-1.596,0.503-2.406 c0.247-1.178,0.503-2.372,0.674-3.413c0.12-0.751,0.162-1.357,0.239-2.022c0.077-0.7,0.222-1.51,0.247-2.108l4.651-23.245 l11.904,15.863L319.999,120.774z">
+                                        </path>
+                                        <path
+                                            d="M273.066,265.536h-34.133v51.2h34.133V265.536z M255.999,299.669c-4.71,0-8.533-3.823-8.533-8.533 c0-4.71,3.823-8.533,8.533-8.533c4.71,0,8.533,3.823,8.533,8.533C264.532,295.846,260.71,299.669,255.999,299.669z">
+                                        </path>
+                                        <polygon
+                                            points="290.132,274.069 290.132,308.203 356.837,308.203 350.25,274.069 ">
+                                        </polygon>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <svg onclick="male_suit()" fill="#00e1fe" height="40px" width="40px" version="1.1" id="_male_suit"
+                        class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 298.859 298.859" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <path
+                                    d="M198.971,0.269c-0.002,0-0.005-0.002-0.008-0.002c-0.012-0.004-0.023-0.008-0.035-0.012 c-0.057-0.018-0.113-0.029-0.17-0.045c-0.004,0-0.008-0.002-0.012-0.002c-0.078-0.022-0.156-0.047-0.236-0.065 c-0.029-0.008-0.059-0.014-0.088-0.021c-0.072-0.016-0.145-0.025-0.217-0.037c-0.078-0.014-0.154-0.029-0.23-0.039 c-0.027-0.004-0.055-0.006-0.082-0.01c-0.08-0.01-0.16-0.014-0.238-0.019c-0.072-0.004-0.143-0.012-0.213-0.014 c-0.027-0.002-0.057-0.002-0.084-0.002c-0.086,0-0.169,0.002-0.253,0.006c-0.063,0.002-0.128,0-0.192,0.004 c-0.031,0.002-0.063,0.006-0.094,0.008c-0.086,0.008-0.17,0.02-0.254,0.031c-0.059,0.008-0.12,0.012-0.18,0.022 c-0.033,0.006-0.066,0.012-0.1,0.019c-0.084,0.014-0.164,0.035-0.246,0.053c-0.06,0.014-0.119,0.025-0.178,0.041 c-0.033,0.01-0.066,0.017-0.1,0.027c-0.078,0.023-0.154,0.051-0.232,0.076c-0.061,0.022-0.125,0.039-0.186,0.063 c-0.031,0.012-0.06,0.022-0.092,0.035c-0.071,0.027-0.141,0.061-0.211,0.092c-0.068,0.031-0.137,0.061-0.203,0.094 c-0.021,0.01-0.045,0.018-0.066,0.029c-0.006,0.002-0.01,0.006-0.014,0.008c-0.063,0.033-0.123,0.07-0.185,0.106 c-0.069,0.039-0.14,0.078-0.208,0.121c-0.012,0.006-0.025,0.014-0.037,0.021c-0.016,0.01-0.031,0.018-0.047,0.027 c-0.053,0.033-0.1,0.072-0.151,0.107c-0.067,0.047-0.136,0.094-0.2,0.145c-0.029,0.021-0.059,0.041-0.086,0.063 c-0.049,0.037-0.092,0.08-0.138,0.119c-0.061,0.053-0.124,0.105-0.183,0.162c-0.027,0.023-0.057,0.047-0.084,0.074 c-0.043,0.041-0.082,0.088-0.125,0.131c-0.055,0.059-0.111,0.115-0.164,0.176c-0.025,0.029-0.053,0.057-0.078,0.086 c-0.039,0.045-0.072,0.094-0.109,0.141c-0.05,0.063-0.1,0.127-0.147,0.193c-0.023,0.031-0.048,0.063-0.071,0.096 c-0.033,0.047-0.061,0.1-0.094,0.148c-0.044,0.068-0.088,0.139-0.131,0.211c-0.02,0.033-0.041,0.065-0.059,0.098 c-0.031,0.055-0.055,0.111-0.083,0.168c-0.038,0.072-0.075,0.146-0.11,0.223c-0.014,0.029-0.029,0.057-0.042,0.086 c-0.017,0.041-0.03,0.082-0.046,0.123c-0.011,0.025-0.02,0.053-0.029,0.078c-0.021,0.053-0.045,0.102-0.064,0.154l-21.439,60.607 l-4.533-31.318c1.025-0.299,1.956-0.885,2.661-1.717c1.046-1.232,1.495-2.861,1.231-4.455l-3.668-22.18 C165.9,1.947,163.604,0,160.913,0h-22.961c-2.691,0-4.988,1.947-5.428,4.603l-3.668,22.18c-0.264,1.594,0.188,3.223,1.232,4.455 c0.705,0.832,1.637,1.418,2.662,1.717l-4.623,31.98L107.321,3.73c-0.021-0.059-0.047-0.111-0.068-0.168 c-0.007-0.022-0.014-0.041-0.021-0.06c-0.025-0.061-0.044-0.123-0.07-0.184c-0.008-0.02-0.02-0.039-0.028-0.061 c-0.034-0.076-0.073-0.148-0.11-0.223c-0.002-0.004-0.004-0.01-0.006-0.014c-0.042-0.084-0.082-0.166-0.129-0.246 c-0.041-0.074-0.087-0.143-0.132-0.215c-0.002-0.002-0.004-0.006-0.006-0.008c-0.036-0.057-0.067-0.117-0.105-0.172 c-0.015-0.021-0.032-0.041-0.048-0.063c-0.049-0.07-0.104-0.137-0.156-0.205c-0.041-0.053-0.08-0.109-0.124-0.162 c-0.017-0.018-0.034-0.035-0.05-0.055c-0.057-0.063-0.115-0.123-0.174-0.186c-0.064-0.066-0.127-0.135-0.195-0.199 c-0.063-0.059-0.129-0.115-0.193-0.172c-0.07-0.061-0.141-0.121-0.214-0.178c-0.072-0.057-0.147-0.107-0.222-0.16 c-0.001,0-0.002,0-0.002,0c-0.051-0.035-0.098-0.074-0.15-0.109c-0.021-0.014-0.043-0.025-0.064-0.039 c-0.076-0.047-0.153-0.09-0.23-0.133c-0.061-0.035-0.118-0.07-0.18-0.104c-0.01-0.004-0.02-0.01-0.029-0.016 c-0.012-0.006-0.023-0.01-0.034-0.016c-0.073-0.037-0.149-0.068-0.226-0.102c-0.068-0.031-0.135-0.065-0.205-0.092 c-0.024-0.01-0.047-0.019-0.072-0.029c-0.068-0.027-0.141-0.047-0.211-0.07c-0.075-0.025-0.148-0.053-0.225-0.074 c-0.027-0.008-0.053-0.018-0.08-0.025c-0.061-0.016-0.121-0.025-0.182-0.041c-0.008,0-0.015-0.002-0.021-0.004 c-0.08-0.02-0.16-0.039-0.24-0.055c-0.096-0.018-0.189-0.029-0.283-0.041c-0.084-0.012-0.168-0.023-0.252-0.031 c-0.008,0-0.014-0.002-0.021-0.002c-0.084-0.006-0.168-0.008-0.252-0.01c-0.002,0-0.004-0.002-0.006-0.002 c-0.086-0.002-0.172-0.006-0.258-0.006c-0.002,0-0.003,0-0.004,0c-0.09,0.002-0.178,0.008-0.266,0.014 c-0.006,0.002-0.011,0.002-0.016,0.002c-0.086,0.006-0.17,0.01-0.256,0.019c-0.02,0.002-0.039,0.002-0.059,0.004 c-0.076,0.01-0.154,0.027-0.23,0.039c-0.08,0.014-0.162,0.025-0.242,0.043c-0.021,0.004-0.041,0.008-0.063,0.012 c-0.074,0.016-0.146,0.041-0.219,0.06c-0.012,0.002-0.021,0.006-0.031,0.008c-0.063,0.018-0.123,0.027-0.186,0.047 c-0.018,0.006-0.037,0.012-0.055,0.018c-0.002,0.002-0.002,0.002-0.004,0.002c-23.736,7.42-44.011,19.98-58.633,36.324 c-15.226,17.02-23.274,37.029-23.274,57.867v151.666c0,3.039,2.462,5.5,5.5,5.5h33.47l-4.304,41.158 c-0.162,1.551,0.341,3.096,1.384,4.254c1.043,1.158,2.527,1.818,4.086,1.818h71.217c0.011,0,0.021,0.002,0.031,0.002 c0.174,0,0.346-0.012,0.518-0.027c0.041-0.004,0.08-0.01,0.121-0.014c0.127-0.016,0.252-0.035,0.375-0.059 c0.05-0.008,0.1-0.018,0.148-0.027c0.15-0.033,0.299-0.07,0.443-0.113c0.055-0.018,0.107-0.037,0.161-0.057 c0.099-0.033,0.196-0.068,0.294-0.107c0.064-0.025,0.129-0.055,0.193-0.084c0.086-0.037,0.17-0.078,0.254-0.121 c0.057-0.029,0.115-0.059,0.17-0.09c0.135-0.074,0.268-0.154,0.396-0.24c0.008-0.006,0.016-0.012,0.025-0.017 c0.127-0.088,0.248-0.18,0.367-0.275c0.029-0.024,0.059-0.049,0.088-0.074c0.1-0.086,0.197-0.174,0.291-0.266 c0.025-0.023,0.051-0.049,0.074-0.072c0.109-0.109,0.213-0.225,0.311-0.342c0.006-0.008,0.014-0.014,0.02-0.022 c0.107-0.131,0.207-0.266,0.302-0.404c0.018-0.025,0.033-0.053,0.05-0.08c0.07-0.105,0.135-0.213,0.197-0.322 c0.031-0.057,0.061-0.113,0.09-0.17c0.043-0.084,0.084-0.168,0.123-0.254c0.029-0.068,0.061-0.137,0.09-0.207 c0.008-0.021,0.018-0.041,0.026-0.063l14.682-37.736l14.714,37.74c0.008,0.02,0.018,0.039,0.026,0.059 c0.028,0.07,0.06,0.139,0.091,0.209c0.039,0.084,0.078,0.17,0.121,0.254c0.029,0.057,0.06,0.113,0.09,0.168 c0.063,0.111,0.129,0.219,0.197,0.324c0.018,0.025,0.033,0.053,0.05,0.078c0.095,0.141,0.196,0.275,0.304,0.406 c0.004,0.004,0.006,0.008,0.01,0.012c0.102,0.121,0.209,0.238,0.32,0.352c0.022,0.023,0.045,0.045,0.068,0.068 c0.096,0.094,0.197,0.184,0.299,0.272c0.027,0.023,0.055,0.047,0.082,0.068c0.121,0.1,0.247,0.193,0.377,0.283 c0.006,0.004,0.012,0.008,0.018,0.012c0.129,0.086,0.263,0.166,0.398,0.242c0.055,0.029,0.108,0.057,0.162,0.084 c0.088,0.045,0.175,0.088,0.264,0.127c0.063,0.029,0.125,0.057,0.188,0.082c0.099,0.039,0.199,0.076,0.3,0.109 c0.051,0.017,0.1,0.037,0.15,0.053c0.146,0.045,0.297,0.082,0.449,0.115c0.049,0.01,0.098,0.02,0.146,0.027 c0.125,0.023,0.251,0.043,0.379,0.059c0.039,0.004,0.078,0.01,0.119,0.014c0.171,0.016,0.344,0.027,0.518,0.027 c0.01,0,0.02-0.002,0.031-0.002h71.695c1.559,0,3.044-0.66,4.087-1.818s1.546-2.703,1.384-4.254l-4.303-41.158h32.416 c3.037,0,5.5-2.461,5.5-5.5V94.461c0-20.775-7.984-40.752-23.09-57.768C242.729,20.324,222.575,7.731,198.971,0.269z M190.769,53.346c-0.054,0.053-0.099,0.111-0.149,0.166c-0.076,0.082-0.156,0.164-0.229,0.252c-0.02,0.023-0.035,0.051-0.055,0.074 c-1.471,1.867-1.564,4.467-0.271,6.424c0.039,0.061,0.086,0.115,0.129,0.174c0.064,0.092,0.127,0.184,0.198,0.271 c0.056,0.066,0.118,0.131,0.179,0.197c0.065,0.072,0.128,0.148,0.199,0.219l15.981,15.982l-57.056,83.521l-0.965-1.412 l24.822-70.174c0.005-0.012,0.009-0.023,0.014-0.035l24.623-69.607l8.961,17.562L190.769,53.346z M108.62,61.125c0,0,0,0,0.002,0 c0.32-0.32,0.588-0.672,0.813-1.043c0.434-0.717,0.693-1.508,0.771-2.314c0-0.002,0.001-0.004,0.002-0.006 c0.018-0.197,0.026-0.395,0.024-0.592c-0.016-1.387-0.553-2.766-1.609-3.824L92.237,36.959l8.859-17.363l41.83,123.043 l-1.883,5.322L92.635,77.105L108.62,61.125z M142.616,11h13.632l1.849,11.18h-17.329L142.616,11z M143.833,33.18h11.199 l7.729,53.391l-13.91,39.32l-12.925-38.018L143.833,33.18z M69.053,246.697c0-0.004,0-0.01,0-0.014l6.061-57.949 c0.041-0.404,0.039-0.811-0.008-1.213l-11-93.701c-0.354-3.018-3.09-5.176-6.104-4.822c-3.017,0.355-5.176,3.088-4.822,6.104 l10.93,93.096l-5.483,52.43h-29.12V94.461c0-33.135,23.665-63.088,61.346-78.992L80.661,35.447l-0.023,0.045l-0.016,0.029 c-0.014,0.029-0.024,0.059-0.039,0.086c-0.064,0.133-0.125,0.266-0.178,0.4c-0.023,0.061-0.043,0.121-0.064,0.184 c-0.037,0.106-0.075,0.211-0.105,0.318c-0.025,0.088-0.045,0.178-0.066,0.266c-0.018,0.082-0.039,0.164-0.055,0.246 c-0.019,0.104-0.031,0.209-0.045,0.314c-0.008,0.068-0.02,0.139-0.025,0.207c-0.01,0.107-0.012,0.217-0.016,0.326 c-0.002,0.068-0.005,0.137-0.004,0.205c0,0.104,0.008,0.205,0.014,0.307c0.006,0.076,0.01,0.154,0.018,0.23 c0.01,0.09,0.025,0.18,0.039,0.268c0.014,0.09,0.027,0.178,0.045,0.266c0.016,0.076,0.037,0.152,0.056,0.227 c0.024,0.1,0.05,0.197,0.08,0.295c0.021,0.066,0.046,0.131,0.069,0.195c0.035,0.104,0.072,0.205,0.114,0.305 c0.026,0.064,0.058,0.127,0.089,0.189c0.045,0.096,0.089,0.191,0.139,0.285c0.041,0.074,0.084,0.145,0.128,0.215 c0.048,0.08,0.093,0.158,0.145,0.234c0.061,0.092,0.13,0.18,0.196,0.267c0.041,0.053,0.078,0.108,0.121,0.158 c0.09,0.111,0.188,0.217,0.289,0.32c0.023,0.025,0.043,0.051,0.066,0.074l0.025,0.025l0.033,0.033l15.264,15.266L81.632,72.553 c-0.008,0.008-0.015,0.018-0.022,0.025c-0.093,0.094-0.178,0.191-0.264,0.291c-0.035,0.041-0.072,0.08-0.105,0.121 c-0.078,0.096-0.146,0.195-0.217,0.293c-0.035,0.053-0.075,0.102-0.109,0.154c-0.055,0.084-0.102,0.17-0.152,0.256 c-0.041,0.072-0.086,0.143-0.123,0.217c-0.035,0.066-0.063,0.135-0.094,0.201c-0.045,0.096-0.092,0.191-0.131,0.289 c-0.021,0.051-0.035,0.102-0.055,0.154c-0.041,0.115-0.084,0.23-0.119,0.348c-0.014,0.051-0.023,0.102-0.037,0.152 c-0.031,0.119-0.063,0.238-0.085,0.359c-0.015,0.072-0.021,0.145-0.032,0.219c-0.014,0.1-0.031,0.197-0.041,0.297 c-0.01,0.109-0.012,0.219-0.016,0.326c-0.002,0.066-0.008,0.131-0.008,0.197c0,0.131,0.009,0.26,0.018,0.391 c0.004,0.045,0.004,0.09,0.008,0.133c0.012,0.129,0.033,0.256,0.055,0.383c0.008,0.047,0.013,0.096,0.021,0.143 c0.021,0.109,0.052,0.217,0.08,0.324c0.018,0.066,0.03,0.133,0.051,0.199c0.024,0.084,0.057,0.166,0.086,0.248 c0.031,0.09,0.061,0.18,0.098,0.268c0.025,0.063,0.057,0.123,0.084,0.184c0.049,0.105,0.096,0.213,0.152,0.316 c0.027,0.051,0.061,0.1,0.089,0.15c0.063,0.109,0.126,0.217,0.198,0.324c0.006,0.01,0.012,0.02,0.018,0.029l63.217,92.531v69.352 l-18.064,46.43H64.748L69.053,246.697z M269.352,240.627h-28.067l-5.482-52.43l10.928-93.096c0.354-3.016-1.805-5.748-4.821-6.104 c-3.015-0.354-5.749,1.805-6.104,4.822l-10.999,93.701c-0.047,0.402-0.051,0.809-0.008,1.213l6.059,57.945 c0,0.008,0.002,0.014,0.002,0.021l4.304,41.156h-61.866l-18.102-46.432v-69.35l63.211-92.531c0.008-0.01,0.012-0.02,0.018-0.027 c0.074-0.111,0.141-0.225,0.205-0.336c0.027-0.047,0.057-0.092,0.082-0.139c0.059-0.109,0.109-0.221,0.16-0.332 c0.025-0.057,0.054-0.111,0.077-0.168c0.039-0.094,0.069-0.189,0.103-0.285c0.027-0.076,0.059-0.152,0.082-0.23 c0.021-0.072,0.037-0.146,0.055-0.221c0.026-0.1,0.055-0.199,0.074-0.301c0.012-0.057,0.017-0.113,0.025-0.17 c0.02-0.119,0.041-0.238,0.053-0.357c0.004-0.055,0.004-0.109,0.008-0.164c0.008-0.119,0.018-0.24,0.018-0.359 c0-0.078-0.008-0.156-0.01-0.234c-0.004-0.096-0.006-0.191-0.014-0.287c-0.012-0.113-0.029-0.225-0.047-0.338 c-0.01-0.061-0.016-0.121-0.027-0.18c-0.024-0.133-0.059-0.262-0.092-0.393c-0.012-0.039-0.019-0.08-0.029-0.119 c-0.037-0.127-0.082-0.25-0.129-0.373c-0.016-0.043-0.027-0.086-0.045-0.129c-0.041-0.105-0.092-0.207-0.139-0.309 c-0.029-0.061-0.055-0.123-0.085-0.182c-0.04-0.078-0.088-0.154-0.132-0.23c-0.048-0.08-0.092-0.164-0.145-0.242 c-0.035-0.057-0.078-0.109-0.115-0.162c-0.068-0.098-0.135-0.193-0.21-0.285c-0.036-0.045-0.075-0.086-0.112-0.129 c-0.083-0.096-0.166-0.193-0.258-0.285c-0.008-0.008-0.015-0.018-0.023-0.025l-15.318-15.318L217.7,41.967l0.031-0.029l0.027-0.027 c0.025-0.025,0.047-0.053,0.07-0.08c0.1-0.102,0.195-0.205,0.285-0.315c0.043-0.051,0.081-0.107,0.121-0.16 c0.068-0.088,0.135-0.174,0.195-0.266c0.052-0.076,0.098-0.156,0.146-0.236c0.043-0.07,0.086-0.141,0.125-0.213 c0.051-0.094,0.096-0.189,0.141-0.285c0.029-0.063,0.061-0.127,0.088-0.189c0.043-0.1,0.079-0.203,0.115-0.305 c0.023-0.064,0.049-0.131,0.068-0.195c0.031-0.098,0.055-0.197,0.08-0.295c0.02-0.076,0.039-0.15,0.056-0.227 c0.019-0.088,0.031-0.176,0.046-0.264c0.014-0.09,0.029-0.18,0.039-0.27c0.008-0.076,0.012-0.152,0.016-0.229 c0.008-0.104,0.014-0.205,0.016-0.309c0-0.068-0.004-0.137-0.006-0.205c-0.002-0.109-0.006-0.219-0.016-0.326 c-0.006-0.07-0.016-0.139-0.023-0.207c-0.014-0.105-0.027-0.211-0.047-0.316c-0.015-0.08-0.035-0.162-0.055-0.242 c-0.019-0.09-0.039-0.18-0.064-0.27c-0.031-0.105-0.068-0.211-0.105-0.316c-0.021-0.06-0.041-0.123-0.064-0.185 c-0.053-0.133-0.113-0.264-0.178-0.395c-0.015-0.031-0.025-0.061-0.041-0.09l-0.016-0.031l-0.021-0.043l-10.158-19.906 c37.338,15.965,60.781,45.881,60.781,78.92V240.627z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <svg onclick="short()" fill="#00e1fe" height="40px" width="40px" version="1.1" id="_short"
+                        class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 382.262 382.262" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path id="XMLID_233_"
+                                d="M376.94,318.389L348.661,55.786v-34.01c0-4.971-4.029-9-9-9H43.185c-4.971,0-9,4.029-9,9v34.009 L5.933,318.141C2.472,319.395,0,322.711,0,326.604v33.881c0,4.971,4.029,9,9,9h135.25c4.971,0,9-4.029,9-9v-33.881 c0-0.848-0.117-1.668-0.336-2.446l35.846-118.093h5.33l35.566,117.185c-0.416,1.037-0.646,2.169-0.646,3.354v33.881 c0,4.971,4.029,9,9,9h135.251c4.971,0,9-4.029,9-9v-33.881C382.262,322.944,380.077,319.795,376.94,318.389z M335.089,97.868h-49.24 c-8.758,0-15.883-7.125-15.883-15.882V65.269h61.612L335.089,97.868z M52.185,30.776h278.477v16.492H52.185V30.776z M51.268,65.269 h61.612v16.718c0,8.757-7.124,15.882-15.881,15.882H47.757L51.268,65.269z M135.25,351.485H18v-15.881h117.25V351.485z M212.9,206.065h19.643c4.971,0,9-4.029,9-9s-4.029-9-9-9h-82.234c-4.971,0-9,4.029-9,9s4.029,9,9,9h19.64l-33.856,111.539H24.095 l21.724-201.736h51.181c18.682,0,33.881-15.199,33.881-33.882V65.269h51.545v70.781c0,2.387,0.948,4.676,2.636,6.364 c1.688,1.688,3.978,2.636,6.364,2.636l25.14-0.001c4.971,0,9-4.029,9-9s-4.03-9-9-9l-16.14,0.001V65.269h51.541v16.718 c0,18.683,15.2,33.882,33.883,33.882h51.179l21.725,201.736H246.754L212.9,206.065z M364.262,351.485H247.011v-15.881h117.251 V351.485z">
+                            </path>
+                        </g>
+                    </svg>
+
+                    <svg onclick="towel()" fill="#00e1fe" height="40px" width="40px" version="1.1" id="_towel"
+                        xmlns="http://www.w3.org/2000/svg" class="clickable_icon"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 290.626 290.626" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <g>
+                                    <g>
+                                        <path
+                                            d="M290.61,252.764l-0.014-0.173c-0.023-1.5-0.145-2.972-0.342-4.43l-4.134-53.752c2.873-6.417,4.505-13.341,4.505-20.813 c0-0.108-0.014-0.159-0.014-0.159h0.009l-0.028-0.548c-0.023-1.88-0.159-3.647-0.384-5.47L281.24,37.5h-0.009 C281.057,18.75,264.318,0,243.749,0H51.562C31.007,0,14.277,16.631,14.08,37.139h-0.005L5.052,154.411 c-0.192,1.453-0.319,2.925-0.342,4.43l-0.023,0.173H4.682c0.005,0.028,0.005,0.361,0.005,0.361h0.009l-4.373,74.18 c-0.173,1.575-0.253,3.244-0.281,4.861l-0.033,0.647h0.005c0,0-0.014,0.042-0.014,0.136c0,28.434,23.133,51.427,51.563,51.427 h201.563c20.677,0,37.5-16.823,37.5-37.5C290.624,253.003,290.605,252.886,290.61,252.764z M18.749,37.5h4.688 c0-15.511,12.614-28.125,28.125-28.125h192.187c15.511,0,28.125,12.614,28.125,28.125h4.688l-4.678,0.323l7.106,103.041 c-9.464-11.578-23.841-18.989-39.928-18.989H42.187c-10.116,0-19.289,4.041-26.039,10.575l7.275-94.589L18.749,37.5z M12.711,182.48c3.788,4.823,8.719,8.7,14.395,11.203c-6.141,3.323-11.513,7.875-15.839,13.294L12.711,182.48z M276.629,192.187 h-0.052l0.005,0.267c-6.998,13.627-21.173,23.17-37.519,23.17H70.312c-12.923,0-23.438,10.514-23.438,23.438 S57.388,262.5,70.312,262.5h168.75v-9.375H70.312c-7.753,0-14.063-6.309-14.063-14.063c0-7.754,6.309-14.062,14.063-14.062 h182.813c14.133,0,25.828,10.486,27.802,24.075l0.319,4.158c-0.063,15.459-12.649,28.017-28.122,28.017H51.562 c-23.241,0-42.15-18.891-42.183-42.122l0.281-4.819c2.372-21.033,20.245-37.434,41.902-37.434h182.813 c10.341,0,18.75-8.409,18.75-18.75s-8.409-18.75-18.75-18.75h-187.5v9.375h187.5c5.17,0,9.375,4.205,9.375,9.375 s-4.205,9.375-9.375,9.375H42.187c-15.473,0-28.059-12.558-28.12-28.012l0.319-4.158c1.973-13.594,13.669-24.08,27.802-24.08 h196.875c21.431,0,39.136,16.073,41.803,36.787l0.38,5.33C281.227,180.206,279.544,187.5,276.629,192.187z M279.163,226.2 c-3.891-3.764-8.592-6.675-13.809-8.484c4.645-2.77,8.813-6.234,12.37-10.27L279.163,226.2z">
+                                        </path>
+                                        <rect x="46.874" y="18.75" width="9.375" height="9.375"></rect>
+                                        <rect x="65.624" y="18.75" width="9.375" height="9.375"></rect>
+                                        <rect x="84.374" y="18.75" width="9.375" height="9.375"></rect>
+                                        <rect x="234.374" y="18.75" width="9.375" height="9.375"></rect>
+                                        <rect x="215.624" y="18.75" width="9.375" height="9.375"></rect>
+                                        <rect x="79.687" y="98.438" width="9.375" height="9.375"></rect>
+                                        <rect x="37.499" y="98.438" width="32.813" height="9.375"></rect>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <svg onclick="baby_clothes()" fill="#00e1fe" height="40px" width="40px" version="1.1"
+                        id="_baby_clothes" xmlns="http://www.w3.org/2000/svg" class="clickable_icon"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 511.702 511.702" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g transform="translate(-1)">
+                                <g>
+                                    <g>
+                                        <path
+                                            d="M496.177,139.794L375.508,30.61c-3.644-3.644-7.68-6.929-11.947-9.754c-7.825-5.222-16.256-8.849-25.054-10.786 c-12.331-2.714-24.004-4.736-35.439-6.366l1.118,5.948c0.393,2.526,0.674,4.779,0.674,7.117 c0,25.318-18.492,46.345-42.667,50.432v9.301c0,4.71-3.814,8.533-8.533,8.533c-4.719,0-8.533-3.823-8.533-8.533v-9.301 c-24.175-4.087-42.667-25.114-42.667-50.432c0-2.406,0.299-4.719,0.64-7.023l0.981-6.255 c-11.315,1.587-22.861,3.567-35.004,6.238c-9.02,1.98-17.724,5.811-25.89,11.392c-3.925,2.679-7.629,5.751-10.871,8.977 L17.244,140.092c-13.696,13.696-14.822,35.371-2.654,50.415c6.562,8.098,16.282,13.167,26.667,13.901 c10.411,0.734,20.727-2.91,28.16-9.83l64.777-56.619v326.81c0,25.882,21.06,46.933,46.933,46.933 c25.873,0,46.933-21.052,46.933-46.933v-98.133c0-11.11,7.159-20.497,17.067-24.03v-27.17c0-4.71,3.814-8.533,8.533-8.533 c4.719,0,8.533,3.823,8.533,8.533v27.17c9.907,3.533,17.067,12.919,17.067,24.03v98.133c0,25.882,21.06,46.933,46.933,46.933 s46.933-21.052,46.933-46.933V137.037l70.989,57.37c7.637,7.091,18.005,10.726,28.356,10.001 c10.385-0.734,20.105-5.803,26.667-13.901C511.316,175.454,510.181,153.78,496.177,139.794z M262.193,289.835 c0,4.71-3.814,8.533-8.533,8.533c-4.719,0-8.533-3.823-8.533-8.533v-17.067c0-4.71,3.814-8.533,8.533-8.533 c4.719,0,8.533,3.823,8.533,8.533V289.835z M262.193,247.169c0,4.71-3.814,8.533-8.533,8.533c-4.719,0-8.533-3.823-8.533-8.533 v-17.067c0-4.71,3.814-8.533,8.533-8.533c4.719,0,8.533,3.823,8.533,8.533V247.169z M262.193,204.502 c0,4.71-3.814,8.533-8.533,8.533c-4.719,0-8.533-3.823-8.533-8.533v-17.067c0-4.71,3.814-8.533,8.533-8.533 c4.719,0,8.533,3.823,8.533,8.533V204.502z M262.193,161.835c0,4.71-3.814,8.533-8.533,8.533c-4.719,0-8.533-3.823-8.533-8.533 v-17.067c0-4.71,3.814-8.533,8.533-8.533c4.719,0,8.533,3.823,8.533,8.533V161.835z M262.193,119.169 c0,4.71-3.814,8.533-8.533,8.533c-4.719,0-8.533-3.823-8.533-8.533v-17.067c0-4.71,3.814-8.533,8.533-8.533 c4.719,0,8.533,3.823,8.533,8.533V119.169z M338.993,187.435c0,4.71-3.814,8.533-8.533,8.533h-42.667 c-4.719,0-8.533-3.823-8.533-8.533v-51.2c0-4.71,3.814-8.533,8.533-8.533h42.667c4.719,0,8.533,3.823,8.533,8.533V187.435z">
+                                        </path>
+                                        <rect x="296.327" y="144.772" width="25.6" height="34.133"></rect>
+                                        <path
+                                            d="M253.658,50.905c18.825,0,34.133-15.317,34.133-34.133c0-1.468-0.213-2.876-0.435-4.275l-2.039-10.914 c-21.513-2.065-42.274-2.108-63.633-0.137l-1.707,10.889c-0.213,1.417-0.452,2.893-0.452,4.437 C219.524,35.588,234.833,50.905,253.658,50.905z">
+                                        </path>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+
+                <hr style="color: white;">
+
+                <div class="inner_container">
+
+                    <svg onclick="clothes()" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="#00e1fe"
+                        height="40px" width="40px" stroke="#00e1fe" id="_clothes" class="clickable_icon">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path fill="#00e1fe"
+                                d="M133.3 33.41L77.89 47.25 34.6 148.3l33.29 22.2 27.46-54.9 17.05 4.9-15.07 150.1H245.2l9.2-87.9.9-8.1h4.5l-5.4-54.1 17.1-4.9 27.4 54.9 33.3-22.2-43.3-101.05-55.4-13.84c-5.5 3.87-12.2 6.21-19.5 7.95-9.4 2.21-20 3.24-30.6 3.24-10.6 0-21.2-1.03-30.6-3.24-7.3-1.74-14-4.07-19.5-7.95zM271.5 192.6l-1.5 14h178.8l-1.5-14zm-3.4 32l-26.7 254h62.7l46.5-216.9h17.6l46.5 216.9h62.7l-26.7-254z">
+                            </path>
+                        </g>
+                    </svg>
+
+                    <svg onclick="services()" fill="#00e1fe" height="40px" width="40px" version="1.1" id="_services"
+                        xmlns="http://www.w3.org/2000/svg" class="clickable_icon"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 496 496" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <g>
+                                    <g>
+                                        <path
+                                            d="M482.344,264.968C491.024,256.288,496,244.272,496,232c0-12.272-4.976-24.288-13.656-32.968L416,132.688L340.688,208 l32,32L240,372.688l-32-32L132.688,416l66.344,66.344C207.712,491.024,219.728,496,232,496c12.272,0,24.288-4.976,32.968-13.656 l18.456-18.456C306.824,484.576,336.504,496,368,496c70.576,0,128-57.424,128-128c0-31.504-11.424-61.192-32.112-84.576 L482.344,264.968z M363.312,208L416,155.312L428.688,168L376,220.688L363.312,208z M155.312,416L208,363.312L220.688,376 L168,428.688L155.312,416z M271.832,452.848l-18.176,18.184C247.952,476.736,240.064,480,232,480 c-8.064,0-15.952-3.264-21.656-8.968L179.312,440L232,387.312l8,8L395.312,240l-8-8L440,179.312l31.032,31.032 C476.736,216.048,480,223.936,480,232c0,8.064-3.264,15.952-8.968,21.656l-18.176,18.176L271.832,452.848z M480,368 c0,61.76-50.24,112-112,112c-27.232,0-52.984-9.656-73.344-27.344l158-158C470.344,315.008,480,340.76,480,368z">
+                                        </path>
+                                        <path
+                                            d="M208,336v-29.792c10.232-2.96,20.096-7.048,29.44-12.208l21.072,21.08l56.568-56.568L294,237.44 c5.168-9.344,9.248-19.2,12.208-29.44H336v-80h-29.792c-2.96-10.232-7.048-20.096-12.208-29.44l21.08-21.072L258.512,20.92 L237.44,42c-9.344-5.168-19.2-9.248-29.44-12.208V0h-80v29.792C117.768,32.752,107.904,36.84,98.56,42L77.488,20.92L20.92,77.488 L42,98.56c-5.168,9.344-9.248,19.2-12.208,29.44H0v80h29.792c2.96,10.232,7.048,20.096,12.208,29.44l-21.08,21.072l56.568,56.568 L98.56,294c9.344,5.168,19.2,9.248,29.44,12.208V336H208z M101.432,277.168l-5.376-3.28l-18.56,18.568l-33.944-33.944 l18.568-18.56l-3.28-5.376c-6.92-11.328-12.008-23.592-15.12-36.448L42.24,192H16v-48h26.24l1.48-6.128 c3.112-12.848,8.192-25.12,15.12-36.448l3.28-5.376l-18.568-18.56l33.944-33.944l18.56,18.568l5.376-3.28 c11.328-6.92,23.592-12.008,36.448-15.12L144,42.24V16h48v26.24l6.128,1.48c12.848,3.112,25.12,8.192,36.448,15.12l5.376,3.28 l18.56-18.568l33.944,33.944l-18.568,18.56l3.28,5.376c6.92,11.328,12.008,23.592,15.12,36.448l1.472,6.12H320v48h-26.24 l-1.48,6.128c-3.112,12.848-8.192,25.12-15.12,36.448l-3.28,5.376l18.568,18.56l-33.944,33.944l-18.56-18.568l-5.376,3.28 c-11.328,6.92-23.592,12.008-36.448,15.12L192,293.76V320h-48v-26.24l-6.128-1.48 C125.024,289.168,112.76,284.088,101.432,277.168z">
+                                        </path>
+                                        <path
+                                            d="M256,168c0-48.52-39.48-88-88-88s-88,39.48-88,88s39.48,88,88,88S256,216.52,256,168z M96,168c0-39.704,32.296-72,72-72 s72,32.296,72,72s-32.296,72-72,72S96,207.704,96,168z">
+                                        </path>
+                                        <rect x="231.995" y="324.69"
+                                            transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 647.2864 403.8884)"
+                                            width="16" height="22.624"></rect>
+                                        <rect x="324.683" y="231.998"
+                                            transform="matrix(-0.7071 -0.7071 0.7071 -0.7071 403.8752 647.2874)"
+                                            width="22.624" height="16"></rect>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <svg onclick="lingerine()" fill="#00e1fe" height="40px" width="40px" version="1.1" id="_lingerine"
+                        class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 299.272 299.272" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <path
+                                    d="M276.987,38.829c0.708-1.405,0.815-3.024,0.301-4.515c-0.526-1.481-1.62-2.692-3.047-3.358L225.449,8.432 c-10.383-3.518-20.958-6.297-31.631-8.323c-3.068-0.601-6.049,1.34-6.725,4.387c-3.894,17.172-19.091,30.022-37.455,30.022 c-18.363,0-33.562-12.85-37.456-30.022c-0.687-3.047-3.658-4.988-6.725-4.387C94.784,2.135,84.21,4.914,73.816,8.432L25.034,30.956 c-1.438,0.666-2.543,1.877-3.047,3.358c-0.515,1.492-0.418,3.111,0.311,4.515l21.184,41.811c1.244,2.499,4.119,3.732,6.801,2.928 l23.533-6.972c0,0-0.138,123.669-0.641,160.047c-0.041,2.955,2.151,5.47,5.085,5.825c13.368,1.615,27.097,10.702,36.037,20.387 c10.146,10.992,18.642,23.663,22.096,34.148c0.446,1.354,1.712,2.271,3.137,2.271h10.107h10.107c1.426,0,2.691-0.917,3.137-2.271 c3.454-10.484,11.95-23.156,22.096-34.148c8.94-9.685,22.668-18.772,36.037-20.387c2.94-0.355,5.126-2.864,5.085-5.825 c-0.504-36.374-0.649-160.047-0.649-160.047l23.544,6.972c2.681,0.804,5.535-0.43,6.8-2.928L276.987,38.829z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <svg onclick="pullover()" fill="#00e1fe" height="40px" width="40px" version="1.1" id="_pullover"
+                        class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 469.528 469.528" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path
+                                d="M359.606,80.995c-5.652-20.096-18.292-24.42-34.294-29.896c-5.122-1.752-10.927-3.738-17.101-6.462 c-15.695-6.924-25.703-15.728-30.608-20.797c-1.873-1.936-3.308-4.228-4.346-6.713c-1.922-4.599-5.479-8.451-10.156-10.693 C254.318,2.225,244.519,0,234.76,0s-19.558,2.225-28.344,6.438c-4.634,2.228-8.195,6.102-10.126,10.709 c-1.027,2.452-2.451,4.712-4.297,6.625c-4.881,5.058-14.909,13.911-30.675,20.866c-6.174,2.724-11.979,4.71-17.101,6.462 c-16.002,5.476-28.643,9.8-34.294,29.896c-6.69,23.788-26.849,320.48-27.704,333.099c-0.178,2.633,1.72,4.951,4.336,5.295 l39.311,5.175c0.217,0.029,0.435,0.043,0.652,0.043c1.106,0,2.188-0.367,3.071-1.055c1.056-0.821,1.738-2.032,1.895-3.361 l23.294-197.999c2.61,12.519,4.682,22.712,5.857,28.976c2.439,13.01,0.022,24.441-3.983,43.38 c-6.365,30.098-15.984,75.581-15.984,169.981c0,2.762,2.239,5,5,5h178.194c2.761,0,5-2.238,5-5c0-94.4-9.619-139.884-15.984-169.981 c-4.005-18.938-6.422-30.37-3.983-43.38c1.175-6.264,3.247-16.457,5.857-28.976l23.294,198c0.156,1.329,0.839,2.54,1.895,3.361 c0.883,0.688,1.965,1.055,3.071,1.055c0.217,0,0.435-0.014,0.652-0.043l39.311-5.175c2.616-0.344,4.514-2.662,4.336-5.295 C386.455,401.476,366.296,104.783,359.606,80.995z M274.476,34.753c5.74,5.217,14.472,11.831,26.51,17.565 c-1.654,24.739-13.424,177.666-53.489,221.134c-4.648,0.865-8.428,4.208-9.923,8.604l-5.344-1.853 c1.662-11.571,4.12-23.147,7.315-34.405c12.3-40.559,21.712-85.578,27.976-133.807C271.793,79.106,273.661,51.771,274.476,34.753z M252.886,286.229v112.525h-6.011V286.229c0-1.657,1.349-3.006,3.006-3.006S252.886,284.571,252.886,286.229z M236.875,292.397v9 l-66.816-23.158c0.492-2.971,0.882-5.822,1.148-8.602L236.875,292.397z M205.614,44.553c19.369-3.213,38.946-3.213,58.316,0.002 c-1.007,16.67-2.873,39.571-6.326,66.148c-5.349,41.185-13.013,79.979-22.84,115.638C214.7,153.404,207.899,81.882,205.614,44.553z M210.744,15.452C218.185,11.886,226.49,10,234.76,10s16.576,1.886,24.016,5.452c3.843,1.843,6.229,5.782,6.079,10.038 c-0.09,2.558-0.214,5.589-0.38,9.031c-19.74-3.16-39.675-3.16-59.416-0.001c-0.173-3.538-0.296-6.569-0.383-9.03 c-0.001-0.031-0.004-0.088-0.006-0.12c-0.005-0.089-0.002-0.178-0.002-0.267C204.669,21.015,207.055,17.226,210.744,15.452z M195.06,34.746c1.728,35.591,8.493,123.181,34.493,209.65c-2.876,10.342-5.139,20.876-6.774,31.42 c-39.289-45.134-52.335-198.632-54.208-223.513C180.599,46.571,189.324,39.96,195.06,34.746z M95.962,410.541l-3.448-0.454 c0.984-14.466,2.1-30.605,3.307-47.751l4.054,0.396L95.962,410.541z M109.479,412.32l-3.591-0.473l3.94-48.142l4.603,0.45 L109.479,412.32z M122.144,413.987l-2.747-0.361l4.986-48.497l3.468,0.339L122.144,413.987z M129.02,355.535l-32.495-3.178 c7.761-109.567,18.776-253.551,23.024-268.655c0.97-3.448,2.162-6.251,3.604-8.596c5.822,26.681,16.509,75.807,25.158,116.439 L129.02,355.535z M131.619,66.999c4.197-2.452,9.406-4.238,15.836-6.438c3.503-1.199,7.319-2.509,11.392-4.089 c2.452,31.732,14.292,160.129,48.563,215.128l-35.858-12.428c-0.12-3.243-0.459-6.493-1.088-9.85 C164.983,220.119,140.24,106.468,131.619,66.999z M166.435,296.616c0.626-2.96,1.214-5.753,1.761-8.438l51.577,17.876 c-0.174,3.885-0.263,7.868-0.263,11.889v100.266h-67.976C154.014,355.359,161.298,320.907,166.435,296.616z M157.968,459.528h-7.292 c0.041-11.127,0.219-21.546,0.51-31.32h6.781V459.528z M178.481,459.528h-10.513v-31.32h10.513V459.528z M198.994,459.528h-10.513 v-31.32h10.513V459.528z M208.994,459.528v-31.32h10.513v31.32H208.994z M229.51,459.528v-31.32h10.511v31.32H229.51z M260.534,459.528h-10.513v-31.32h10.513V459.528z M281.047,459.528h-10.513v-31.32h10.513V459.528z M301.56,459.528h-10.513v-31.32 h10.513V459.528z M318.852,459.528h-7.292v-31.32h6.781C318.633,437.982,318.811,448.401,318.852,459.528z M317.995,418.208H229.51 V317.942c0-2.852,0.051-5.678,0.142-8.464l7.223,2.503v91.772c0,2.762,2.239,5,5,5h16.011c2.761,0,5-2.238,5-5v-22.248h11.009 c2.761,0,5-2.238,5-5v-75.424l22.614-12.039c0.497,2.42,1.026,4.931,1.585,7.573C308.23,320.907,315.515,355.359,317.995,418.208z M262.886,298.274v-8.254l35.577-18.94c0.273,2.481,0.647,5.032,1.092,7.674L262.886,298.274z M268.895,306.405v65.101h-6.005 v-61.904L268.895,306.405z M299.065,249.323c-0.685,3.652-1.036,7.179-1.123,10.707l-36.86,19.623 c-0.759-1.287-1.724-2.438-2.863-3.392c38.522-48.853,50.225-186.599,52.519-219.765c4.051,1.57,7.849,2.873,11.335,4.066 c6.429,2.2,11.638,3.986,15.836,6.438C329.289,106.468,304.546,220.119,299.065,249.323z M321.149,191.865 c8.661-40.694,19.389-90.009,25.226-116.759c1.441,2.344,2.634,5.148,3.604,8.596c4.248,15.104,15.263,159.088,23.024,268.655 l-32.523,3.18L321.149,191.865z M347.384,413.987l-5.73-48.517l3.491-0.341l4.986,48.497L347.384,413.987z M360.049,412.32 l-4.952-48.164l4.603-0.45l3.94,48.142L360.049,412.32z M373.566,410.541l-3.913-47.809l4.054-0.396 c1.207,17.146,2.323,33.285,3.307,47.751L373.566,410.541z">
+                            </path>
+                        </g>
+                    </svg>
+
+                    <svg onclick="vest()" fill="#00e1fe" height="40px" width="40px" version="1.1" id="_vest"
+                        class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 462.919 462.919" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path
+                                d="M383.417,306.472c10.536-31.521,0.941-55.54-2.248-62.162c3.169-16.197-2.561-31.532-2.814-32.201 c-0.263-0.688-0.673-1.309-1.202-1.819c-0.498-0.48-0.999-0.973-1.505-1.478c-28.604-28.528-37.568-71.621-22.839-109.783 l10.724-27.783c0.543-1.409,0.421-2.987-0.332-4.296c-12.14-21.084-36.023-24.793-46.338-25.385l-1.521-21.303 C314.529,8.9,304.97,0,293.579,0H169.34c-11.391,0-20.949,8.9-21.761,20.262l-1.521,21.303 c-10.314,0.592-34.199,4.301-46.338,25.385c-0.753,1.309-0.875,2.887-0.332,4.295l10.723,27.784 c14.73,38.161,5.766,81.254-22.839,109.784c-0.505,0.504-1.007,0.996-1.505,1.477c-0.529,0.511-0.939,1.132-1.202,1.819 c-0.254,0.669-5.983,16.004-2.813,32.201c-3.189,6.622-12.785,30.642-2.249,62.162c-2.191,6.712-8.762,31.149-0.547,62.52 c-0.879,6.398-4.178,38.005,11.949,63.417v16.295c0,2.5,1.847,4.615,4.323,4.954c45.198,6.175,90.715,9.262,136.232,9.262 c45.517,0,91.033-3.087,136.232-9.262c2.477-0.339,4.323-2.454,4.323-4.954v-16.295c16.126-25.412,12.827-57.019,11.949-63.416 C392.18,337.622,385.608,313.184,383.417,306.472z M354.49,363.705c-1.27-17.383-1.556-34.814-0.87-52.22h20.852 c2.111,7.475,6.33,27.382,0.495,52.22H354.49z M374.51,301.485h-20.383c0.76-12.451,2.002-24.882,3.764-37.263 c0.389-2.733-1.512-5.265-4.245-5.654l-19.067-2.714c-1.317-0.186-2.646,0.155-3.707,0.951c-1.061,0.797-1.762,1.981-1.948,3.295 c-1.957,13.749-3.317,27.555-4.111,41.385H236.46V250h136.306c1.176,2.705,2.953,7.47,4.146,13.786 C379.251,276.181,378.436,288.847,374.51,301.485z M347.312,391.86l-9.167,1.306c-5.545-42.063-5.545-84.641,0-126.703l9.167,1.305 C341.89,308.968,341.89,350.661,347.312,391.86z M138.586,311.485h87.874v52.22h-88.698 C138.956,346.32,139.232,328.891,138.586,311.485z M236.46,311.485h87.873c-0.646,17.406-0.37,34.834,0.824,52.22H236.46V311.485z M369.345,216.645c0.999,3.063,3.782,12.903,2.391,23.355H236.46v-52.134h111.72c5.222,10.202,12.041,19.683,20.404,28.024 C368.839,216.145,369.092,216.396,369.345,216.645z M127.095,135.347l99.365-11.395v53.914H119.258 C124.566,164.381,127.241,149.936,127.095,135.347z M236.46,123.952l99.364,11.395c-0.146,14.588,2.529,29.034,7.836,42.519H236.46 V123.952z M353.307,69.963l-9.829,25.464c-3.77,9.768-6.105,19.831-7.099,29.918l-99.92-11.458V91.233 c2.289,1.097,4.842,1.729,7.545,1.729c29.65,0,56.63-15.804,71.151-41.45C322.494,51.829,342.759,54.169,353.307,69.963z M169.34,10 h124.239c6.17,0,11.348,4.82,11.787,10.975l1.743,24.413c-12.576,23.209-36.624,37.575-63.104,37.575 c-4.16,0-7.545-3.385-7.545-7.546V40.37h6.813c17.409,0,34.439-6.047,47.953-17.025c2.143-1.741,2.469-4.891,0.728-7.034 c-1.741-2.142-4.89-2.469-7.034-0.728c-11.736,9.536-26.526,14.787-41.646,14.787h-23.627c-15.121,0-29.911-5.251-41.646-14.787 c-2.145-1.74-5.292-1.415-7.034,0.728c-1.741,2.144-1.415,5.293,0.728,7.034c13.513,10.979,30.543,17.025,47.953,17.025h6.813 v35.047c0,4.161-3.385,7.546-7.546,7.546c-26.481,0-50.529-14.366-63.104-37.575l1.744-24.413C157.993,14.82,163.171,10,169.34,10z M109.612,69.963c10.55-15.798,30.823-18.134,38.151-18.45c14.521,25.646,41.501,41.45,71.151,41.45 c2.704,0,5.256-0.633,7.546-1.729v22.653l-99.921,11.458c-0.994-10.087-3.329-20.15-7.099-29.918L109.612,69.963z M93.579,216.64 c0.251-0.246,0.503-0.496,0.756-0.748c8.364-8.342,15.182-17.823,20.405-28.025h111.72V240H91.186 C89.812,229.595,92.588,219.708,93.579,216.64z M90.163,250H226.46v51.485h-88.353c-0.794-13.83-2.155-27.636-4.111-41.385 c-0.187-1.313-0.888-2.498-1.948-3.295c-1.061-0.796-2.393-1.137-3.707-0.951l-19.066,2.714c-2.733,0.39-4.634,2.921-4.245,5.654 c1.762,12.38,3.005,24.812,3.764,37.263H88.407C80.642,276.367,87.264,256.734,90.163,250z M115.607,267.768l9.166-1.305 c5.546,42.063,5.546,84.641,0,126.703l-9.166-1.306C121.03,350.661,121.03,308.968,115.607,267.768z M108.43,363.705H87.952 c-5.836-24.844-1.615-44.753,0.494-52.22H109.3C109.986,328.891,109.699,346.322,108.43,363.705z M88.512,373.705h19.071 c-0.687,7.247-1.527,14.483-2.554,21.701c-0.187,1.313,0.155,2.646,0.952,3.706c0.796,1.061,1.98,1.762,3.294,1.948l19.064,2.714 c0.235,0.033,0.472,0.05,0.706,0.05c1.076,0,2.131-0.348,3.002-1.001c1.061-0.796,1.762-1.981,1.948-3.295 c1.222-8.588,2.216-17.199,2.984-25.823h89.481v62.766c-42.315-0.212-84.618-3.12-126.65-8.722 C87.074,408.296,87.672,383.438,88.512,373.705z M100.904,444.33v-6.349c43.332,5.669,86.943,8.511,130.556,8.511 c43.612,0,87.223-2.842,130.556-8.511v6.349C275.361,455.781,187.557,455.781,100.904,444.33z M363.11,427.75 c-42.033,5.602-84.337,8.509-126.651,8.722v-62.766h89.48c0.768,8.625,1.761,17.235,2.984,25.823 c0.187,1.313,0.888,2.498,1.948,3.295c0.871,0.653,1.926,1.001,3.002,1.001c0.234,0,0.471-0.017,0.706-0.05l19.065-2.714 c1.313-0.187,2.498-0.888,3.294-1.948c0.797-1.061,1.139-2.394,0.952-3.706c-1.027-7.218-1.868-14.455-2.554-21.701h19.078 C375.268,383.424,375.888,408.232,363.11,427.75z">
+                            </path>
+                        </g>
+                    </svg>
+
+                    <svg onclick="polo()" fill="#00e1fe" height="40px" width="40px" version="1.1" id="_polo"
+                        class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 438.616 438.616" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <path
+                                    d="M413.791,175.669C399.133,66.288,363.053,47.273,361.524,46.518c-0.306-0.151-0.627-0.271-0.958-0.356l-80.121-20.845 L265.503,2.279c-0.929-1.434-2.516-2.28-4.195-2.277V0h-84v0.002c-1.678-0.003-3.265,0.843-4.195,2.277L158.17,25.316 L78.049,46.161c-0.331,0.086-0.651,0.205-0.958,0.356c-1.529,0.756-37.608,19.771-52.266,129.151 c-0.14,1.042,0.053,2.101,0.549,3.027l2.267,4.226v13.411c0,2.622,2.025,4.799,4.64,4.987l58.667,4.233 c0.121,0.009,0.242,0.013,0.362,0.013c2.071,0,3.945-1.283,4.68-3.245l3.651-9.744V423c0,2.409,1.717,4.476,4.085,4.916 c38.347,7.134,76.964,10.7,115.581,10.7c38.617,0,77.234-3.566,115.582-10.7c2.368-0.44,4.085-2.507,4.085-4.916V192.576 l3.651,9.744c0.735,1.963,2.609,3.246,4.68,3.246c0.12,0,0.241-0.004,0.362-0.013l58.667-4.233c2.615-0.188,4.64-2.365,4.64-4.987 v-13.411l2.267-4.226C413.738,177.77,413.93,176.711,413.791,175.669z M403.663,175.398l-0.794,1.48l-59.203,4.317l-1.777-1.522 l-2.884-14.998c0.457-7.122,5.186-74.615,21.801-106.302C369.809,66.557,392.592,94.632,403.663,175.398z M262.513,16.045 l9.847,15.182c0.062,4.746-0.589,22.671-13.055,35.468l-28.974-8.88C239.385,50.456,253.635,36.506,262.513,16.045z M219.302,53.626c-6.78-4.847-25.154-19.647-34.88-43.626h69.769C244.482,33.9,226.081,48.761,219.302,53.626z M211.308,67.347 l8-2.452l8,2.452v65.316h-16V67.347z M166.255,31.228l9.848-15.183c8.878,20.46,23.128,34.411,32.182,41.77l-28.974,8.88 C166.839,53.892,166.194,35.954,166.255,31.228z M77.806,58.366c16.61,31.672,21.348,99.188,21.806,106.311l-2.884,14.998 l-1.777,1.522l-59.203-4.317l-0.794-1.48C46.036,94.543,68.856,66.498,77.806,58.366z M37.641,191.681v-4.637l51.974,3.79 l-1.678,4.477L37.641,191.681z M328.975,418.83c-72.789,13.048-146.544,13.047-219.333,0V167.689c0,0-0.088-4.338-0.202-5.976 c-1.006-14.446-6.134-75.588-22.547-107.521l69.493-18.08c0.638,9.549,3.878,27.109,18.26,39.949 c0.929,0.83,2.119,1.271,3.331,1.271c0.49,0,0.983-0.072,1.464-0.22l21.868-6.702v67.251c0,2.762,2.239,5,5,5h26 c2.761,0,5-2.238,5-5V70.412l21.869,6.702c0.481,0.147,0.975,0.22,1.464,0.22c1.212,0,2.402-0.44,3.331-1.271 c14.381-12.84,17.621-30.4,18.259-39.949l69.493,18.08c-16.322,31.754-21.483,92.394-22.53,107.275 c-0.125,1.78-0.219,7.224-0.219,7.224V418.83z M350.678,195.311L349,190.833l51.974-3.79v4.637L350.678,195.311z">
+                                </path>
+                                <path
+                                    d="M219.311,74.661c-1.32,0-2.61,0.53-3.54,1.46c-0.93,0.93-1.46,2.22-1.46,3.54c0,1.31,0.53,2.6,1.46,3.53 c0.93,0.93,2.22,1.47,3.54,1.47c1.31,0,2.6-0.54,3.53-1.47c0.93-0.931,1.47-2.221,1.47-3.53c0-1.32-0.54-2.61-1.47-3.54 S220.621,74.661,219.311,74.661z">
+                                </path>
+                                <path
+                                    d="M219.311,95.661c-1.32,0-2.61,0.53-3.54,1.46c-0.93,0.93-1.46,2.22-1.46,3.54c0,1.31,0.53,2.6,1.46,3.53 c0.93,0.93,2.22,1.47,3.54,1.47c1.31,0,2.6-0.54,3.53-1.47c0.93-0.931,1.47-2.221,1.47-3.53c0-1.32-0.54-2.61-1.47-3.54 S220.621,95.661,219.311,95.661z">
+                                </path>
+                                <path
+                                    d="M219.311,116.661c-1.32,0-2.61,0.53-3.54,1.46c-0.93,0.93-1.46,2.22-1.46,3.54c0,1.31,0.53,2.6,1.46,3.53 c0.93,0.93,2.22,1.47,3.54,1.47c1.31,0,2.6-0.54,3.53-1.47c0.93-0.931,1.47-2.221,1.47-3.53c0-1.32-0.54-2.61-1.47-3.54 S220.621,116.661,219.311,116.661z">
+                                </path>
+                                <path
+                                    d="M234.641,22.333c0-2.762-2.239-5-5-5h-20.667c-2.761,0-5,2.238-5,5s2.239,5,5,5h20.667 C232.403,27.333,234.641,25.095,234.641,22.333z">
+                                </path>
+                                <path
+                                    d="M317.308,116h-57.333c-2.761,0-5,2.238-5,5v18c0,2.762,2.239,5,5,5h57.333c2.761,0,5-2.238,5-5v-18 C322.308,118.238,320.069,116,317.308,116z M312.308,134h-47.333v-8h47.333V134z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+
+
+                </div>
+
+                <hr style="color: white;">
+
+                <div class="inner_container">
+
+                    <svg onclick="women_suit()" fill="#00e1fe" height="40px" width="40px" version="1.1" id="_women_suit"
+                        class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 488.869 488.869" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <path
+                                    d="M399.698,241.25l-26.575-70.644c-2.22-5.902-4.463-16.204-4.898-22.496l-7.021-101.526 c-0.511-7.39-5.699-16.456-11.813-20.64L315.78,2.94C313.011,1.044,309.441,0,305.73,0c-4.521,0-8.881,1.536-11.96,4.214 l-6.999,6.087c-5.294,4.604-11.243,13.815-13.264,20.533l-28.654,95.3c-0.142,0.472-0.281,0.972-0.419,1.487 c-0.138-0.514-0.277-1.015-0.419-1.487l-28.654-95.3c-2.021-6.718-7.97-15.929-13.264-20.533l-6.999-6.087 C192.02,1.536,187.66,0,183.139,0c-3.711,0-7.28,1.044-10.05,2.94l-33.611,23.004c-6.113,4.184-11.302,13.25-11.813,20.64 l-7.021,101.526c-0.436,6.292-2.679,16.594-4.898,22.496L89.171,241.25c-1.395,3.707-1.104,7.47,0.799,10.325 c1.901,2.855,5.261,4.575,9.218,4.718l15.586,0.564c0.184,0.006,0.367,0.01,0.553,0.01c7.547,0,15.367-5.537,17.803-12.605 l24.763-71.848c2.225-6.451,4.206-17.252,4.419-24.077l1.253-40.287l5.502,44.372c0.767,6.176-0.071,16.437-1.829,22.407 l-15.533,52.771c-1.126,3.826-0.589,7.517,1.511,10.393c2.1,2.876,5.451,4.512,9.438,4.605l39.101,0.913l0.394,0.004 c7.413,0,16.263-4.862,20.147-11.068l18.605-29.724c1.298-2.075,2.507-4.715,3.536-7.564c1.029,2.849,2.238,5.489,3.536,7.565 l18.605,29.723c3.886,6.207,12.735,11.068,20.147,11.068l39.494-0.917c3.986-0.093,7.338-1.729,9.438-4.605 c2.1-2.876,2.637-6.567,1.511-10.393l-15.533-52.771c-1.758-5.97-2.596-16.231-1.829-22.407l5.502-44.372l1.253,40.287 c0.213,6.825,2.194,17.625,4.419,24.076l24.763,71.849c2.436,7.068,10.256,12.605,17.803,12.605c0.001,0,0.002,0,0.003,0 c0.185,0,0.367-0.003,0.551-0.01l15.584-0.564c3.958-0.143,7.317-1.863,9.219-4.718C400.802,248.72,401.093,244.957,399.698,241.25 z M243.723,166.023c-6.154,0-11.144-4.989-11.144-11.144s4.989-11.144,11.144-11.144s11.144,4.989,11.144,11.144 S249.878,166.023,243.723,166.023z">
+                                </path>
+                                <path
+                                    d="M334.067,273.057c-2.046-11.45-13.172-20.764-24.804-20.764H179.605c-11.621,0-22.814,9.293-24.951,20.717l-4.545,24.296 c-1.95,10.42-3.536,26.088-3.536,34.926c0,8.761,0.664,24.429,1.481,34.927l7.818,100.461 c0.911,11.716,11.214,21.249,22.966,21.249H310.03c11.751,0,22.059-9.531,22.978-21.246l7.795-99.387 c0.823-10.492,1.493-25.759,1.493-34.031c0-8.336-1.517-23.605-3.382-34.037L334.067,273.057z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <svg onclick="cloth_robe()" fill="#00e1fe" height="40px" width="40px" version="1.2"
+                        baseProfile="tiny" id="_cloth_robe" xmlns="http://www.w3.org/2000/svg" class="clickable_icon"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 256 256" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <path
+                                    d="M117.2,79.5l6.7-19.5L104.5,3.8c-3.2,3.8-7.7,9-9.7,11.4c1.5,4.1,5.7,16.5,10.5,30.2L117.2,79.5z">
+                                </path>
+                                <path d="M107.2,172l54.2-156.7L151.8,5c-7.8,22.6-43.6,127.3-57.2,167H107.2z"></path>
+                                <rect x="67.5" y="180.6" width="121.4" height="7.4"></rect>
+                                <path
+                                    d="M67.7,172h17.8l27.2-79.3L87.1,19.3l-27.3,7c-0.3,0.1-16.1,4.1-20.4,18.7c-3.5,12-25,125.6-37.5,167.3h47.6l18.4-105.1 L67.7,172z">
+                                </path>
+                                <path
+                                    d="M216.9,45c-4.3-14.7-20.1-18.7-20.2-18.7l-27.5-7l-52,151.6H189l-0.8-63.7l18.5,105.2h47.6 C241.9,170.7,220.4,57.1,216.9,45z">
+                                </path>
+                                <path
+                                    d="M189.4,196.7h-24.3H91.3H66.9l-3.3,52.5c0,0.4-0.1,0.7-0.1,1.1h129.1c0-0.4,0-0.7-0.1-1.1L189.4,196.7z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <svg onclick="sport_shoe()" fill="#00e1fe" height="40px" width="40px" version="1.1" id="_sport_shoe"
+                        class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 454.258 454.258" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g>
+                                <path
+                                    d="M450.003,285.589l-2.341-3.443l-1.938,3.685c-12.648,24.029-54.696,38.389-88.041,38.389 c-42.46,0-252.092-6.381-279.383-7.935c-5.395-0.32-11.03-0.469-17.735-0.469c-4.159,0-8.021,0.052-11.756,0.101 c-3.244,0.043-6.305,0.084-9.181,0.084c-8.974,0-16.353-2.401-21.74-4.155c-3.491-1.136-6.249-2.033-8.533-2.033 c-1.761,0-3.188,0.542-4.241,1.612c-1.379,1.399-1.998,3.572-1.949,6.838c0.418,28.253,15.377,30.437,36.464,30.437 c2.896,0,5.979-0.041,9.247-0.084c3.718-0.05,7.563-0.101,11.689-0.101c6.604,0,12.146,0.146,17.445,0.46 c27.324,1.556,237.17,7.943,279.673,7.943c21.573,0,45.421-5.729,63.792-15.322c21.141-11.041,32.783-25.898,32.783-41.836 C454.258,294.509,452.826,289.74,450.003,285.589z">
+                                </path>
+                                <path
+                                    d="M36.795,302.434c2.875,0,5.933-0.041,9.176-0.084c3.689-0.05,7.505-0.101,11.599-0.101c6.565,0,12.062,0.146,17.308,0.46 c27.109,1.556,235.325,7.942,277.504,7.942c21.412,0,45.08-5.729,63.313-15.326c20.979-11.042,32.532-25.898,32.532-41.832 c0-23.11-26.366-30.573-54.281-38.476c-15.22-4.308-30.958-8.763-44.257-15.892c-5.99-3.218-15.123-7.882-26.253-13.456 c0.018-0.322,0.049-0.642,0.049-0.968c0-9.515-7.74-17.255-17.255-17.255c-4.271,0-8.176,1.568-11.192,4.148 c-4.031-1.982-8.164-4.01-12.368-6.069c-0.376-9.184-7.944-16.545-17.219-16.545c-3.746,0-7.207,1.213-10.038,3.249 c-3.77-1.833-7.546-3.667-11.311-5.494c0.08-0.672,0.133-1.352,0.133-2.045c0-9.514-7.74-17.254-17.254-17.254 c-4.775,0-9.101,1.951-12.228,5.095c-36.779-17.76-66.932-32.185-69.634-33.477c-1.646-1.123-3.481-1.716-5.323-1.716 c-2.97,0-5.825,1.444-7.64,3.868l-20.316,27.244c-2.722,3.687-3.791,7.403-3.178,11.048c1.214,7.222,8.664,12.338,14.65,16.448 c2.383,1.637,5.927,4.07,6.496,5.251c-0.008,0.008-0.017,0.017-0.025,0.025c-3.311,3.237-13.938,8.055-29.648,8.055 c-9.081,0-18.65-1.735-27.673-5.02c-11.041-4.02-15.603-15.05-19.268-23.913c-3.065-7.413-5.713-13.814-11.596-13.814 c-4.463,0-9.627,4.004-17.293,13.42c-26.057,33.12-24.839,83.725-23.949,120.675c0.095,3.957,0.187,7.76,0.24,11.369 C1.01,300.251,15.86,302.434,36.795,302.434z M255.188,199.765c0,0,3.342-3.308,7.473-2.071c3.595,1.076,12.096,3.366,17.297,4.658 c4.447,1.105,0.432,4.601,0.432,4.601l-67.519,61.801c-0.054,0.039-2.8,2.544-6.967,2.544c-6.727,0-19.768-0.051-25.082-0.051 c-4.417,0-0.752-3.727-0.752-3.727S255.179,199.765,255.188,199.765z M203.778,185.178c0.018-0.016,5.211-5.138,11.464-3.159 c3.17,1.003,10.61,2.85,15.355,4.178c4.058,1.135-0.245,5.321-0.247,5.325l-83.579,75.775c-0.058,0.043-1.991,3.536-8.505,3.536 c-7.351,0-21.378,0.336-27.117,0.336c-3.244,0-0.36-3.489-0.363-3.487L203.778,185.178z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <svg onclick="tie()" viewBox="-25.43 0 97.16 97.16" xmlns="http://www.w3.org/2000/svg"
+                        fill="#000000" height="40px" width="40px" id="_tie" class="clickable_icon">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g id="Group_39" data-name="Group 39" transform="translate(-347.476 -1075.698)">
+                                <path id="Path_187" data-name="Path 187"
+                                    d="M377.157,1111.085H364.04a3.352,3.352,0,0,1-3.321-2.822l-1.652-10.133a3.364,3.364,0,0,1,3.321-3.906h16.284a3.365,3.365,0,0,1,3.327,3.863l-1.514,10.131A3.345,3.345,0,0,1,377.157,1111.085Zm-14.769-13.861a.365.365,0,0,0-.36.423l1.652,10.133a.363.363,0,0,0,.36.3h13.117a.364.364,0,0,0,.362-.31l1.513-10.132a.363.363,0,0,0-.36-.419Z"
+                                    fill="#00e1fe"></path>
+                                <path id="Path_188" data-name="Path 188"
+                                    d="M372.511,1172.858a1.5,1.5,0,0,1-1.03-.408l-11.988-11.3a1.5,1.5,0,0,1-.465-1.219l4.286-50.473a1.5,1.5,0,0,1,1.495-1.373h12.348a1.5,1.5,0,0,1,1.484,1.279l7.6,50.811a1.5,1.5,0,0,1-.482,1.339l-12.242,10.961A1.5,1.5,0,0,1,372.511,1172.858Zm-10.433-13.4,10.459,9.858,10.612-9.5-7.284-48.734h-9.679Z"
+                                    fill="#00e1fe"></path>
+                                <rect id="Rectangle_19" data-name="Rectangle 19" width="3" height="15.642"
+                                    transform="matrix(0.366, -0.93, 0.93, 0.366, 363.771, 1116.735)" fill="#00e1fe">
+                                </rect>
+                                <rect id="Rectangle_20" data-name="Rectangle 20" width="3.001" height="17.532"
+                                    transform="translate(363.75 1128.536) rotate(-67.663)" fill="#00e1fe"></rect>
+                                <rect id="Rectangle_21" data-name="Rectangle 21" width="3" height="21.959"
+                                    transform="translate(361.828 1139.232) rotate(-67.213)" fill="#00e1fe"></rect>
+                                <rect id="Rectangle_22" data-name="Rectangle 22" width="3" height="24.952"
+                                    transform="translate(360.867 1150.662) rotate(-67.617)" fill="#00e1fe"></rect>
+                                <path id="Path_189" data-name="Path 189"
+                                    d="M379.609,1106.561a1.5,1.5,0,0,1-1.483-1.721l.749-5.045a1.5,1.5,0,0,1,1.144-1.24,7.6,7.6,0,0,0-1.409-14.99c-.04,0-.08,0-.12-.01-2.872-.35-4.26-2.435-4.145-4.315.1-1.707,1.5-3.542,4.327-3.542a15.464,15.464,0,0,1,1.077,30.856A1.324,1.324,0,0,1,379.609,1106.561Zm2.091-5.368-.3,2.045a12.468,12.468,0,0,0-2.764-24.541c-.755,0-1.266.278-1.293.724-.029.471.465,1.012,1.462,1.149a10.6,10.6,0,0,1,2.9,20.623Z"
+                                    fill="#00e1fe"></path>
+                                <path id="Path_190" data-name="Path 190"
+                                    d="M361.635,1106.561a1.325,1.325,0,0,1-.14-.007,15.464,15.464,0,0,1,1.037-30.855h0c2.865,0,4.263,1.834,4.366,3.541.115,1.88-1.273,3.965-4.145,4.315-.04.005-.08.008-.12.01a7.6,7.6,0,0,0-1.409,14.99,1.5,1.5,0,0,1,1.144,1.24l.714,4.806a1.5,1.5,0,0,1-1.429,1.96Zm.937-27.863a12.468,12.468,0,0,0-2.724,24.54l-.3-2.045a10.6,10.6,0,0,1,2.9-20.623c1-.137,1.491-.678,1.462-1.149C363.878,1078.975,363.367,1078.7,362.572,1078.7Z"
+                                    fill="#00e1fe"></path>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <svg onclick="shirt()" fill="#00e1fe" height="40px" width="40px" version="1.1" id="_shirt"
+                        class="clickable_icon" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.06 512.06" xml:space="preserve"
+                        stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <g transform="translate(1 1)">
+                                <g>
+                                    <g>
+                                        <circle cx="255.001" cy="190.963" r="8.533"></circle>
+                                        <circle cx="255.001" cy="250.696" r="8.533"></circle>
+                                        <circle cx="255.001" cy="310.429" r="8.533"></circle>
+                                        <circle cx="255.001" cy="370.163" r="8.533"></circle>
+                                        <path
+                                            d="M348.868,225.099h-51.2c-4.713,0-8.533,3.821-8.533,8.533v68.267c0,4.713,3.82,8.533,8.533,8.533h51.2 c4.713,0,8.533-3.82,8.533-8.533v-68.267C357.401,228.919,353.581,225.099,348.868,225.099z M340.335,293.365h-34.133v-51.2 h34.133V293.365z">
+                                        </path>
+                                        <path
+                                            d="M510.233,307.148c0.036-0.126,0.085-0.249,0.118-0.375c0.046-0.175,0.072-0.355,0.113-0.532 c1.222-5.16,0.553-10.778-2.349-15.715l-5.518-9.381l-9.591-16.309c-0.007-0.012-0.016-0.022-0.023-0.034L393.638,95.899 c-2.847-4.875-6.509-9.219-10.834-12.852c-8.886-7.462-20.105-11.548-31.703-11.548h-2.181c-0.013,0-0.025-0.003-0.038-0.003 h-27.488c-7.23-15.857-34.534-25.6-66.379-25.6s-59.149,9.743-66.379,25.6h-27.488c-0.013,0-0.025,0.003-0.038,0.003h-2.188 c-11.595,0-22.823,4.09-31.697,11.55c-4.326,3.634-7.991,7.983-10.839,12.864L1.734,292.245c-1.55,2.655-2.396,5.52-2.639,8.392 c-0.471,5.549,1.377,11.124,5.202,15.273c1.339,1.453,2.918,2.732,4.72,3.772l24.456,14.122 c9.53,5.501,21.708,2.289,27.283-7.196l13.226-22.519l3.472-5.91c0.003-0.006,0.006-0.012,0.009-0.018l41.017-69.839 l-0.015,184.509c0,3.316,1.92,6.331,4.924,7.733l58.82,27.452c46.141,21.531,99.446,21.531,145.577,0l58.82-27.452 c3.004-1.402,4.924-4.417,4.924-7.732l0.015-184.814l51.811,87.254l6.462,10.885c0.351,0.591,0.727,1.157,1.127,1.698 c4.242,5.748,11.129,8.636,17.954,8.001c2.788-0.258,5.565-1.086,8.146-2.575l20.436-11.801l2.909-1.68 c0.641-0.37,1.256-0.768,1.844-1.193C506.236,315.724,508.961,311.64,510.233,307.148z M491.864,305.018l-2.935,1.695 l-20.409,11.783c-0.472,0.273-0.987,0.39-1.494,0.388c-0.814-0.005-1.611-0.335-2.174-0.955c-0.13-0.143-0.247-0.302-0.35-0.475 l-6.38-10.744l-4.275-7.202l28.928-18.403l4.998,8.497l5.627,9.57c0.647,1.101,0.729,2.364,0.361,3.485 C493.446,303.616,492.807,304.473,491.864,305.018z M191.41,88.565l28.503,32.575l-15.03,20.041l-29.231-52.616H191.41z M318.621,88.565h15.756l-29.231,52.616l-15.029-20.04L318.621,88.565z M216.139,69.77c10-4.285,23.915-6.808,38.877-6.808 s28.877,2.522,38.877,6.808c6.19,2.653,9.981,5.561,11.523,7.967l-32.698,37.368c-0.004,0.005-0.008,0.01-0.012,0.015 l-17.69,20.217l-17.69-20.217c-0.004-0.005-0.008-0.01-0.012-0.015l-32.698-37.368C206.158,75.332,209.949,72.423,216.139,69.77z M46.039,317.959c-0.821,1.401-2.621,1.875-4.022,1.065l-24.47-14.125c-0.177-0.102-0.34-0.22-0.487-0.351 c-0.624-0.556-0.963-1.345-0.979-2.154c-0.009-0.524,0.11-1.056,0.394-1.543l11.474-19.652l30.271,16.026L46.039,317.959z M390.353,192.582c-4.429-7.459-15.87-4.319-15.871,4.356l-0.017,210.459l-53.896,25.154c-41.557,19.395-89.577,19.395-131.142,0 l-53.895-25.153l0.017-210.459c0.001-8.697-11.487-11.822-15.891-4.322l-52.786,89.877l-30.31-16.047l94.563-161.931 c1.861-3.189,4.253-6.027,7.08-8.402c5.101-4.288,11.392-6.871,17.989-7.431l40.161,72.291 c3.003,5.405,10.577,5.922,14.286,0.976l20.759-27.681l17.193,19.649c3.4,3.885,9.444,3.885,12.844,0l17.192-19.648l20.758,27.68 c3.709,4.946,11.284,4.429,14.286-0.976l40.161-72.29c6.598,0.561,12.884,3.142,17.992,7.432 c2.826,2.374,5.218,5.212,7.077,8.398l95.211,161.872l-28.988,18.441L390.353,192.582z">
+                                        </path>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <svg onclick="policeman()" fill="#00e1fe" height="40px" width="40px" version="1.1" id="_policeman"
+                        xmlns="http://www.w3.org/2000/svg" class="clickable_icon"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300 300"
+                        enable-background="new 0 0 300 300" xml:space="preserve" stroke="#00e1fe">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path
+                                d="M150.197,8.669c-28.271,0-51.188,14.291-51.188,31.919c0,5.592,2.32,10.842,6.373,15.412h89.631 c4.053-4.57,6.372-9.82,6.372-15.412C201.385,22.959,178.467,8.669,150.197,8.669z M150.197,48.26 c-5.682,0-10.289-6.467-10.289-14.444c0-7.977,4.607-14.444,10.289-14.444c5.682,0,10.289,6.467,10.289,14.444 C160.486,41.793,155.879,48.26,150.197,48.26z M198,66v10h-10.601c0,20.711-16.744,37.5-37.399,37.5S112.601,96.711,112.601,76H102 V66H198z M94,271h113v23H94V271z M205,126h-46v100l-9,10l-9-10V126H95c-25.415,0-46,20.516-46,46v105c0,8.977,7.047,17,16,17 s17-8.023,17-17v-94h12v69h113v-69h12v94c0,8.977,7.047,17,16,17s16-8.023,16-17V172C251,146.516,230.416,126,205,126z M183.967,179.146c-5.776,0-10.459-6.573-10.459-14.682s4.683-14.682,10.459-14.682c5.776,0,10.459,6.573,10.459,14.682 S189.743,179.146,183.967,179.146z">
+                            </path>
+                        </g>
+                    </svg>
+                </div>
+                <hr style="color: white; padding-bottom: 0px; margin-bottom: 0px;">
+            </section>
+            <footer class="icon_modal-info-footer">
+
+                <button class="icon_modal-ok-button" onclick="icon_onCancelTemplateForm()">Ok</button>
+            </footer>
+        </section>
+    </div>
+</div>
+<!-- ======= END OF POPUP ICON TEMPLATE ========== -->
+
+
+
+
+<!-- ========= START TOAST NOTIFICATION (NEW VERSION) ======== -->
+<section class="notification">
+    <span class="close">
+        <span class="slant_left"></span>
+        <span class="slant_right"></span>
+    </span>
+
+    <div class="left">
+        <span class="check"></span>
+    </div>
+
+    <div class="right">
+        <h1>Success</h1>
+        <p>Your request has been saved.</p>
+    </div>
+</section>
+
+<!-- ========= END TOAST NOTIFICATION (NEW VERSION) ========= -->
+
+
+<!-- ===== WINDOW SPINNER ======= -->
+<div id="windowSpinner" class="spin-modal-container">
+    <div id="spinner_modal_id" class="bar">
+        <section>
+
+            <section class="spinner_modal_content">
+                <div class="loading">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+
+                <p style="font-family: Lucida Handwriting; font-size: 20px; font-weight: bold;">Loading... <span
+                        style="font-family: Bradley Hand; font-size: 20px;">please wait</span></p>
+            </section>
+
+        </section>
+    </div>
+</div>
+<!-- ====== END OF WINDOW SPINNER ====== -->
+
+
+<!-- ======= POPUP MESSAGE INFORMATION ========== -->
+<div id="information" class="message-modal-container">
+    <div class="modal_form">
+        <section>
+            <header>
+                <h2 class="modal-header">Warning</h2>
+            </header>
+            <section>
+                <h5 class="modal_content" id="modal_info_content_id"></h5>
+            </section>
+            <footer class="modal-info-footer">
+
+                <button class="modal-ok-button" onclick="onCancelInfoForm()">Ok</button>
+            </footer>
+        </section>
+    </div>
+</div>
+<!-- ======= END OF POPUP MESSAGE INFORMATION ========== -->
+
+
+<!-- ======= POPUP CONFIRMATION TEMPLATE ========== -->
+<div id="confirmation" class="modal-container">
+    <div class="modal_form">
+        <section>
+            <header>
+                <h2 class="modal-header">Warning</h2>
+            </header>
+            <section>
+                <h5 class="modal_content" id="modal_content_id"></h5>
+            </section>
+            <footer class="modal-footer">
+                <button class="modal-button" onclick="onCancel()" id="cancelBtnId">Cancel</button>
+                <button class="modal-button modal-confirm-button" onclick="onConfirmBtn()"
+                    id="confirmBtnId">Confirm</button>
+            </footer>
+        </section>
+    </div>
+</div>
+<!-- ======= END OF POPUP CONFIRMATION TEMPLATE ========== -->
+
+
+
+<script type="text/javascript">
+
+    var isTransparentTemplate = "{{ isTransparentTemplate }}";
+    var isSuccess = "{{ isSuccess }}";
+    var serverMsg = "{{ serverMsg }}";
+    var serviceList = "{{ serviceList }}";
+    var sessionStorageMsg = null;   // USED TO STORE VARIBLE ON THE BROWSER BEFORE IT RELOAD 
+
+
+    // DISPLAY TOAST NOTIFICATION MESSAGE (NEW VERSION)
+    if (isSuccess == 'True') {
+
+        toastNotificationNewVersion();
+
+    }
+
+    // STYLING THE MAIN CONTAINER...
+    var autoHt = window.innerHeight;
+    var av = screen.availHeight;
+
+    av = av - 80;
+    autoHt = autoHt - 80;
+
+    document.getElementById('main_container').style.height = autoHt + 'px';
+    document.getElementById('main_container').style.overflowY = 'auto';
+    document.getElementById('main_container').style.width = '80%';
+    document.getElementById('main_container').style.paddingTop = '0.5rem';
+
+
+
+    // ONCE THE FORM RE-LOAD AND THERE IS A REASON WHY THIS CONDITION
+    // IS MEANT I.E. "NAME ALREADY EXIST IN THE SYSTEM" THE FORM 
+    // REMAIN VISIBLE FOR USER TO MAKE AMENDMENT AND RE-SAVE
+    if (isTransparentTemplate == 'True') {
+        // window.onbeforeunload = function () {
+        //     return false
+        // }
+        sessionStorageMsg = sessionStorage.getItem('service_record');
+        data = JSON.parse(sessionStorageMsg);
+
+        document.getElementById('service_nameId').value = data['serviceName'];
+        document.getElementById('optionSelected').value = data['cat_id'];
+        document.getElementById('ironNormalId').value = data['ironNormal'];
+        document.getElementById('ironFastId').value = data['ironFast'];
+        document.getElementById('laundNormalId').value = data['laundryNormal'];
+        document.getElementById('laundFastId').value = data['laundryFast'];
+        document.getElementById('laund_ironNorId').value = data['laundryIronNormal'];
+        document.getElementById('laund_ironFastId').value = data['laundryIronFast'];
+        document.getElementById('dryWashNorId').value = data['dryWashNormal'];
+        document.getElementById('dryWashFastId').value = data['dryWashFast'];
+        document.getElementById('stainRemovalId').value = data['stainRemoval'];
+        document.getElementById('dryUpId').value = data['dryUp'];
+        document.getElementById('othersId').value = data['others'];
+
+        const destination_icon = document.querySelector("#icon_cover svg");
+        const clone = document.querySelector("#" + data['iconId']).cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+        onPopAddServiceForm();
+    } else if (isSuccess == 'True') {
+        document.getElementById('service_nameId').innerHTML = '';
+        document.getElementById("frmId").setAttribute("method", "GET");
+    }
+
+
+    // ========= USED TO DISPLAY 'ADD SERVICE FORM' ===========
+    document.getElementById('addService_btn').addEventListener('click', function (e) {
+        e.preventDefault()
+        document.getElementById('headerId').innerHTML = 'Add Service';
+        document.getElementById('confirmBtn-id').value = 'Save';
+        document.getElementById('optionSelected').value = '';
+        onPopAddServiceForm();
+    })
+
+
+
+    // =========== SCRIPT FOR OPEN TRANSPARENT FORM ==========
+    function onPopAddServiceForm() {
+        let confirmation = document.getElementById('confirmation-id');
+        if (!confirmation.classList.contains('modal-open-form')) {
+            confirmation.classList.add("modal-open-form");
+        }
+
+    }
+
+    function onCancelForm() {
+        document.getElementById('service_nameId').value = '';
+        document.getElementById('optionSelected').value = '';
+        document.getElementById('ironNormalId').value = '';
+        document.getElementById('ironFastId').value = '';
+        document.getElementById('laundNormalId').value = '';
+        document.getElementById('laundFastId').value = '';
+        document.getElementById('laund_ironNorId').value = '';
+        document.getElementById('laund_ironFastId').value = '';
+        document.getElementById('dryWashNorId').value = '';
+        document.getElementById('dryWashFastId').value = '';
+        document.getElementById('stainRemovalId').value = '';
+        document.getElementById('dryUpId').value = '';
+        document.getElementById('othersId').value = '';
+        document.getElementById('flexSwitchCheckChecked_id').checked = true;
+
+        let confirmation = document.getElementById('confirmation-id');
+        confirmation.classList.remove("modal-open-form");
+
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#defaultIcon").cloneNode(true);
+        destination_icon.replaceWith(clone);
+    }
+
+    // =========== END OF SCRIPT FOR OPEN TRANSPARENT FORM ==========
+
+
+    // =========== SCRIPT FOR POPUP CONFIRMATION MESSAGE ==========
+    function onPopConfirmForm() {
+        let confirmation = document.getElementById('confirmation');
+        if (!confirmation.classList.contains('modal-open')) {
+            confirmation.classList.add("modal-open");
+        }
+
+    }
+
+    function onCancel() {
+        let confirmation = document.getElementById('confirmation');
+        confirmation.classList.remove("modal-open");
+    }
+
+    function onConfirmBtn() { deleteRequest(); }
+
+
+
+    // =========== END OF SCRIPT FOR POPUP CONFIRMATION MESSAGE ==========
+
+
+    // FUNCTION TO SAVE SERVICE 
+    function saveRequest(serviceName, cat_id, ironNormalId, ironFastId, laundNormalId,
+        laundFastId, laund_ironNorId, laund_ironFastId, dryWashNorId, dryWashFastId,
+        stainRemovalId, dryUpId, othersId, activeSwitchBtn, iconId
+    ) {
+
+        var url = '/addServices/';
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({
+                'call': 'saveServiceReq', 'serviceName': serviceName, 'cat_id': cat_id,
+                'ironNormal': ironNormalId, 'ironFast': ironFastId, 'laundryNormal': laundNormalId,
+                'laundryFast': laundFastId, 'laundryIronNormal': laund_ironNorId,
+                'laundryIronFast': laund_ironFastId, 'dryWashNormal': dryWashNorId,
+                'dryWashFast': dryWashFastId, 'stainRemoval': stainRemovalId,
+                'dryUp': dryUpId, 'others': othersId, 'activeSwitchBtn': activeSwitchBtn,
+                'iconId': iconId
+            })
+        })
+
+            .then((response) => {
+                return response.json()
+            })
+
+            .then((data) => {
+                // NEW SERVICE HAVE BEEN SAVED 
+                if (data == 'success') {
+                    location.reload();
+                }
+                // A NEW SERVICE WAS NOT SAVED. 
+                else {
+                    location.reload();
+                    // onCancelWindowSpinner();
+                    // data = JSON.parse(data)
+                    sessionStorageMsg = sessionStorage.setItem('service_record', data)
+
+                }
+
+
+
+            })
+
+
+
+        // toastNotificationNewVersion();
+
+        // var serviceName = document.getElementById('service_nameId').value;
+        // var category = document.getElementById('optionSelected').value;
+        // var ironNormalId = document.getElementById('ironNormalId').value;
+        // var ironFastId = document.getElementById('ironFastId').value;
+        // var laundNormalId = document.getElementById('laundNormalId').value;
+        // var laundFastId = document.getElementById('laundFastId').value;
+        // var laund_ironNorId = document.getElementById('laund_ironNorId').value;
+        // var laund_ironFastId = document.getElementById('laund_ironFastId').value;
+        // var dryWashNorId = document.getElementById('dryWashNorId').value;
+        // var dryWashFastId = document.getElementById('dryWashFastId').value;
+        // var stainRemovalId = document.getElementById('stainRemovalId').value;
+        // var dryUpId = document.getElementById('dryUpId').value;
+        // var othersId = document.getElementById('othersId').value;
+
+        // if (serviceName != '' && category != '' && ironNormalId != '' &&
+        //     ironFastId != '' && laundNormalId != '' && laundFastId != '' &&
+        //     laund_ironFastId != '' && laund_ironNorId != '' && dryWashNorId != '' &&
+        //     dryWashFastId != '' && stainRemovalId != '' && dryUpId != '' &&
+        //     othersId != '') {
+
+        //     onPopWindowSpinner();
+        // }
+    }
+
+
+    // FUNCTION CALL TO SAVE & UPDATE SERVICE TO DATABASE. COLLECT ALL THE VALUES,
+    // CHECK THAT NO FIELD IS EMPTY AND SEND REQUEST...
+    document.getElementById('confirmBtn-id').addEventListener('click', function (e) {
+        var serviceName = document.getElementById('service_nameId').value;
+        var cat_id = document.getElementById('optionSelected').value;
+        var ironNormalId = document.getElementById('ironNormalId').value;
+        var ironFastId = document.getElementById('ironFastId').value;
+        var laundNormalId = document.getElementById('laundNormalId').value;
+        var laundFastId = document.getElementById('laundFastId').value;
+        var laund_ironNorId = document.getElementById('laund_ironNorId').value;
+        var laund_ironFastId = document.getElementById('laund_ironFastId').value;
+        var dryWashNorId = document.getElementById('dryWashNorId').value;
+        var dryWashFastId = document.getElementById('dryWashFastId').value;
+        var stainRemovalId = document.getElementById('stainRemovalId').value;
+        var dryUpId = document.getElementById('dryUpId').value;
+        var othersId = document.getElementById('othersId').value;
+        var activeSwitchBtn = document.getElementById('flexSwitchCheckChecked_id').checked;
+        // var default_icon_id = document.getElementById()
+        var iconId = document.querySelector('#icon_cover svg').id;
+
+        if (serviceName != '' && cat_id != '' && ironNormalId != '' &&
+            ironFastId != '' && laundNormalId != '' && laundFastId != '' &&
+            laund_ironFastId != '' && laund_ironNorId != '' && dryWashNorId != '' &&
+            dryWashFastId != '' && stainRemovalId != '' && dryUpId != '' &&
+            othersId != '') {
+
+            e.preventDefault()
+
+            if (iconId == '' || iconId == 'defaultIcon') {
+                onPopInfoForm()
+                document.getElementById('modal_info_content_id').innerHTML = 'Kindly use the Icon button to select an icon before proceeding';
+
+            } else {
+                onPopWindowSpinner();
+                var btn = document.getElementById('confirmBtn-id').value;
+                if (btn == 'Save') {
+
+                    saveRequest(serviceName, cat_id, ironNormalId, ironFastId, laundNormalId,
+                        laundFastId, laund_ironNorId, laund_ironFastId, dryWashNorId, dryWashFastId,
+                        stainRemovalId, dryUpId, othersId, activeSwitchBtn, iconId);
+                }
+                // UPDATE BUTTON CLICKED
+                else {
+                    var id = document.getElementById('formId').value;
+                    updateRequest(id, serviceName, cat_id, ironNormalId, ironFastId, laundNormalId,
+                        laundFastId, laund_ironNorId, laund_ironFastId, dryWashNorId, dryWashFastId,
+                        stainRemovalId, dryUpId, othersId, activeSwitchBtn, iconId);
+                }
+            }
+
+        }
+    })
+
+
+    // FUNCTION TO UPDATE SERVICE 
+    function updateRequest(id, serviceName, cat_id, ironNormalId, ironFastId, laundNormalId,
+        laundFastId, laund_ironNorId, laund_ironFastId, dryWashNorId, dryWashFastId,
+        stainRemovalId, dryUpId, othersId, activeSwitchBtn, iconId
+    ) {
+
+        var url = '/addServices/';
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({
+                'call': 'updateServiceReq', 'id': id, 'serviceName': serviceName, 'cat_id': cat_id,
+                'ironNormal': ironNormalId, 'ironFast': ironFastId, 'laundryNormal': laundNormalId,
+                'laundryFast': laundFastId, 'laundryIronNormal': laund_ironNorId,
+                'laundryIronFast': laund_ironFastId, 'dryWashNormal': dryWashNorId,
+                'dryWashFast': dryWashFastId, 'stainRemoval': stainRemovalId,
+                'dryUp': dryUpId, 'others': othersId, 'activeSwitchBtn': activeSwitchBtn,
+                'iconId': iconId
+            })
+        })
+
+            .then((response) => {
+                return response.json()
+            })
+
+            .then((data) => {
+                // SERVICE HAVE BEEN UPDATED 
+                if (data == 'success') {
+                    location.reload();
+                }
+                // SERVICE WAS NOT UPDATED. 
+                else {
+                    location.reload();
+                    // onCancelWindowSpinner();
+                    // data = JSON.parse(data)
+                    sessionStorageMsg = sessionStorage.setItem('service_record', data)
+
+                }
+
+
+
+            })
+    }
+
+
+
+    function deleteRequest() {
+        var checkbox = document.querySelectorAll("input[name=chkBox]");
+        const idList = [];
+        for (var i = 0; i < checkbox.length; i++) {
+            if (checkbox[i].checked) {
+                idList.push(checkbox[i].value)
+
+            }
+        }
+        submitForm(idList);
+
+    }
+
+    function submitForm(selectedList) {
+
+        var url = '/addServices/'
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({
+                'selectedList': selectedList, 'call': 'del'
+            })
+        })
+
+
+            .then((response) => {
+                return response.json()
+            })
+
+            .then((data) => {
+                console.log('data:', data)
+
+                console.log('processing');
+                toastNotificationNewVersion();
+                location.reload();
+            })
+
+    }
+
+
+
+    //  ======== START TOAST NOTIFICATION (NEW VERSION) =============
+
+    function toastNotificationNewVersion() {
+        const notification = document.querySelector(".notification"),
+
+            close = document.querySelector(".close"),
+            close_effect = ".7s cubic-bezier(0.75, -.2, 0.205, 1.1)";
+
+        setTimeout(() => {
+            notification.style.right = "8px";
+        }, 1500);
+
+        setTimeout(() => {
+            notification.style.right = "-900px";
+            notification.style.transition = close_effect;
+        }, 6000);
+
+        close.addEventListener("click", () => {
+            notification.style.right = "-900px";
+            notification.style.transition = close_effect;
+        })
+    }
+
+    //  =========== END TOAST NOTIFICATION (NEW VERSION) =============
+
+
+    // ============= SCRIPT FOR WINDOW SPINNER ===========
+
+    function onPopWindowSpinner() {
+
+        let spin = document.getElementById('windowSpinner');
+        if (!spin.classList.contains('modal-open-load')) {
+            spin.classList.add('modal-open-load');
+        }
+
+    }
+
+    function onCancelWindowSpinner() {
+        let spin = document.getElementById('windowSpinner');
+        spin.classList.remove("modal-open-load");
+    }
+    // ============= END OF SCRIPT FOR WINDOW SPINNER ==========
+
+
+    // ============= SCRIPT FOR POPUP INFORMATION MESSAGE ===========
+
+    function onPopInfoForm() {
+        let info = document.getElementById('information');
+        if (!info.classList.contains('modal-open-info')) {
+            info.classList.add('modal-open-info');
+        }
+    }
+
+    function onCancelInfoForm() {
+        let information = document.getElementById('information');
+        information.classList.remove("modal-open-info");
+    }
+    // ============= END OF SCRIPT FOR INFORMATION MESSAGE ==========
+
+
+
+    // ============= SCRIPT FOR POPUP ICON TEMPLATE ===========
+
+    function icon_popTemplateForm() {
+        let info = document.getElementById('icon_information');
+        if (!info.classList.contains('icon_modal-open-info')) {
+            info.classList.add('icon_modal-open-info');
+        }
+    }
+
+    function icon_onCancelTemplateForm() {
+        let information = document.getElementById('icon_information');
+        information.classList.remove("icon_modal-open-info");
+    }
+    // ============= END OF SCRIPT FOR ICON TEMPLATE  ==========
+
+
+    // ==== CONDITION TO DISPLAY INFO POPUP =======
+    if (serverMsg != '' && isSuccess == 'False') {
+        onPopInfoForm()
+        document.getElementById('modal_info_content_id').innerHTML = serverMsg;
+
+    }
+
+
+    // USED TO CHECK WHICH OF THE SERVICE LIST WAS CLICKED ON,
+    // PICK THE ID AND SEND REQUEST...
+    var first_col = document.getElementsByClassName('first_col')
+    for (var i = 0; i < first_col.length; i++) {
+        first_col[i].addEventListener('click', function (e) {
+            e.preventDefault();
+
+            let pk = this.dataset.pk
+            console.log(pk);
+            getRecord(pk);
+        })
+    }
+
+
+    // ===== GET SERVICE RECORD FOR UPDATE PURPOSE ====
+    function getRecord(id) {
+
+        var url = '/addServices/'
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({
+                'id': id, 'call': 'getRec'
+            })
+        })
+
+
+            .then((response) => {
+                return response.json()
+            })
+
+            .then((data) => {
+                data = JSON.parse(data)
+                console.log('data:', data)
+                onPopAddServiceForm();
+
+                document.getElementById('headerId').innerHTML = 'Update Service'
+                document.getElementById('confirmBtn-id').value = 'Update';
+                // document.getElementById('formId').style.display = 'block';
+                document.getElementById('formId').value = data['id'];
+                document.getElementById('service_nameId').value = data['serviceName'];
+                document.getElementById('optionSelected').value = data['cat_id'];
+                document.getElementById('ironNormalId').value = data['ironNormal'];
+                document.getElementById('ironFastId').value = data['ironFast'];
+                document.getElementById('laundNormalId').value = data['laundryNormal'];
+                document.getElementById('laundFastId').value = data['laundryFast'];
+                document.getElementById('laund_ironNorId').value = data['laundryIronNormal'];
+                document.getElementById('laund_ironFastId').value = data['laundryIronFast'];
+                document.getElementById('dryWashNorId').value = data['dryWashNormal'];
+                document.getElementById('dryWashFastId').value = data['dryWashFast'];
+                document.getElementById('stainRemovalId').value = data['stainRemoval'];
+                document.getElementById('dryUpId').value = data['dryUp'];
+                document.getElementById('othersId').value = data['others'];
+                document.getElementById('flexSwitchCheckChecked_id').checked = data['active'];
+
+                const destination_icon = document.querySelector("#icon_cover svg");
+                const clone = document.querySelector("#" + data['iconId']).cloneNode(true);
+                destination_icon.replaceWith(clone);
+            })
+        // location.reload();
+
+        // window.location.replace("{% url 'services' %}")
+    }
+
+
+    //  === SINGLE CHECK BOX OPERATION THAT LOOP THROUGH ALL THE
+    // CHECK BOXES. GET THE ONE THAT WAS CLICKED AND SEND THE 
+    // STATUS & ID TO ANOTHER FUNCTION TO PROCESS THE COMBO BOX & PROCEED BUTTON 
+    var checkbox = document.querySelectorAll("input[name=chkBox]");
+    var idList = [];
+    var chk_allBox = document.getElementById('chk_all')
+
+    for (var i = 0; i < checkbox.length; i++) {
+
+        checkbox[i].addEventListener('change', function () {
+            check_uncheckBoxes(this.checked, this.dataset.id, 'singleChkBox');
+
+        });
+    }
+
+
+    // ===== LOGICAL OPERATION ON 'PROCEED' BUTTON (CLOSE TO DROP-DOWN BUTTON) =====
+    // IF DELETE IS SELECTED, POP A CONFIRMATION MESSAGE BEFORE CARRYING OUT OPERATION.
+    document.getElementById('proceedId').addEventListener('click', function (e) {
+        var selectedDropdown = document.getElementById('selectId').value;
+        if (selectedDropdown == 'delete') {
+            e.preventDefault()
+            onPopConfirmForm()
+            document.getElementById('modal_content_id').innerHTML = 'Kindly confirm if you want to delete this record.';
+
+        }
+    })
+
+
+    // CHECK BOX FUNCTION TO SELECT AND UNSELECT ALL CHECK BOXES
+    document.getElementById('chk_all').addEventListener('change', function () {
+        var isChk = document.getElementById('chk_all').checked;
+        var chckboxes = document.querySelectorAll("input[name=chkBox]");
+        idList = [];
+        if (isChk == true) {
+            for (var i = 0; i < chckboxes.length; i++) {
+                chckboxes[i].checked = true;
+                check_uncheckBoxes(isChk, chckboxes[i].value, 'singleChkBox');
+            }
+        }
+        else {
+
+            for (var i = 0; i < chckboxes.length; i++) {
+                chckboxes[i].checked = false;
+                check_uncheckBoxes(isChk, chckboxes[i].value, 'allChkBox');
+            }
+        }
+    })
+
+
+    // LOGICAL OPERATION TO SHOW THE DROP-DOWN BUTTON AND PROCEED BUTTON =========
+    function check_uncheckBoxes(isCheck, id, call) {
+
+        if (call == 'singleChkBox') {
+
+            if (isCheck) {
+                document.getElementById('hide').style.display = 'flex';
+
+                idList.push(id);
+
+            } else {
+                idList.pop();
+
+                if (idList.length == 0) {
+                    document.getElementById('hide').style.display = 'none';
+                    document.getElementById('selectId').value = '';
+                    chk_allBox.checked = false;
+                }
+            }
+        } else if (call == 'allChkBox') {
+            if (isCheck) {
+                document.getElementById('hide').style.display = 'flex';
+
+                idList.push(id);
+
+            } else {
+
+                if (idList.length == 0) {
+                    document.getElementById('hide').style.display = 'none';
+                    document.getElementById('selectId').value = '';
+
+                }
+            }
+        }
+    }
+
+
+    // ======== WORK IN PROGRESS... SEARCH RECORD FIELD ====
+
+    var format = "{{ format }}";
+    formattedServiceList = JSON.parse(format.replace(/&quot;/g, '"'));
+
+    // console.log('data:', formattedServiceList);
+
+    for (var x = 0; x < formattedServiceList.length; x++) {
+        var y = document.getElementsByClassName('first_col');
+        // console.log(y)
+        // console.log(formattedServiceList[x]['serviceName'])
+    }
+
+    // ======================== WORK IN PROGRESS ================
+
+    function pants() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_pant").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+
+    function t_shirt() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_tshirt").cloneNode(true);
+        destination_icon.replaceWith(clone);
+    }
+
+    function long_sleeve() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_long_sleeve").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+
+    function woman_coat() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_woman_coat").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+
+    function hat() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_hat").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function baby_cloth() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_baby_cloth").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function jacket() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_jacket").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function gloves() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_gloves").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function socks() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_socks").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function winter_cap() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_winter_cap").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function robe() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_robe").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function little_girl_cloth() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_little_girl_cloth").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function bikini_summer() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_bikini_summer").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function dress() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_dress").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function women_dress() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_women_dress").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function sweater_hood() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_sweater_hood").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function women_swimsuit() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_women_swimsuit").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function female_trakcsuit() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_female_trakcsuit").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function skirt() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_skirt").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function female_coat() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_female_coat").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function male_suit() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_male_suit").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function short() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_short").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function towel() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_towel").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function baby_clothes() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_baby_clothes").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function clothes() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_clothes").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function services() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_services").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function lingerine() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_lingerine").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function pullover() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_pullover").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function vest() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_vest").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function polo() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_polo").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function women_suit() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_women_suit").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function cloth_robe() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_cloth_robe").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function sport_shoe() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_sport_shoe").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function tie() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_tie").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+
+    }
+    function shirt() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_shirt").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+    }
+    function policeman() {
+        const destination_icon = document.querySelector("#icon_cover svg");
+
+        const clone = document.querySelector("#_policeman").cloneNode(true);
+        destination_icon.replaceWith(clone);
+
+    }
+
+</script>
+{% endblock content %}

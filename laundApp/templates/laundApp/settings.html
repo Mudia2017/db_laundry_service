@@ -1,0 +1,580 @@
+{% extends 'laundApp/base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    div .right_element {
+        border-radius: 5px;
+        background-color: turquoise;
+        width: 40%;
+        padding: 3px;
+    }
+
+    /* ===================== CSS FOR INPUT FIELD NAME ===================== */
+
+
+    /* .first-row {
+        display: flex;
+    }
+
+    .name-row {
+        width: 100%;
+        position: relative;
+        height: 50px;
+        overflow: hidden;
+    } */
+
+    .name {
+        width: 50%;
+        position: relative;
+        height: 50px;
+        overflow: hidden;
+    }
+
+    .input-name-field {
+        width: 100%;
+        height: 100%;
+        color: #595f6e;
+        padding-top: 20px;
+        border: none;
+        outline: none;
+        padding-left: 1%;
+    }
+
+    .label-name {
+        position: absolute;
+        bottom: -4px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        border-bottom: 1px solid black;
+    }
+
+    .label-name::after {
+        content: "";
+        position: absolute;
+        left: 0px;
+        bottom: -1px;
+        width: 100%;
+        height: 100%;
+        border-bottom: 3px solid #5fa8d3;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    .content-name {
+        position: absolute;
+        bottom: 5px;
+        left: 2%;
+        transition: all 0.3s ease;
+        font-size: 12px;
+    }
+
+    .input-name-field:focus+.label-name .content-name,
+    .input-name-field:valid+.label-name .content-name {
+        transform: translateY(-140%);
+        font-size: 11px;
+        color: #5fa8d3;
+    }
+
+    .input-name-field:focus+.label-name::after,
+    .input-name-field:valid+.input-name-field::after {
+        transform: translateX(0%);
+    }
+
+
+    /* ======================= END OF INPUT FIELD NAME ========================= */
+
+
+    /*  ====== START TOAST NOTIFICATION (NEW VERSION) ======== */
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: Verdana, Verdana, Geneva, Tahoma, sans-serif;
+    }
+
+    body {
+        overflow: hidden;
+    }
+
+    .notification {
+        width: 320px;
+        height: 70px;
+        position: absolute;
+        padding: 12px 8px 8px 15px;
+        right: -900px;
+        /* right: 18px; */
+        /* top: 24px; */
+        bottom: 24px;
+        border-radius: 8px;
+        background-color: #fff;
+        border-bottom: 1px solid #2a9f76;
+        border-left: 1px solid #26916d;
+        box-shadow: #555 -1px 4px 17px -4px;
+        transition: .4s cubic-bezier(0.075, 0.82, 0.35, 1.1);
+    }
+
+    .left,
+    .right {
+        display: inline-block;
+    }
+
+    .left {
+        width: 18%;
+    }
+
+    .close {
+        display: block;
+        position: absolute;
+        width: 23px;
+        height: 23px;
+        top: 0px;
+        right: 2px;
+    }
+
+    .close:hover {
+        cursor: pointer;
+    }
+
+    .close .slant_left {
+        transform: rotate(45deg);
+        transition: .5s;
+    }
+
+    .close .slant_right {
+        transform: rotate(135deg);
+        transition: .3s;
+    }
+
+    .close:hover .slant_left {
+        transform: rotate(-145deg);
+        background-color: tomato;
+    }
+
+    .close:hover .slant_right {
+        transform: rotate(-45deg);
+        background-color: tomato;
+    }
+
+    .close span {
+        display: block;
+        position: absolute;
+        top: 13px;
+        width: 15px;
+        height: 1.6px;
+        background-color: #555;
+    }
+
+    .check {
+        display: block;
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        top: 18px;
+        background-color: #26916d;
+        border-radius: 50%;
+    }
+
+    .check::before,
+    .check::after {
+        content: "";
+        display: block;
+        position: absolute;
+        height: 2px;
+        background-color: #fff;
+    }
+
+    .check::before {
+        width: 12px;
+        top: 23px;
+        left: 5px;
+        transform: rotate(45deg);
+    }
+
+    .check::after {
+        width: 22px;
+        top: 20px;
+        right: 7px;
+        transform: rotate(135deg);
+    }
+
+    h1 {
+        font-size: 17px;
+        font-weight: 600;
+        color: #26916d;
+    }
+
+    p {
+        margin-top: 5px;
+        font-size: 13px;
+    }
+
+    /*  =====  END TOAST NOTIFICATION (NEW VERSION) ==== */
+
+    /* ===== START OF POPUP INFO ========= */
+    .message-modal-container {
+        z-index: 9999;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-open-info {
+        display: flex;
+    }
+
+    .modal-info-footer {
+        padding: 1em;
+        background-color: rgba(0, 0, 0, 0.05);
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .modal-ok-button {
+        background-color: rgb(50, 135, 245);
+        text-transform: uppercase;
+        padding: 0.5em 1em;
+        border: none;
+        color: white;
+        border-radius: 3px;
+        margin-left: 0.5em;
+    }
+
+    /* ============ END OF POPUP INFO ========== */
+
+
+    /* ========== POPUP CONFIRMATION FORM ============= */
+
+    .modal-container {
+        z-index: 9999;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-open {
+        display: flex;
+    }
+
+    .modal_form {
+        max-width: 700px;
+        max-height: 800px;
+        background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 3px;
+    }
+
+    .modal-button {
+        text-transform: uppercase;
+        padding: 0.5em 1em;
+        border: none;
+        color: white;
+        background-color: grey;
+        border-radius: 3px;
+        margin-left: 0.5em;
+    }
+
+    .modal-confirm-button {
+        background-color: tomato;
+    }
+
+    .modal-header {
+
+        color: orange;
+    }
+
+    .modal-header h2 {
+        padding: 0.5em;
+    }
+
+    .modal_content {
+        padding: 1em;
+        color: rgba(168, 167, 167);
+        text-align: center;
+    }
+
+    .modal-footer {
+        padding: 1em;
+        background-color: rgba(0, 0, 0, 0.05);
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    #formId {
+        display: none;
+    }
+
+    /* =========== END OF POPUP CONFIRMATION FORM ========== */
+</style>
+
+
+
+<div id="box_element">
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="right_element">
+            <div style="width: 100%; background-color: bisque;">
+                <label style="margin-top: 0%; font-weight: 800; font-size: 15px; padding-left: 0px;" for="">Category
+                </label>
+
+                <div style="background-color: white; width: 100%; display: block; justify-content: space-between;">
+
+                    <div style="display: flex;">
+                        <div class="name" style="width: 80%; margin-bottom: 2%; margin-left: 2%;">
+
+                            <input id="catName" value="" class="input-name-field" type="text" name="search"
+                                autocomplete="" required />
+                            <label for="" class="label-name">
+                                <span class="content-name">Category</span>
+                            </label>
+
+                        </div>
+
+                        <div class="form-check form-switch" style="margin: 20px 5px 0px 0px; ">
+
+
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" name="activeBtn" type="checkbox" role="switch"
+                                    id="flexSwitchCheckChecked_id" checked>
+                                <label class="form-check-label" for="flexSwitchCheckChecked"
+                                    style="font-size: 12px;">Active</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="select_box">
+                        {% if catList %}
+                        <select required name="catName" class="form-select form-select-lg mb-3 btn-sm shadow-none"
+                            style=" font-size: 12px; " aria-label=".form-select-lg example" id="optionSelected">
+                            <option name="opt_selected" value="" selected>Select Category record and update</option>
+                            {% for category in catList %}
+
+                            <option name="opt_selected" data-active="{{ category.active }}"
+                                data-cat_id="{{ category.id }}" value="{{ category.catName }}">{{category.catName}}
+                            </option>
+                            {% endfor %}
+                        </select>
+
+                        {% endif %}
+                        <input id="saveCat_btn" style="font-weight: 700; margin-top: 0rem;" type="submit"
+                            class="btn btn-warning btn-sm shadow-none" value="Save" name="update_btn">
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+    </form>
+</div>
+
+
+<!-- ========= START TOAST NOTIFICATION (NEW VERSION) ======== -->
+<section class="notification">
+    <span class="close">
+        <span class="slant_left"></span>
+        <span class="slant_right"></span>
+    </span>
+
+    <div class="left">
+        <span class="check"></span>
+    </div>
+
+    <div class="right">
+        <h1>Success</h1>
+        <p>Your request has been saved.</p>
+    </div>
+</section>
+
+<!-- ========= END TOAST NOTIFICATION (NEW VERSION) ========= -->
+
+
+<!-- ======= POPUP MESSAGE INFORMATION ========== -->
+<div id="information" class="message-modal-container">
+    <div class="modal_form">
+        <section>
+            <header>
+                <h2 class="modal-header">Warning</h2>
+            </header>
+            <section>
+                <h5 class="modal_content" id="modal_info_content_id"></h5>
+            </section>
+            <footer class="modal-info-footer">
+
+                <button class="modal-ok-button" onclick="onCancelInfoForm()">Ok</button>
+            </footer>
+        </section>
+    </div>
+</div>
+<!-- ======= END OF POPUP MESSAGE INFORMATION ========== -->
+
+
+
+<script>
+
+    var isSuccess = "{{ isSuccess }}";
+    var serverMsg = "{{ serverMsg }}";
+    var catId = ''; // IT IS USED TO UPDATE CATEGORY 
+
+    // STYLING THE MAIN CONTAINER...
+    var autoHt = window.innerHeight;
+    var av = screen.availHeight;
+
+    av = av - 80;
+    autoHt = autoHt - 80;
+
+    document.getElementById('box_element').style.height = autoHt + 'px';
+    document.getElementById('box_element').style.overflowY = 'auto';
+    document.getElementById('box_element').style.width = '80%';
+    document.getElementById('box_element').style.paddingTop = '0.5rem';
+
+
+    //  ======== START TOAST NOTIFICATION (NEW VERSION) =============
+
+    function toastNotificationNewVersion() {
+        const notification = document.querySelector(".notification"),
+
+            close = document.querySelector(".close"),
+            close_effect = ".7s cubic-bezier(0.75, -.2, 0.205, 1.1)";
+
+        setTimeout(() => {
+            notification.style.right = "8px";
+        }, 1500);
+
+        setTimeout(() => {
+            notification.style.right = "-900px";
+            notification.style.transition = close_effect;
+        }, 6000);
+
+        close.addEventListener("click", () => {
+            notification.style.right = "-900px";
+            notification.style.transition = close_effect;
+        })
+    }
+
+    // DISPLAY TOAST NOTIFICATION MESSAGE (NEW VERSION)
+    if (isSuccess == 'True') {
+
+        toastNotificationNewVersion();
+
+    }
+
+    //  =========== END TOAST NOTIFICATION (NEW VERSION) =============
+
+
+    // ============= SCRIPT FOR POPUP INFORMATION MESSAGE ===========
+
+    function onPopInfoForm() {
+        let info = document.getElementById('information');
+        if (!info.classList.contains('modal-open-info')) {
+            info.classList.add('modal-open-info');
+        }
+    }
+
+    function onCancelInfoForm() {
+        let information = document.getElementById('information');
+        information.classList.remove("modal-open-info");
+    }
+    // ============= END OF SCRIPT FOR INFORMATION MESSAGE ==========
+
+
+    // ==== CONDITION TO DISPLAY INFO POPUP =======
+    if (serverMsg != '' && isSuccess == 'False') {
+        onPopInfoForm()
+        document.getElementById('modal_info_content_id').innerHTML = serverMsg;
+
+    }
+
+
+
+    // =========== CATEGORY SAVE/UPDATE FUNCTION ....
+    document.getElementById('saveCat_btn').addEventListener('click', function (e) {
+        const categoryName = document.getElementById('catName').value;
+        const isActive = document.getElementById('flexSwitchCheckChecked_id').checked;
+
+        if (categoryName != '') {
+            e.preventDefault();
+            const btn = document.getElementById('saveCat_btn').value;
+            if (btn == 'Save') {
+                saveCategoryRequest(catId, categoryName, isActive, 'saveCat');
+            } else if (btn == 'Update') {
+                saveCategoryRequest(catId, categoryName, isActive, 'updateCat');
+            }
+        }
+    })
+
+    function saveCategoryRequest(catId, categoryName, isActive, call) {
+        var url = '/jsonSave_setting/';
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({
+                'catId': catId, 'call': call,
+                'catName': categoryName,
+                'active': isActive
+            })
+        })
+
+            .then((response) => {
+                return response.json()
+            })
+
+            .then((data) => {
+
+                location.reload();
+            })
+
+    }
+
+
+    // FUNCTION CALL WHEN A SELECTION IS MADE ON THE DROP-DOWN CATEGORY 
+    // IT DISPLAY THE SELECTED CATEGORY FOR EDITING & SWITCH THE SAVE BUTTON TO UPDATE
+    document.getElementById('optionSelected').addEventListener('change', function () {
+        const selected = document.querySelectorAll('option[name="opt_selected"]');
+
+        for (const select of selected) {
+            if (select.selected && select.value != '') {
+                catId = select.dataset.cat_id;
+                document.getElementById('catName').value = select.value;
+                document.getElementById('saveCat_btn').value = 'Update';
+                if (select.dataset.active == 'True') {
+                    document.getElementById('flexSwitchCheckChecked_id').checked = true;
+                } else {
+                    document.getElementById('flexSwitchCheckChecked_id').checked = false;
+                }
+
+                break;
+            }
+            else {
+
+                document.getElementById('catName').value = '';
+                document.getElementById('saveCat_btn').value = 'Save';
+            }
+        }
+    })
+
+
+
+</script>
+
+{% endblock content %}
